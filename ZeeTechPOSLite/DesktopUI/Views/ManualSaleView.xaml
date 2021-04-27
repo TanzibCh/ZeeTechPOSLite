@@ -1,0 +1,334 @@
+﻿<UserControl x:Class="DesktopUI.Views.ManualSaleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:DesktopUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1100" Background="White">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition MinHeight="20" MaxHeight="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--#region  Date Time -->
+        <!-- Date and Time -->
+        <StackPanel  Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+            <TextBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10"
+                     MinWidth="150"
+                     Text="Date" FontSize="16" />
+
+            <TextBox  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10"
+                      MinWidth="150"
+                      Text="Time" FontSize="16" />
+        </StackPanel>
+        <!--#endregion-->
+
+        <!--#region Search entry-->
+        <Grid Grid.Column="0" Grid.Row="1" Margin="0 0 10 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+
+
+            <!-- Lable -->
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
+                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                   Content="Search Entry" FontSize="16"/>
+            <!-- Product search box -->
+            <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="10"
+                     VerticalContentAlignment="Center"
+                     Text="Search" FontSize="16" />
+
+            <!-- Search ListBox -->
+            <ListBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
+                     Margin="10 0">
+
+            </ListBox>
+
+            <!-- Qty -->
+            <TextBox Grid.Column="0" Grid.Row="3" Margin="10"
+                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                 Text="Qty" FontSize="16" />
+
+            <!-- Price -->
+            <TextBox Grid.Column="1" Grid.Row="3" Margin="10"
+                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                 Text="Price" FontSize="16" />
+
+            <!-- Cost -->
+            <TextBox Grid.Column="2" Grid.Row="3" Margin="10"
+                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                 Text="Cost" FontSize="16"  />
+
+            <!-- Add to cart Button -->
+            <Button Grid.Column="3" Grid.Row="3"
+                Margin="10"
+                Content="Add" FontSize="16" />
+
+
+        </Grid>
+        <!--#endregion-->
+
+        <!--#region Manual entry-->
+        <Grid Grid.Column="0" Grid.Row="3" Margin="0 0 10 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+
+
+            <!-- Lable -->
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
+                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                   Content="Manual Entry" FontSize="16"/>
+
+            <!-- Name/Model -->
+            <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalContentAlignment="Center"
+                 Margin="10"
+                 Text="Name/Model" FontSize="16"  />
+
+            <!-- Description -->
+            <TextBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" VerticalContentAlignment="Center"
+                 Margin="10"
+                 Text="Description" FontSize="16"  />
+
+            <!-- Qty -->
+            <TextBox Grid.Column="0" Grid.Row="3" Margin="10"
+                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                 Text="Qty" FontSize="16" />
+
+            <!-- Price -->
+            <TextBox Grid.Column="1" Grid.Row="3" Margin="10"
+                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                 Text="Price" FontSize="16" />
+
+            <!-- Code -->
+            <TextBox Grid.Column="0" Grid.Row="4" Margin="10"
+                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                 Text="Code" FontSize="16"  />
+
+            <!-- Cost -->
+            <TextBox Grid.Column="1" Grid.Row="4" Margin="10"
+                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                 Text="Cost" FontSize="16"  />
+
+            <!--Add to cart button -->
+            <Button Grid.Column="3" Grid.Row="3" Grid.RowSpan="2"
+                Margin="10"
+                Content="Add" FontSize="16" />
+
+        </Grid>
+
+        <!--#endregion-->
+
+        <!--#region Cart -->
+
+        <!-- Cart Lable -->
+        <Label Grid.Column="1" Grid.Row="0"
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"
+               Content="Cart" FontSize="20"/>
+
+        <!-- Cart and Payment Grid -->
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="4">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="200" />
+            </Grid.RowDefinitions>
+
+            <!--#region Cart -->
+
+            <!-- Cart ListBox -->
+            <ListBox Grid.Row="0" HorizontalContentAlignment="Stretch"
+                     Margin="10,10,10,10">
+                <ListBoxItem>
+                    <!-- Listbox grid -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Name/model -->
+                        <TextBox Grid.Column="0"
+                                   Margin="5"
+                                   Text="Name/Model" FontSize="16" />
+
+                        <!-- Description and Remove Button Grid -->
+                        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10*" />
+                                <ColumnDefinition Width="*" />
+
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Description -->
+                            <TextBox Grid.Column="0"
+                                   Margin="5"
+                                   Text="Description" FontSize="18"/>
+
+                            <!-- Remove Button -->
+                            <Button Grid.Column="1"
+                                    Margin="5"
+                                    Content="X"
+                                    FontSize="16"
+                                    FontWeight="Bold"/>
+                        </Grid>
+
+                        <!-- Qty-->
+                        <TextBox Grid.Column="1" HorizontalContentAlignment="Center"
+                                   Margin="5" MinWidth="70"
+                                   HorizontalAlignment="Center"
+                                   Text="Qty" FontSize="16" />
+
+                        <!-- Total -->
+                        <TextBox Grid.Column="2" HorizontalContentAlignment="Center"
+                                   Margin="5"
+                                   Text="Total" FontSize="16" />
+
+                    </Grid>
+                </ListBoxItem>
+            </ListBox>
+
+            <!--#endregion-->
+
+            <!--#region Payment -->
+            <Grid Grid.Column="1" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Pay Button -->
+                <Button Grid.Column="1" Grid.Row="1"
+                        Margin="10"
+                        Content="Pay" FontSize="30" FontWeight="Bold" />
+
+                <!-- Payment Grid -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="10 0"
+                                Orientation="Vertical" >
+                        <Label Content="Card" 
+                               Height="30"
+                               VerticalContentAlignment="Bottom"
+                               HorizontalContentAlignment="Center"
+                               FontSize="16"/>
+                        <TextBox Text="£0.00"
+                                 HorizontalContentAlignment="Center"
+                                 FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="10 0"
+                                Orientation="Vertical" >
+                        <Label Content="Cash" 
+                               Height="30"
+                               VerticalContentAlignment="Bottom"
+                               HorizontalContentAlignment="Center"
+                               FontSize="16"/>
+                        <TextBox Text="£0.00"
+                                 HorizontalContentAlignment="Center"
+                                 FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="2" Margin="10 0"
+                                Orientation="Vertical" >
+                        <Label Content="Cheque" 
+                               Height="30   "
+                               VerticalContentAlignment="Bottom"
+                               HorizontalContentAlignment="Center"
+                               FontSize="16"/>
+                        <TextBox Text="£0.00"
+                                 HorizontalContentAlignment="Center"
+                                 FontSize="16"/>
+                    </StackPanel>
+
+                    <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label Margin="10" VerticalAlignment="Center"
+                                   Content="Sub-Total"
+                                   FontSize="16"/>
+                            <TextBlock Margin="10" VerticalAlignment="Center" MinWidth="150"
+                                       Text="£00.00"
+                                       FontSize="20"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label Margin="10" VerticalAlignment="Center"
+                                   Content="Tax"
+                                   FontSize="16"/>
+                            <TextBlock Margin="10" VerticalAlignment="Center" MinWidth="150"
+                                       Text="£00.00"
+                                       FontSize="20"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label Margin="10" VerticalAlignment="Center"
+                                   Content="Total"
+                                   FontSize="16"/>
+                            <TextBlock Margin="10" VerticalAlignment="Center" MinWidth="150"
+                                       Text="£00.00"
+                                       FontSize="30"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!--#endregion-->
+        </Grid>
+
+        <!--#endregion-->
+
+    </Grid>
+</UserControl>
