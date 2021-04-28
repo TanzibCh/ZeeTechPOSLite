@@ -1,16 +1,36 @@
 ﻿<Application x:Class="DesktopUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:DesktopUI"
              StartupUri="Views/MainView.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#37474F" SecondaryColor="#bfb78d" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+        
+        
+         <!--Colours--> 
+             <!--Light--> 
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#CFD8DC" />
+            <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#37474F" />
+            
+             <!--Mid--> 
+            <SolidColorBrush x:Key="PrimaryHueMidtBrush" Color="#78909C" />
+            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#37474F" />
+
+             <!--Dark--> 
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#37474F" />
+            <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#bfb78d" />
+
+             <!--Accent--> 
+            <SolidColorBrush x:Key="PrimaryHueAccentBrush" Color="#bfb78d" />
+            <SolidColorBrush x:Key="PrimaryHueAccentForegroundBrush" Color="#37474F" />
+
         </ResourceDictionary>
     </Application.Resources>
+
 </Application>

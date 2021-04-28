@@ -34,7 +34,7 @@
             </Style>
         </Grid.Resources>
 
-        <Border Grid.Column="0" Background="#FF212138" />
+        <Border Grid.Column="0" Background="#37474F" />
 
 
 
