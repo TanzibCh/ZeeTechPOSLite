@@ -38,8 +38,15 @@
                       Text="Time" />
         </StackPanel>
         <!--#endregion-->
+        
+        <!--#region Cart Lable-->
+        <Label Grid.Column="1" Grid.Row="0"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               FontSize="20"
+               Content="Cart" />
+        <!--#endregion-->
 
-        <!--Product entry-->
+        <!--#region Product Entry-->
         <Grid Grid.Column="0" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -48,12 +55,12 @@
 
             <!--#region Search entry-->
             <materialDesign:Card Grid.Row="0"
-                                 Margin="10"
-                                 BorderBrush="White"
-                                 materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                 UniformCornerRadius="15" >
+                                    Margin="10 10"
+                                    BorderBrush="White"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                    UniformCornerRadius="15" >
 
-            <Grid Grid.Column="0" Grid.Row="1" Margin="0 0 10 0">
+            <Grid Grid.Column="0" Grid.Row="1" Margin="0 0 10 10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="150" />
@@ -71,33 +78,33 @@
 
                 <!-- Lable -->
                 <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
-                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                   Content="Search Entry" FontSize="16"/>
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    Content="Search Entry" FontSize="16"/>
                 <!-- Product search box -->
                 <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="10"
-                     VerticalContentAlignment="Center"
-                     materialDesign:HintAssist.Hint="Search product by Model/Barcode" />
+                        VerticalContentAlignment="Center"
+                        materialDesign:HintAssist.Hint="Search product by Model/Barcode" />
 
                 <!-- Search ListBox -->
                 <ListBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
-                     Margin="10 0">
+                        Margin="10 0">
 
                 </ListBox>
 
                 <!-- Qty -->
                 <TextBox Grid.Column="0" Grid.Row="3" Margin="10"
-                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                 materialDesign:HintAssist.Hint="Qty" />
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    materialDesign:HintAssist.Hint="Qty" />
 
                 <!-- Price -->
                 <TextBox Grid.Column="1" Grid.Row="3" Margin="10"
-                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                 materialDesign:HintAssist.Hint="Price" />
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    materialDesign:HintAssist.Hint="Price" />
 
                 <!-- Cost -->
                 <TextBox Grid.Column="2" Grid.Row="3" Margin="10"
-                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                 materialDesign:HintAssist.Hint="Cost" />
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    materialDesign:HintAssist.Hint="Cost" />
 
                 <!-- Add to cart Button -->
                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
@@ -107,16 +114,16 @@
             </Grid>
             </materialDesign:Card>
             <!--#endregion-->
-
+            
             <!--#region Manual entry-->
-            <materialDesign:Card Grid.Row="1"
-                                 Margin="10"
-                                 BorderBrush="White"
-                                 materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                 UniformCornerRadius="15" >
+            <materialDesign:Card Grid.Row="2"
+                                    Margin="10 10"
+                                    BorderBrush="White"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                    UniformCornerRadius="15" >
 
 
-                <Grid Grid.Column="0" Grid.Row="3" Margin="0 0 10 0">
+                <Grid Grid.Column="0" Grid.Row="3" Margin="0 0 10 10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="150" />
@@ -135,38 +142,38 @@
 
                     <!-- Lable -->
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
-                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                   Content="Manual Entry" FontSize="16"/>
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    Content="Manual Entry" FontSize="16"/>
 
                     <!-- Name/Model -->
                     <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalContentAlignment="Center"
-                 Margin="10"
-                 materialDesign:HintAssist.Hint="Name/Model" />
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Name/Model" />
 
                     <!-- Description -->
                     <TextBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" VerticalContentAlignment="Center"
-                 Margin="10"
-                 materialDesign:HintAssist.Hint="Description"  />
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="Description"  />
 
                     <!-- Qty -->
                     <TextBox Grid.Column="0" Grid.Row="3" Margin="10"
-                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                 materialDesign:HintAssist.Hint="Qty" />
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    materialDesign:HintAssist.Hint="Qty" />
 
                     <!-- Price -->
                     <TextBox Grid.Column="1" Grid.Row="3" Margin="10"
-                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                 materialDesign:HintAssist.Hint="Price" />
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    materialDesign:HintAssist.Hint="Price" />
 
                     <!-- Code -->
                     <TextBox Grid.Column="0" Grid.Row="4" Margin="10"
-                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                 materialDesign:HintAssist.Hint="Code" />
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    materialDesign:HintAssist.Hint="Code" />
 
                     <!-- Cost -->
                     <TextBox Grid.Column="1" Grid.Row="4" Margin="10"
-                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                 materialDesign:HintAssist.Hint="Cost"  />
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    materialDesign:HintAssist.Hint="Cost"  />
 
                     <!--Add to cart button -->
                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
@@ -178,5 +185,192 @@
             </materialDesign:Card>
             <!--#endregion-->
         </Grid>
+        <!--#endregion-->
+        
+        <!--#region Cart -->
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="200" />
+            </Grid.RowDefinitions>
+
+            <!--#region Cart ListBox -->
+            <materialDesign:Card Margin="10 10"
+                                    BorderBrush="White"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                    UniformCornerRadius="15">
+                <!-- Cart ListBox -->
+            <ListBox Grid.Row="0" HorizontalContentAlignment="Stretch"
+                     Margin="10,10,10,10">
+                <ListBoxItem>
+                    <!-- Listbox grid -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Name/model -->
+                        <TextBox Grid.Column="0"
+                                   Margin="5"
+                                   Text="Name/Model" FontSize="16" />
+
+                        <!-- Description and Remove Button Grid -->
+                        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="458*" />
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="50" />
+
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Description -->
+                            <TextBox Grid.Column="0"
+                                   Margin="5,5,5,5"
+                                   Text="Description" FontSize="18" Grid.ColumnSpan="2"/>
+
+                            <!-- Remove Button -->
+                            <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                    Grid.Column="2"
+                                    Margin="5,5,5,6"
+                                    Content="X"/>
+                        </Grid>
+
+                        <!-- Qty-->
+                        <TextBox Grid.Column="1" HorizontalContentAlignment="Center"
+                                   Margin="5" MinWidth="70"
+                                   HorizontalAlignment="Center"
+                                   Text="Qty" FontSize="16" />
+
+                        <!-- Total -->
+                        <TextBox Grid.Column="2" HorizontalContentAlignment="Center"
+                                   Margin="5"
+                                   Text="Total" FontSize="16" />
+
+                    </Grid>
+                </ListBoxItem>
+            </ListBox>
+
+            </materialDesign:Card>
+            
+            <!--#endregion-->
+            
+            <!--#region Payment-->
+            <materialDesign:Card Grid.Row="1"
+                                 Margin="10 10"
+                                 BorderBrush="White"
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                 UniformCornerRadius="15">
+
+                <Grid Grid.Column="1" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Pay Button -->
+                    <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        VerticalAlignment="Bottom"
+                        MinHeight="100"
+                        Grid.Column="1"
+                        Margin="10"
+                        Content="Pay" FontSize="30" FontWeight="Bold" />
+
+                    <!-- Payment Grid -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="3*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Column="0" Grid.Row="0" Margin="10 0"
+                                Orientation="Vertical" >
+                            <Label Content="Card" 
+                               Height="30"
+                               VerticalContentAlignment="Bottom"
+                               HorizontalContentAlignment="Center"
+                               FontSize="16"/>
+                            <TextBox Text="£0.00"
+                                 HorizontalContentAlignment="Center"
+                                 FontSize="16"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Grid.Row="1" Margin="10 0"
+                                Orientation="Vertical" >
+                            <Label Content="Cash" 
+                               Height="30"
+                               VerticalContentAlignment="Bottom"
+                               HorizontalContentAlignment="Center"
+                               FontSize="16"/>
+                            <TextBox Text="£0.00"
+                                 HorizontalContentAlignment="Center"
+                                 FontSize="16"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Grid.Row="2" Margin="10 0"
+                                Orientation="Vertical" >
+                            <Label Content="Cheque" 
+                               Height="30   "
+                               VerticalContentAlignment="Bottom"
+                               HorizontalContentAlignment="Center"
+                               FontSize="16"/>
+                            <TextBox Text="£0.00"
+                                 HorizontalContentAlignment="Center"
+                                 FontSize="16"/>
+                        </StackPanel>
+
+                        <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Label Margin="10" VerticalAlignment="Center"
+                                   Content="Sub-Total"
+                                   FontSize="16"/>
+                                <TextBlock Margin="10" VerticalAlignment="Center" MinWidth="150"
+                                       Text="£00.00"
+                                       FontSize="20"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Label Margin="10" VerticalAlignment="Center"
+                                   Content="Tax"
+                                   FontSize="16"/>
+                                <TextBlock Margin="10" VerticalAlignment="Center" MinWidth="150"
+                                       Text="£00.00"
+                                       FontSize="20"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Label Margin="10" VerticalAlignment="Center"
+                                   Content="Total"
+                                   FontSize="16"/>
+                                <TextBlock Margin="10" VerticalAlignment="Center" MinWidth="150"
+                                       Text="£00.00"
+                                       FontSize="30"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+            </materialDesign:Card>
+            
+            <!--#endregion-->
+        </Grid>
+        <!--#endregion-->
     </Grid>
 </UserControl>
