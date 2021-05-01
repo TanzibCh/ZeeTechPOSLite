@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 namespace DesktopUI.Views
 {
     /// <summary>
-    /// Interaction logic for ManualSaleView.xaml
+    /// Interaction logic for BankingView.xaml
     /// </summary>
-    public partial class ManualSaleView : UserControl
+    public partial class BankingView : UserControl
     {
-        public ManualSaleView()
+        public BankingView()
         {
             InitializeComponent();
-            this.DataContext = new ManualSaleViewModel();
+            this.DataContext = new BankingViewModel();
         }
     }
 }

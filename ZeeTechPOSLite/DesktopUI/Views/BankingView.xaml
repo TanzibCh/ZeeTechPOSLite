@@ -1,0 +1,422 @@
+﻿<UserControl x:Class="DesktopUI.Views.BankingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             FontFamily="{materialDesign:MaterialDesignFont}"
+             xmlns:local="clr-namespace:DesktopUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1100" >
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card Grid.Row="0" Margin="0 0 0 10"
+                             UniformCornerRadius="15"
+                             materialDesign:ShadowAssist.ShadowDepth="Depth1">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="400" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                            Content="{materialDesign:PackIcon Kind=ChevronLeftCircleOutline,Size=20}"
+                            Height="25" Width="25"
+                            Margin="10 0 0 0">
+                    </Button>
+
+                    <DatePicker Margin="10 0"
+                                Width="150" >
+                        
+                    </DatePicker>
+
+                    <Button Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                            Content="{materialDesign:PackIcon Kind=ChevronRightCircleOutline, Size=20}"
+                            Height="25" Width="25"
+                            Margin="10 0 0 0" />
+                </StackPanel>
+
+                <Viewbox Grid.Column="1">
+                    <Label 
+                       Content="Daily Banking"
+                       FontSize="30"
+                       Foreground="{StaticResource MaterialDesignLightForeground}" />
+                </Viewbox>
+                
+
+                <ToggleButton Grid.Column="2"
+                              Margin="10 0"
+                              HorizontalAlignment="Right"
+                              IsChecked="True"/>
+            </Grid>
+        </materialDesign:Card>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--#region Totals -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="290" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!--#region Totals -->
+                <materialDesign:Card Grid.Row="0" Margin="0 0 0 5"
+                                 UniformCornerRadius="15"
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth1">
+
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
+                                Margin="10">
+
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Total Label-->
+                            <Label Grid.Column="0"
+                                   Content="Total:"
+                                   FontSize="20"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+
+                            <!-- Total Text -->
+                            <TextBlock Grid.Column="1"
+                                       Margin="13 0 0 0"
+                                   Text="£10000.00"
+                                   FontSize="20"
+                                   VerticalAlignment="Center"/>
+
+                            <!-- Profit Label-->
+                            <Label Grid.Column="0" Grid.Row="1"
+                                   Content="Profit:"
+                                   FontSize="20"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+
+                            <!-- Profit Text -->
+                            <TextBlock Grid.Column="1" Grid.Row="1"
+                                       Margin="13 0 0 0"
+                                   Text="£10000.00"
+                                   FontSize="20"
+                                   VerticalAlignment="Center"/>
+
+                            <!-- Profit Label-->
+                            <Label Grid.Column="0" Grid.Row="2"
+                                   Content="Till Cash:"
+                                   FontSize="20"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+
+                            <!-- Profit Text -->
+                            <TextBlock Grid.Column="1" Grid.Row="2"
+                                       Margin="13 0 0 0"
+                                   Text="£10000.00"
+                                   FontSize="20"
+                                   VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <Separator />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Card Label-->
+                            <Label Grid.Column="0" Grid.Row="0"
+                                   Content="Card:"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+
+                            <!-- Card Text -->
+                            <TextBlock Grid.Column="1" Grid.Row="0"
+                                       HorizontalAlignment="Right"
+                                       Margin="10 0 0 0"
+                                   Text="£10000.00"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"/>
+
+                            <!-- Cash Label-->
+                            <Label Grid.Column="0" Grid.Row="1"
+                                   Content="Cash:"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+
+                            <!-- Cash Text -->
+                            <TextBlock Grid.Column="1" Grid.Row="1"
+                                       HorizontalAlignment="Right"
+                                       Margin="10 0 0 0"
+                                   Text="£10000.00"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"/>
+
+                            <!-- Cash-In Label-->
+                            <Label Grid.Column="0" Grid.Row="2"
+                                   Content="Cash-Out:"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+
+                            <!-- Cash-In Text -->
+                            <TextBlock Grid.Column="1" Grid.Row="2"
+                                       HorizontalAlignment="Right"
+                                       Margin="10 0 0 0"
+                                   Text="£10000.00"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"/>
+
+                            <!-- Cheque Label-->
+                            <Label Grid.Column="0" Grid.Row="3"
+                                   Content="Cheque:"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+
+                            <!-- Cheque Text -->
+                            <TextBlock Grid.Column="1" Grid.Row="3"
+                                       HorizontalAlignment="Right"
+                                       Margin="10 0 0 0"
+                                   Text="£10000.00"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"/>
+
+                            <!-- Refund Label-->
+                            <Label Grid.Column="0" Grid.Row="4"
+                                   Content="Refund:"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+
+                            <!-- Refund Text -->
+                            <TextBlock Grid.Column="1" Grid.Row="4"
+                                       HorizontalAlignment="Right"
+                                       Margin="10 0 0 0"
+                                   Text="£10000.00"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"/>
+
+                            <!-- Expenses Label-->
+                            <Label Grid.Column="0" Grid.Row="5"
+                                   Content="Expense:"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+
+                            <!-- Expenses Text -->
+                            <TextBlock Grid.Column="1" Grid.Row="5"
+                                       HorizontalAlignment="Right"
+                                       Margin="10 0 0 0"
+                                   Text="£10000.00"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"/>
+                        </Grid>
+
+                    </StackPanel>
+                </materialDesign:Card>
+                <!--#endregion-->
+                
+                <!--#region  Departments -->
+                <materialDesign:Card Grid.Row="1" Margin="0 5"
+                                 UniformCornerRadius="15"
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth1">
+
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <materialDesign:Card Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+                                             Margin="0 5"
+                                             UniformCornerRadius="15"
+                                             Background="#FFF1DDB2"
+                                             materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                        </materialDesign:Card>
+
+                        <Label Grid.Column="0" Grid.Row="0"
+                                   Margin="5 0"
+                                   VerticalAlignment="Center"
+                                   Content="Mobile"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="1" Grid.Row="0"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="10"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="2" Grid.Row="0"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="£1000.00"
+                                   FontSize="16"/>
+
+                        <materialDesign:Card Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"
+                                             Margin="0 5"
+                                             UniformCornerRadius="15"
+                                             Background="#FFC9B2F1"
+                                             materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                        </materialDesign:Card>
+                        <Label Grid.Column="0" Grid.Row="1"
+                                   Margin="5 0"
+                                   VerticalAlignment="Center"
+                                   Content="Computer"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="1" Grid.Row="1"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="10"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="2" Grid.Row="1"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="£1000.00"
+                                   FontSize="16"/>
+
+                        <materialDesign:Card Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"
+                                             Margin="0 5"
+                                             UniformCornerRadius="15"
+                                             Background="#FFB2F1DA"
+                                             materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                        </materialDesign:Card>
+                        <Label Grid.Column="0" Grid.Row="2"
+                                   Margin="5 0"
+                                   VerticalAlignment="Center"
+                                   Content="Home"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="1" Grid.Row="2"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="10"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="2" Grid.Row="2"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="£1000.00"
+                                   FontSize="16"/>
+
+                        <materialDesign:Card Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"
+                                             Margin="0 5"
+                                             UniformCornerRadius="15"
+                                             Background="#FFB2DAF1"
+                                             materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                        </materialDesign:Card>
+                        <Label Grid.Column="0" Grid.Row="3"
+                                   Margin="5 0"
+                                   VerticalAlignment="Center"
+                                   Content="Camera"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="1" Grid.Row="3"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="10"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="2" Grid.Row="3"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="£1000.00"
+                                   FontSize="16"/>
+                    </Grid>
+                        </materialDesign:Card>
+                <!--#endregion-->
+
+                <!--#region  New Expense -->
+                <materialDesign:Card Grid.Row="2" Margin="0 5 0 0"
+                                 UniformCornerRadius="15"
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+                        <Label Content="New Expense" 
+                               HorizontalAlignment="Center"/>
+                        
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox Width="100"
+                                      materialDesign:HintAssist.Hint="Payment"
+                                      Margin="10"/>
+
+                            <TextBox MinWidth="100"
+                                     materialDesign:HintAssist.Hint="Amount"
+                                     TextWrapping="Wrap"
+                                     Margin="10"/>
+
+                        </StackPanel>
+
+                        <TextBox MinWidth="100" 
+                                 materialDesign:HintAssist.Hint="Description"
+                                 Margin="10"/>
+
+                        <Button Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                Margin="10"                                
+                                Content="Add" />
+                    </StackPanel>
+                </materialDesign:Card>
+                <!--#endregion-->
+            </Grid>
+            <!--#endregion-->
+
+            <!--#region Sales List -->
+            <Grid Grid.Column="1">
+                <materialDesign:Card Margin="10 0 5 0"
+                                 UniformCornerRadius="15"
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth1">
+
+                </materialDesign:Card>
+            </Grid>
+            <!--#endregion-->
+
+            <!--#region Sale Products List -->
+            <Grid Grid.Column="2">
+                <materialDesign:Card Margin="5 0 0 0"
+                                 UniformCornerRadius="15"
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth1">
+
+                </materialDesign:Card>
+            </Grid>
+            <!--#endregion-->
+        </Grid>
+        
+        
+    </Grid>
+</UserControl>

@@ -17,7 +17,7 @@ namespace DesktopUI.ViewModels
 
         public MainViewModel()
         {
-            SelectedViewModel = new ManualSaleViewModel();
+            SelectedViewModel = new BankingViewModel();
         }
         #endregion
 
