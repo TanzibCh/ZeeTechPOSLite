@@ -12,25 +12,43 @@
              xmlns:local="clr-namespace:DesktopUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1100" >
+    
+    <!-- Custom Styles -->
+    <UserControl.Resources>
+        <Style TargetType="Label" x:Key="HeadingSmall" 
+               BasedOn="{StaticResource MaterialDesignLabel}">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Margin" Value="0 0 0 -5" />
+        </Style>
+        
+        <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"  />
+            
+        </Style>
+    </UserControl.Resources>
+    
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- Top date bar -->
         <materialDesign:Card Grid.Row="0" Margin="0 0 0 10"
                              UniformCornerRadius="15"
                              materialDesign:ShadowAssist.ShadowDepth="Depth1">
-
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="400" />
+                    <ColumnDefinition Width="250" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="400" />
+                    <ColumnDefinition Width="250" />
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal">
-                    <Button Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
                             Content="{materialDesign:PackIcon Kind=ChevronLeftCircleOutline,Size=20}"
                             Height="25" Width="25"
                             Margin="10 0 0 0">
@@ -41,7 +59,7 @@
                         
                     </DatePicker>
 
-                    <Button Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
                             Content="{materialDesign:PackIcon Kind=ChevronRightCircleOutline, Size=20}"
                             Height="25" Width="25"
                             Margin="10 0 0 0" />
@@ -65,8 +83,8 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition MinWidth="300" />
+                <ColumnDefinition Width="400" />
             </Grid.ColumnDefinitions>
 
             <!--#region Totals -->
@@ -406,13 +424,184 @@
             </Grid>
             <!--#endregion-->
 
-            <!--#region Sale Products List -->
+            <!--#region Sale Products and Expenses List -->
             <Grid Grid.Column="2">
-                <materialDesign:Card Margin="5 0 0 0"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                
+                <!--#region Sale Products -->
+                <materialDesign:Card Grid.Row="0" Margin="5 0 0 5"
                                  UniformCornerRadius="15"
                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
 
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="10">
+                        
+                        <Label Content="Selected Sale Products" HorizontalAlignment="Center" />
+
+                        <ListBox HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <ListBoxItem>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition MinWidth="150" />
+                                        <ColumnDefinition MinWidth="60" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Model/Name -->
+                                    <StackPanel Grid.Column="0" Grid.Row="0"
+                                                Orientation="Vertical">
+
+                                        <Label Style="{StaticResource HeadingSmall}"
+                                           Content="Name/Model"/>
+
+                                        <TextBox Text="Logitech G150S" />
+                                    </StackPanel>
+
+                                    <!-- Buttons -->
+                                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal"
+                                                HorizontalAlignment="Right">
+                                        <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                Content="{materialDesign:PackIcon Kind=ContentSaveOutline}" />
+
+                                        <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                Content="{materialDesign:PackIcon Kind=CloseCircleOutline}" 
+                                                Margin="5 0" />
+                                    </StackPanel>
+
+                                    <!-- Description -->
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                                                Orientation="Vertical">
+
+                                        <Label Style="{StaticResource HeadingSmall}"
+                                               Content="Description" 
+                                               HorizontalAlignment="Left" />
+
+                                        <TextBox TextWrapping="Wrap"
+                                                 Text="Logitech Gaming keyboard with custom keys, Backlit and Mechanical" />
+                                    </StackPanel>
+
+                                    <!-- Currency Grid -->
+                                    <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Cost -->
+                                        <StackPanel Grid.Column="0" Grid.Row="0"
+                                                Orientation="Vertical">
+
+                                            <Label Style="{StaticResource HeadingSmall}"
+                                                   Content="Cost" />
+
+                                            <TextBox Style="{StaticResource ListSmallTextBox}"
+                                                     Margin="5 0 0 0"
+                                                     Text="£1000.00"/>
+                                        </StackPanel>
+
+                                        <!-- Price -->
+                                        <StackPanel Grid.Column="1" Grid.Row="0"
+                                                Orientation="Vertical">
+
+                                            <Label Style="{StaticResource HeadingSmall}"
+                                                   Content="Price" />
+
+                                            <TextBox Style="{StaticResource ListSmallTextBox}"
+                                                     Margin="5 0 0 0"
+                                                     Text="£2000.00" />
+                                        </StackPanel>
+
+                                        <!-- Quantity -->
+                                        <StackPanel Grid.Column="2" Grid.Row="0"
+                                                Orientation="Vertical">
+
+                                            <Label Style="{StaticResource HeadingSmall}"
+                                                   Content="Qty" />
+
+                                            <TextBox Style="{StaticResource ListSmallTextBox}"
+                                                     Margin="5 0 0 0"
+                                                     Text="2" />
+                                        </StackPanel>
+
+                                        <!-- Total -->
+                                        <StackPanel Grid.Column="3" Grid.Row="0"
+                                                Orientation="Vertical">
+
+                                            <Label Style="{StaticResource HeadingSmall}"
+                                                   Content="Total" />
+
+                                            <TextBox Style="{StaticResource ListSmallTextBox}"
+                                                     Margin="5 0 0 0"
+                                                     Text="£4000.00" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
                 </materialDesign:Card>
+                <!--#endregion-->
+
+                <!--#region Expenses -->
+                <materialDesign:Card Grid.Row="1" Margin="5 5 0 0"
+                                 UniformCornerRadius="15"
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth1">
+
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch"
+                                Margin="10">
+                        <Label HorizontalAlignment="Center"
+                               Content="Expenses"/>
+
+                        <ListBox HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <ListBoxItem>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBox Grid.Column="0" Grid.Row="0"
+                                             Margin="0 0 5 0" />
+                                    
+                                    <TextBox Grid.Column="1" Grid.Row="0"
+                                             Margin="5 0 0 0" />
+
+                                    <Button Grid.Column="2"
+                                                Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                Content="{materialDesign:PackIcon Kind=ContentSaveOutline}"
+                                                Margin="5 5 0 0"/>
+
+                                    <Button Grid.Column="3"
+                                                Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                Content="{materialDesign:PackIcon Kind=CloseCircleOutline}" 
+                                                Margin="5 5 0 0"/>
+
+                                    <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4"
+                                                 MinWidth="300" 
+                                                 TextWrapping="Wrap"/>
+
+                                </Grid>
+                            </ListBoxItem>
+                        </ListBox>
+                        
+                    </StackPanel>
+                </materialDesign:Card>
+                <!--#endregion-->
+                
             </Grid>
             <!--#endregion-->
         </Grid>
