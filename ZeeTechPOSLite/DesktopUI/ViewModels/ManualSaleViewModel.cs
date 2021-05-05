@@ -7,8 +7,34 @@ namespace DesktopUI.ViewModels
 {
     class ManualSaleViewModel : INotifyPropertyChanged
     {
+        #region Private properties
 
+        private string _currentTime;
 
+        #endregion
+
+        #region Public properties
+        public DateTime SaleDate { get; set; }
+
+        public string CurrentTime
+        {
+            get { return _currentTime; }
+            set { _currentTime = value; }
+        }
+
+        #endregion
+
+        #region Constructor
+        public ManualSaleViewModel()
+        {
+            SaleDate = DateTime.Now;
+            CurrentTime = DateTime.UtcNow.ToString();
+        }
+        #endregion
+
+        #region Methods
+
+        #endregion
 
         #region INotifyPropertyChanged implimentation
 
