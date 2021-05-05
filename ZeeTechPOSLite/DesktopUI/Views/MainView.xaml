@@ -7,7 +7,7 @@
         xmlns:viewModel="clr-namespace:DesktopUI.ViewModels"
         xmlns:local="clr-namespace:DesktopUI.Views"
         mc:Ignorable="d"
-        Title="MainView" Height="850" Width="1200" MinHeight="750" MinWidth="950" WindowStartupLocation="CenterScreen">
+        Title="MainView" Height="800" Width="1400" MinHeight="800" MinWidth="1400" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:ManualSaleViewModel}">
