@@ -16,9 +16,11 @@
         <DataTemplate DataType="{x:Type viewModel:BankingViewModel}" >
             <local:BankingView />
         </DataTemplate>
+
+        <viewModel:MainViewModel x:Key="mainVM" />
     </Window.Resources>
     
-    <Grid>
+    <Grid DataContext="{StaticResource mainVM}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80" />
             <ColumnDefinition Width="*" />
@@ -45,10 +47,12 @@
         <StackPanel >
             <StackPanel Margin="0 10">
                 <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Center"
-                    BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#bfb78d">
+                    BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#bfb78d"
+                        Command="{Binding OpenManualSales}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="CashRegister" />
                     </StackPanel>
+                    
                 </Button>
                 <TextBlock Text="Sale" 
                            Style="{StaticResource menuText}"/>
@@ -78,7 +82,8 @@
 
             <StackPanel Margin="0 10">
                 <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Center"
-                    BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#bfb78d">
+                    BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#bfb78d"
+                        Command="{Binding OpenBanking}">
                     <StackPanel>
                         <materialDesign:PackIcon Kind="Calculator" />
                     </StackPanel>

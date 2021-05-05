@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopUI.ViewModels.Commands;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -14,15 +15,17 @@ namespace DesktopUI.ViewModels
         #endregion
 
         #region Construtors
-
         public MainViewModel()
         {
-            SelectedViewModel = new BankingViewModel();
+            SelectedViewModel = new ManualSaleViewModel();
+
+            OpenManualSales = new OpenManualSalesCommand(this);
+
+            OpenBanking = new OpenBankingCommand(this);
         }
         #endregion
 
         #region Public Properties
-
         public object SelectedViewModel
         {
             get { return _selectedViewModel; }
@@ -33,9 +36,22 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        public OpenManualSalesCommand OpenManualSales { get; set; }
+
+        public OpenBankingCommand OpenBanking { get; set; }
+
         #endregion
 
         #region Methods
+        public void OpenManualSalesPage()
+        {
+            SelectedViewModel = new ManualSaleViewModel();
+        }
+
+        public void OpenBankingPage()
+        {
+            SelectedViewModel = new BankingViewModel();
+        }
 
         #endregion
 
