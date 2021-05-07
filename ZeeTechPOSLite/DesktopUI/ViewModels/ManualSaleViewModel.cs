@@ -9,26 +9,23 @@ namespace DesktopUI.ViewModels
     {
         #region Private properties
 
-        private string _currentTime;
+        
 
         #endregion
 
         #region Public properties
-        public DateTime SaleDate { get; set; }
 
-        public string CurrentTime
-        {
-            get { return _currentTime; }
-            set { _currentTime = value; }
-        }
+        public string SaleDate { get; set; }
+
+        public string CurrentTime { get; set; }
 
         #endregion
 
         #region Constructor
         public ManualSaleViewModel()
         {
-            SaleDate = DateTime.Now;
-            CurrentTime = DateTime.UtcNow.ToString();
+            SaleDate = DateTime.Now.ToString("dd,MM,yyyy");
+            CurrentTime = DateTime.UtcNow.ToString("hh:mm:ss");
         }
         #endregion
 

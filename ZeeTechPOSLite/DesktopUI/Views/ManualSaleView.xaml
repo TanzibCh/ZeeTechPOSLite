@@ -29,34 +29,18 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!--#region  Date Time -->
         <!-- Date and Time -->
         <StackPanel  Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
-            <DatePicker 
-                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                        Margin="10 0"
-                        MinWidth="150"
-                        
-                        SelectedDate="{Binding SaleDate}">
-                
-            </DatePicker>
-
-            <TextBox  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                      Margin="10 17"
-                      MinWidth="150"
-                      Text="{Binding CurrentTime, Mode=TwoWay}" />
+            
         </StackPanel>
         <!--#endregion-->
         
         <!--#region Cart Lable-->
-        <Label Grid.Column="1" Grid.Row="0"
-               HorizontalAlignment="Center" VerticalAlignment="Center"
-               FontSize="20"
-               Content="Cart" />
+        
         <!--#endregion-->
 
         <!--#region Product Entry-->
@@ -235,64 +219,78 @@
                                     BorderBrush="White"
                                     materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                     UniformCornerRadius="15">
-                <!-- Cart ListBox -->
-            <ListBox Grid.Row="0" HorizontalContentAlignment="Stretch"
+                <StackPanel Orientation="Vertical">
+                    <Label HorizontalAlignment="Center"
+                           Content="Cart"
+                           FontSize="20">
+                    </Label>
+
+                    <Separator Margin="10 0" />
+
+                    <!-- Cart ListBox -->
+                    <ListBox Grid.Row="0" HorizontalContentAlignment="Stretch"
                      Margin="10,10,10,10">
-                <ListBoxItem>
-                    <!-- Listbox grid -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition Width="80" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                        <ListBoxItem>
+                            <!-- Listbox grid -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition MinWidth="100" />
+                                </Grid.ColumnDefinitions>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
 
-                        <!-- Name/model -->
-                        <TextBox Grid.Column="0"
+                                <!-- Name/model -->
+                                <TextBox Grid.Column="0"
                                    Margin="5"
                                    Text="Name/Model" FontSize="16" />
 
-                        <!-- Description and Remove Button Grid -->
-                        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
+                                <!-- Description and Remove Button Grid -->
+                                <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4">
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="458*" />
-                                <ColumnDefinition Width="9*"/>
-                                <ColumnDefinition Width="50" />
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="458*" />
+                                        <ColumnDefinition Width="50" />
 
-                            </Grid.ColumnDefinitions>
+                                    </Grid.ColumnDefinitions>
 
-                            <!-- Description -->
-                            <TextBox Grid.Column="0"
+                                    <!-- Description -->
+                                    <TextBox Grid.Column="0"
                                    Margin="5,5,5,5"
-                                   Text="Description" FontSize="18" Grid.ColumnSpan="2"/>
+                                   Text="Description" FontSize="18" />
 
-                            <!-- Remove Button -->
-                            <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                    <!-- Remove Button -->
+                                    <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                     Grid.Column="2"
                                     Margin="5,5,5,6"
                                     Content="X"/>
-                        </Grid>
+                                </Grid>
 
-                        <!-- Qty-->
-                        <TextBox Grid.Column="1" HorizontalContentAlignment="Center"
+                                <!-- Total -->
+                                <TextBox Grid.Column="1" HorizontalContentAlignment="Center"
+                            Margin="5"
+                            Text="Price" FontSize="16" />
+
+                                <!-- Qty-->
+                                <TextBox Grid.Column="2" HorizontalContentAlignment="Center"
                                    Margin="5" MinWidth="70"
                                    HorizontalAlignment="Center"
                                    Text="Qty" FontSize="16" />
 
-                        <!-- Total -->
-                        <TextBox Grid.Column="2" HorizontalContentAlignment="Center"
+                                <!-- Total -->
+                                <TextBox Grid.Column="3" HorizontalContentAlignment="Center"
                                    Margin="5"
                                    Text="Total" FontSize="16" />
 
-                    </Grid>
-                </ListBoxItem>
-            </ListBox>
+                            </Grid>
+                        </ListBoxItem>
+                    </ListBox>
+                </StackPanel>
 
             </materialDesign:Card>
             
