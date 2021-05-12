@@ -1,17 +1,16 @@
-﻿using DataAccessLibrary.Models;
-using DesktopUI.Models;
+﻿using DesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 
-namespace DesktopUI.ViewModels.Commands
+namespace DesktopUI.Commands.ManualSaleCommands
 {
-    public class AddManualProductCommand : ICommand
+    public class MobileCategoryCommand : ICommand
     {
         public ManualSaleViewModel ManualSaleVM { get; set; }
 
-        public AddManualProductCommand(ManualSaleViewModel manualSaleVM)
+        public MobileCategoryCommand(ManualSaleViewModel manualSaleVM)
         {
             ManualSaleVM = manualSaleVM;
         }
@@ -25,7 +24,7 @@ namespace DesktopUI.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            ManualSaleVM.AddCartItem();
+            ManualSaleVM.SelectMobile();
         }
     }
 }

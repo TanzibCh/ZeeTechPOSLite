@@ -1,15 +1,16 @@
-﻿using System;
+﻿using DesktopUI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 
-namespace DesktopUI.ViewModels.Commands
+namespace DesktopUI.Commands.NavigationCommands
 {
-    public class OpenManualSalesCommand : ICommand
+    public class OpenBankingCommand : ICommand
     {
         public MainViewModel MainVM { get; set; }
 
-        public OpenManualSalesCommand(MainViewModel mainVM)
+        public OpenBankingCommand(MainViewModel mainVM)
         {
             MainVM = mainVM;
         }
@@ -23,9 +24,7 @@ namespace DesktopUI.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            MainVM.OpenManualSalesPage();
+            MainVM.OpenBankingPage();
         }
-
-
     }
 }

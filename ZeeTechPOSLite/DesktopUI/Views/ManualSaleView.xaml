@@ -193,23 +193,28 @@
                             Command="{Binding AddManualProduct}"/>
 
                     <WrapPanel Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Right">
-                        <RadioButton Margin="5" >
+                        <RadioButton Margin="5" 
+                                     Command="{Binding SelectMobileCategory}">
                             Mobile
                         </RadioButton>
 
-                        <RadioButton Margin="5" >
+                        <RadioButton Margin="5" 
+                                     Command="{Binding SelectCameraCategory}">
                             Camera
                         </RadioButton>
 
-                        <RadioButton Margin="5" >
+                        <RadioButton Margin="5" 
+                                     Command="{Binding SelectComputerCategory}">
                             Computer
                         </RadioButton>
 
-                        <RadioButton Margin="5" >
+                        <RadioButton Margin="5" 
+                                     Command="{Binding SelectHomeCategory}">
                             Home
                         </RadioButton>
 
-                        <RadioButton Margin="5" >
+                        <RadioButton Margin="5" 
+                                     Command="{Binding SelectRepairCategory}">
                             Repair
                         </RadioButton>
                     </WrapPanel>

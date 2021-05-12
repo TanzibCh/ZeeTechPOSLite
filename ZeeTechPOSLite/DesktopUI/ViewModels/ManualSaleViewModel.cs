@@ -1,6 +1,6 @@
 ﻿using DataAccessLibrary.Models;
 using DesktopUI.Models;
-using DesktopUI.ViewModels.Commands;
+using DesktopUI.Commands.ManualSaleCommands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DesktopUI.ViewModels
 {
-    public class ManualSaleViewModel : INotifyPropertyChanged, IManualSaleViewModel
+    public class ManualSaleViewModel : INotifyPropertyChanged
     {
         #region Private properties
         private int _manualCode;
@@ -18,7 +18,7 @@ namespace DesktopUI.ViewModels
         private string _manualProductDescription;
         private int _manualQuantity;
         private decimal _manualPrice;
-        private int _department;
+        private int _category;
 
         private BindingList<CartItemDisplayModel> _cart;
         #endregion
@@ -88,21 +88,29 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        public int Department
+        public int Category
         {
-            get { return _department; }
+            get { return _category; }
             set
             {
-                _department = value;
-                OnPropertyChanged(nameof(Department));
+                _category = value;
+                OnPropertyChanged(nameof(Category));
             }
         }
 
+        // Date and Time properties
         public string SaleDate { get; set; }
         public string CurrentTime { get; set; }
 
+        // Command Properties
         public AddManualProductCommand AddManualProduct { get; set; }
+        public CameraCategoryCommand SelectCameraCategory { get; set; }
+        public ComputerCategoryCommand SelectComputerCategory { get; set; }
+        public HomeCategoryCommand SelectHomeCategory { get; set; }
+        public MobileCategoryCommand SelectMobileCategory { get; set; }
+        public RepairCategoryCommand SelectRepairCategory { get; set; }
 
+        // Cart Binding List
         public BindingList<CartItemDisplayModel> Cart
         {
             get { return _cart; }
@@ -112,8 +120,6 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(Cart));
             }
         }
-
-
         #endregion
 
         #region Constructor
@@ -128,6 +134,9 @@ namespace DesktopUI.ViewModels
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Converts Code entered to cost and rounds off at 2 decimal places
+        /// </summary>
         private void ConvertCodeToCost()
         {
             int devideBy = 6;
@@ -137,6 +146,10 @@ namespace DesktopUI.ViewModels
             ManualCost = Math.Round(cost, 2);
         }
 
+        /// <summary>
+        /// Creates a product
+        /// </summary>
+        /// <returns>ProductModel</returns>
         private ProductModel CreateProduct()
         {
             ProductModel product = new ProductModel
@@ -146,11 +159,16 @@ namespace DesktopUI.ViewModels
                 ProductDescription = ManualProductDescription,
                 AverageCost = ManualCost,
                 Price = ManualPrice,
-                DepartmentId = Department
+                CategoryId = Category
             };
             return product;
         }
 
+        /// <summary>
+        /// Takes the created product and adds it to the cart
+        /// also adds the quantity entered and calculates the 
+        /// total amount for that product
+        /// </summary>
         public void AddCartItem()
         {
             ProductModel product = CreateProduct();
@@ -166,6 +184,32 @@ namespace DesktopUI.ViewModels
             };
 
             Cart.Add(item);
+        }
+
+        // Category Selection Methods for Commands
+        public void SelectMobile()
+        {
+            Category = 1;
+        }
+
+        public void SelectCamera()
+        {
+            Category = 2;
+        }
+
+        public void SelectComputer()
+        {
+            Category = 3;
+        }
+
+        public void SelectHome()
+        {
+            Category = 4;
+        }
+
+        public void SelectRepair()
+        {
+            Category = 5;
         }
         #endregion
 
