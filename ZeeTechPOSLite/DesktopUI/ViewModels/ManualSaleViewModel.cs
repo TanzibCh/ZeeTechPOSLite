@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
+using System.Windows;
 
 namespace DesktopUI.ViewModels
 {
@@ -18,7 +19,8 @@ namespace DesktopUI.ViewModels
         private string _manualProductDescription;
         private int _manualQuantity;
         private decimal _manualPrice;
-        private int _category;
+        private string _department;
+
 
         private BindingList<CartItemDisplayModel> _cart;
         #endregion
@@ -88,13 +90,13 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        public int Category
+        public string Department
         {
-            get { return _category; }
+            get { return _department; }
             set
             {
-                _category = value;
-                OnPropertyChanged(nameof(Category));
+                _department = value;
+                OnPropertyChanged(nameof(Department));
             }
         }
 
@@ -104,13 +106,13 @@ namespace DesktopUI.ViewModels
 
         // Command Properties
         public AddManualProductCommand AddManualProduct { get; set; }
-        public CameraCategoryCommand SelectCameraCategory { get; set; }
-        public ComputerCategoryCommand SelectComputerCategory { get; set; }
-        public HomeCategoryCommand SelectHomeCategory { get; set; }
-        public MobileCategoryCommand SelectMobileCategory { get; set; }
-        public RepairCategoryCommand SelectRepairCategory { get; set; }
+        public CameraDepartmentCommand SelectCameraDepartment { get; set; }
+        public ComputerDepartmentCommand SelectComputerDepartment { get; set; }
+        public HomeDepartmentCommand SelectHomeDepartment { get; set; }
+        public MobileDepartmentCommand SelectMobileDepartment { get; set; }
+        public RepairDepartmentCommand SelectRepairDepartment { get; set; }
 
-        // Cart Binding List
+       // Cart Binding List
         public BindingList<CartItemDisplayModel> Cart
         {
             get { return _cart; }
@@ -118,9 +120,50 @@ namespace DesktopUI.ViewModels
             { 
                 _cart = value;
                 OnPropertyChanged(nameof(Cart));
+                CalculateCartTotal();
+                CalculateSubtotal(_cartTotal, 1.2m);
             }
         }
         #endregion
+
+        // Payment Properties
+        private decimal _cartTotal;
+
+        public decimal CartTotal
+        {
+            get { return _cartTotal; }
+            set 
+            {
+                _cartTotal = value;
+                OnPropertyChanged(nameof(CartTotal));
+            }
+        }
+
+        private decimal _subtotal;
+
+        public decimal Subtotal
+        {
+            get { return _subtotal; }
+            set 
+            { 
+                _subtotal = value;
+                OnPropertyChanged(nameof(Subtotal));
+            }
+        }
+
+        private decimal _tax;
+
+        public decimal Tax
+        {
+            get { return _tax; }
+            set 
+            { 
+                _tax = value;
+                OnPropertyChanged(nameof(Tax));
+            }
+        }
+
+
 
         #region Constructor
         public ManualSaleViewModel()
@@ -129,11 +172,48 @@ namespace DesktopUI.ViewModels
             CurrentTime = DateTime.UtcNow.ToString("hh:mm:ss");
 
             AddManualProduct = new AddManualProductCommand(this);
+
+            // Department selection commands
+            SelectCameraDepartment = new CameraDepartmentCommand(this);
+            SelectComputerDepartment = new ComputerDepartmentCommand(this);
+            SelectHomeDepartment = new HomeDepartmentCommand(this);
+            SelectMobileDepartment = new MobileDepartmentCommand(this);
+            SelectRepairDepartment = new RepairDepartmentCommand(this);
+
             Cart = new BindingList<CartItemDisplayModel>();
+
         }
         #endregion
 
         #region Methods
+        private void CalculateSubtotal(decimal total, decimal divideBy)
+        {
+            _subtotal = total / divideBy;
+
+            Subtotal = Math.Round(_subtotal, 2);
+        }
+        
+        private void CalculateTax()
+        {
+            _tax = _cartTotal - _subtotal;
+
+            Tax = Math.Round(_tax, 2);
+        }
+
+        private void CalculateCartTotal()
+        {
+            decimal cartTotal = 0m;
+
+            foreach (var item in Cart)
+            {
+                cartTotal += item.Total;
+            }
+
+            _cartTotal = cartTotal;
+
+            CartTotal = Math.Round(_cartTotal, 2);
+        }
+
         /// <summary>
         /// Converts Code entered to cost and rounds off at 2 decimal places
         /// </summary>
@@ -150,16 +230,16 @@ namespace DesktopUI.ViewModels
         /// Creates a product
         /// </summary>
         /// <returns>ProductModel</returns>
-        private ProductModel CreateProduct()
+        private ProductModel CreateManualProduct()
         {
             ProductModel product = new ProductModel
             {
-                Id = 0,
+                Id = -1,
                 ProductName = ManualProductName,
                 ProductDescription = ManualProductDescription,
                 AverageCost = ManualCost,
                 Price = ManualPrice,
-                CategoryId = Category
+                DepartmentId = Department
             };
             return product;
         }
@@ -169,47 +249,65 @@ namespace DesktopUI.ViewModels
         /// also adds the quantity entered and calculates the 
         /// total amount for that product
         /// </summary>
-        public void AddCartItem()
+        public void AddCartManualItem()
         {
-            ProductModel product = CreateProduct();
-
-            decimal total = ManualQuantity * ManualPrice;
-
-            CartItemDisplayModel item = new CartItemDisplayModel
+            if (string.IsNullOrWhiteSpace(ManualProductName))
             {
-                Product = product,
-                Quantity = ManualQuantity,
-                Price = ManualPrice,
-                Total = total
-            };
+                MessageBox.Show("You need to enter Product Name");
+            }
+            else if (string.IsNullOrWhiteSpace(Department))
+            {
+                MessageBox.Show("You need to select a Department");
+            }
+            else if (ManualQuantity <= 0)
+            {
+                MessageBox.Show("You need to enter a Quantity");
+            }
+            else
+            {
+                ProductModel product = CreateManualProduct();
 
-            Cart.Add(item);
+                decimal total = ManualQuantity * ManualPrice;
+
+                CartItemDisplayModel item = new CartItemDisplayModel
+                {
+                    Product = product,
+                    Quantity = ManualQuantity,
+                    Price = ManualPrice,
+                    Total = total
+                };
+
+                Cart.Add(item);
+
+                CalculateCartTotal();
+                CalculateSubtotal(_cartTotal, 1.2m);
+                CalculateTax();
+            } 
         }
 
-        // Category Selection Methods for Commands
         public void SelectMobile()
         {
-            Category = 1;
+            Department = "Mobile";
         }
 
         public void SelectCamera()
         {
-            Category = 2;
+            Department = "Camera";
         }
 
         public void SelectComputer()
         {
-            Category = 3;
+            Department = "Computer";
         }
 
         public void SelectHome()
         {
-            Category = 4;
+            Department = "Home";
         }
 
         public void SelectRepair()
         {
-            Category = 5;
+            Department = "Repair";
         }
         #endregion
 

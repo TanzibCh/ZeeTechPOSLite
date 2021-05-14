@@ -6,11 +6,11 @@ using System.Windows.Input;
 
 namespace DesktopUI.Commands.ManualSaleCommands
 {
-    public class CameraCategoryCommand : ICommand
+    public class MobileDepartmentCommand : ICommand
     {
         public ManualSaleViewModel ManualSaleVM { get; set; }
 
-        public CameraCategoryCommand(ManualSaleViewModel manualSaleVM)
+        public MobileDepartmentCommand(ManualSaleViewModel manualSaleVM)
         {
             ManualSaleVM = manualSaleVM;
         }
@@ -24,7 +24,7 @@ namespace DesktopUI.Commands.ManualSaleCommands
 
         public void Execute(object parameter)
         {
-            ManualSaleVM.SelectCamera();
+            ManualSaleVM.SelectMobile();
         }
     }
 }

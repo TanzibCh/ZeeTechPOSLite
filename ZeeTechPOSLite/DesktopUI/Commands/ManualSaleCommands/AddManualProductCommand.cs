@@ -21,12 +21,29 @@ namespace DesktopUI.Commands.ManualSaleCommands
 
         public bool CanExecute(object parameter)
         {
+            //if (parameter != null)
+            //{
+            //    bool canAdd = (bool)parameter;
+
+            //    if (canAdd == true)
+            //    {
+            //        return true;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
+            //else
+            //{
+            //    return false;
+            //}
             return true;
         }
 
         public void Execute(object parameter)
         {
-            ManualSaleVM.AddCartItem();
+            ManualSaleVM.AddCartManualItem();
         }
     }
 }
