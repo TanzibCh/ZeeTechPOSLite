@@ -25,7 +25,7 @@ namespace DesktopUI.ViewModels
         private BindingList<CartItemDisplayModel> _cart;
         #endregion
 
-        #region Public properties
+        #region Manual Entry Properties
         /// <summary>
         /// All the Manual entry properties for creating New Product
         /// </summary>
@@ -99,20 +99,25 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(Department));
             }
         }
+        #endregion
 
         // Date and Time properties
         public string SaleDate { get; set; }
         public string CurrentTime { get; set; }
 
+        #region Command Properties
         // Command Properties
         public AddManualProductCommand AddManualProduct { get; set; }
+        public RemoveFromCartCommand RemoveFromCart { get; set; }
         public CameraDepartmentCommand SelectCameraDepartment { get; set; }
         public ComputerDepartmentCommand SelectComputerDepartment { get; set; }
         public HomeDepartmentCommand SelectHomeDepartment { get; set; }
         public MobileDepartmentCommand SelectMobileDepartment { get; set; }
         public RepairDepartmentCommand SelectRepairDepartment { get; set; }
+        #endregion
 
-       // Cart Binding List
+        #region Cart Properties
+        // Cart Binding List
         public BindingList<CartItemDisplayModel> Cart
         {
             get { return _cart; }
@@ -124,15 +129,28 @@ namespace DesktopUI.ViewModels
                 CalculateSubtotal(_cartTotal, 1.2m);
             }
         }
+
+        private CartItemDisplayModel _selectedCartItem;
+
+        public CartItemDisplayModel SelectedCartItem
+        {
+            get { return _selectedCartItem; }
+            set
+            {
+                _selectedCartItem = value;
+                OnPropertyChanged(nameof(SelectedCartItem));
+            }
+        }
         #endregion
 
+        #region Payment Properties
         // Payment Properties
         private decimal _cartTotal;
 
         public decimal CartTotal
         {
             get { return _cartTotal; }
-            set 
+            set
             {
                 _cartTotal = value;
                 OnPropertyChanged(nameof(CartTotal));
@@ -144,8 +162,8 @@ namespace DesktopUI.ViewModels
         public decimal Subtotal
         {
             get { return _subtotal; }
-            set 
-            { 
+            set
+            {
                 _subtotal = value;
                 OnPropertyChanged(nameof(Subtotal));
             }
@@ -156,14 +174,13 @@ namespace DesktopUI.ViewModels
         public decimal Tax
         {
             get { return _tax; }
-            set 
-            { 
+            set
+            {
                 _tax = value;
                 OnPropertyChanged(nameof(Tax));
             }
         }
-
-
+        #endregion
 
         #region Constructor
         public ManualSaleViewModel()
@@ -172,6 +189,7 @@ namespace DesktopUI.ViewModels
             CurrentTime = DateTime.UtcNow.ToString("hh:mm:ss");
 
             AddManualProduct = new AddManualProductCommand(this);
+            RemoveFromCart = new RemoveFromCartCommand(this);
 
             // Department selection commands
             SelectCameraDepartment = new CameraDepartmentCommand(this);
@@ -220,9 +238,8 @@ namespace DesktopUI.ViewModels
         private void ConvertCodeToCost()
         {
             int devideBy = 6;
-            decimal cost;
+            decimal cost = (decimal)ManualCode / (decimal)devideBy;
 
-            cost = (decimal)ManualCode / (decimal)devideBy;
             ManualCost = Math.Round(cost, 2);
         }
 
@@ -283,6 +300,14 @@ namespace DesktopUI.ViewModels
                 CalculateSubtotal(_cartTotal, 1.2m);
                 CalculateTax();
             } 
+        }
+
+        /// <summary>
+        /// Remove Item from Cart
+        /// </summary>
+        public void RemoveItemFromCart()
+        {
+            Cart.Remove(SelectedCartItem);
         }
 
         public void SelectMobile()
