@@ -13,6 +13,7 @@ namespace DesktopUI.ViewModels
     public class ManualSaleViewModel : INotifyPropertyChanged
     {
         #region Private properties
+
         private int _manualCode;
         private decimal _manualCost;
         private string _manualProductName;
@@ -21,11 +22,20 @@ namespace DesktopUI.ViewModels
         private decimal _manualPrice;
         private string _department;
 
-
         private BindingList<CartItemDisplayModel> _cart;
+
+        #endregion
+
+        #region Date and Time properties
+
+        // Date and Time properties
+        public string SaleDate { get; set; }
+        public string CurrentTime { get; set; }
+
         #endregion
 
         #region Manual Entry Properties
+
         /// <summary>
         /// All the Manual entry properties for creating New Product
         /// </summary>
@@ -99,21 +109,85 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(Department));
             }
         }
+
+        private bool _enableManualName;
+
+        public bool EnableManualName
+        {
+            get { return _enableManualName; }
+            set 
+            {
+                _enableManualName = value;
+                OnPropertyChanged(nameof(EnableManualName));
+            }
+        }
+
+        private bool _enableManualCost;
+
+        public bool EnableManualCost
+        {
+            get { return _enableManualCost; }
+            set 
+            {
+                _enableManualCost = value;
+                OnPropertyChanged(nameof(EnableManualCost));
+            }
+        }
+
+        private string _manualEntryLable;
+
+        public string ManualEntryLable
+        {
+            get { return _manualEntryLable; }
+            set 
+            { 
+                _manualEntryLable = value;
+                OnPropertyChanged(nameof(ManualEntryLable));
+            }
+        }
+
+        private string _departmentChecked;
+
+        public string DepartmentChecked
+        {
+            get { return _departmentChecked; }
+            set
+            {
+                _departmentChecked = value;
+                OnPropertyChanged(nameof(DepartmentChecked));
+            }
+        }
+
+
         #endregion
 
-        // Date and Time properties
-        public string SaleDate { get; set; }
-        public string CurrentTime { get; set; }
-
         #region Command Properties
+
         // Command Properties
         public AddManualProductCommand AddManualProduct { get; set; }
-        public RemoveFromCartCommand RemoveFromCart { get; set; }
+        public PayCommand Pay { get; set; }
+
+        private RemoveFromCartCommand _removeFromCart;
+
+        public RemoveFromCartCommand RemoveFromCart
+        {
+            get { return _removeFromCart; }
+            set 
+            { 
+                _removeFromCart = value;
+                OnPropertyChanged(nameof(RemoveFromCart));
+            }
+        }
+
+        public EditCartItemCommand EditCartItem { get; set; }
+
+        // Select Department Command properties
         public CameraDepartmentCommand SelectCameraDepartment { get; set; }
         public ComputerDepartmentCommand SelectComputerDepartment { get; set; }
         public HomeDepartmentCommand SelectHomeDepartment { get; set; }
         public MobileDepartmentCommand SelectMobileDepartment { get; set; }
         public RepairDepartmentCommand SelectRepairDepartment { get; set; }
+
         #endregion
 
         #region Cart Properties
@@ -125,8 +199,6 @@ namespace DesktopUI.ViewModels
             { 
                 _cart = value;
                 OnPropertyChanged(nameof(Cart));
-                CalculateCartTotal();
-                CalculateSubtotal(_cartTotal, 1.2m);
             }
         }
 
@@ -144,16 +216,26 @@ namespace DesktopUI.ViewModels
         #endregion
 
         #region Payment Properties
-        // Payment Properties
+
+        // Totals Properties
         private decimal _cartTotal;
 
         public decimal CartTotal
         {
-            get { return _cartTotal; }
-            set
+            get
             {
-                _cartTotal = value;
-                OnPropertyChanged(nameof(CartTotal));
+                decimal cartTotal = 0m;
+
+                if (Cart != null)
+                {
+                    foreach (var item in Cart)
+                    {
+                        cartTotal += item.Total;
+                    }
+                }
+                _cartTotal = cartTotal;
+
+                return Math.Round(_cartTotal, 2);
             }
         }
 
@@ -161,11 +243,13 @@ namespace DesktopUI.ViewModels
 
         public decimal Subtotal
         {
-            get { return _subtotal; }
-            set
+            get 
             {
-                _subtotal = value;
-                OnPropertyChanged(nameof(Subtotal));
+                decimal divideBy = 1.2m;
+
+                _subtotal = _cartTotal / divideBy;
+
+                return Math.Round(_subtotal, 2);
             }
         }
 
@@ -173,23 +257,127 @@ namespace DesktopUI.ViewModels
 
         public decimal Tax
         {
-            get { return _tax; }
-            set
+            get 
             {
-                _tax = value;
-                OnPropertyChanged(nameof(Tax));
+                _tax = _cartTotal - _subtotal;
+
+                return Math.Round(_tax, 2);
             }
         }
+
+
+        // Payment option Properties
+
+        private decimal _cardPayment;
+
+        public decimal CardPayment
+        {
+            get { return _cardPayment; }
+            set 
+            { 
+                _cardPayment = value;
+                OnPropertyChanged(nameof(CardPayment));
+                CheckPaymentSum();
+            }
+        }
+
+        private decimal _cashPayment;
+
+        public decimal CashPayment
+        {
+            get { return _cashPayment; }
+            set
+            {
+                _cashPayment = value;
+                OnPropertyChanged(nameof(CashPayment));
+                CheckPaymentSum();
+            }
+        }
+
+        private decimal _creditPayment;
+
+        public decimal CreditPayment
+        {
+            get { return _creditPayment; }
+            set 
+            { 
+                _creditPayment = value;
+                OnPropertyChanged(nameof(CreditPayment));
+                CheckPaymentSum();
+            }
+        }
+
+
+        private bool _cashOnlySale;
+
+        public bool CashOnlySale
+        {
+            get { return _cashOnlySale; }
+            set 
+            { 
+                _cashOnlySale = value;
+                OnPropertyChanged(nameof(CashOnlySale));
+                CheckCashOnlySale(); 
+                CheckPaymentSum();
+            }
+        }
+
+        private bool _enableCash;
+
+        public bool EnableCash
+        {
+            get { return _enableCash; }
+            set 
+            { 
+                _enableCash = value;
+                OnPropertyChanged(nameof(EnableCash));
+            }
+        }
+
+        private bool _enableCard;
+
+        public bool EnableCard
+        {
+            get { return _enableCard; }
+            set 
+            { 
+                _enableCard = value;
+                OnPropertyChanged(nameof(EnableCard));
+            }
+        }
+
+        private decimal _sumPayment;
+
+        public decimal SumPayment
+        {
+            get { return _sumPayment; }
+            set 
+            {
+                _sumPayment = value;
+                OnPropertyChanged(nameof(SumPayment));
+            }
+        }
+
         #endregion
 
         #region Constructor
+
         public ManualSaleViewModel()
         {
             SaleDate = DateTime.Now.ToString("dd,MM,yyyy");
             CurrentTime = DateTime.UtcNow.ToString("hh:mm:ss");
 
+            CashOnlySale = false;
+            SumPayment = 0m;
+            ManualQuantity = 1;
+            ManualEntryLable = "Manual Entry";
+            EnableManualName = true;
+            EnableManualCost = true;
+
             AddManualProduct = new AddManualProductCommand(this);
             RemoveFromCart = new RemoveFromCartCommand(this);
+            EditCartItem = new EditCartItemCommand(this);
+            Pay = new PayCommand(this);
 
             // Department selection commands
             SelectCameraDepartment = new CameraDepartmentCommand(this);
@@ -201,36 +389,10 @@ namespace DesktopUI.ViewModels
             Cart = new BindingList<CartItemDisplayModel>();
 
         }
+
         #endregion
 
         #region Methods
-        private void CalculateSubtotal(decimal total, decimal divideBy)
-        {
-            _subtotal = total / divideBy;
-
-            Subtotal = Math.Round(_subtotal, 2);
-        }
-        
-        private void CalculateTax()
-        {
-            _tax = _cartTotal - _subtotal;
-
-            Tax = Math.Round(_tax, 2);
-        }
-
-        private void CalculateCartTotal()
-        {
-            decimal cartTotal = 0m;
-
-            foreach (var item in Cart)
-            {
-                cartTotal += item.Total;
-            }
-
-            _cartTotal = cartTotal;
-
-            CartTotal = Math.Round(_cartTotal, 2);
-        }
 
         /// <summary>
         /// Converts Code entered to cost and rounds off at 2 decimal places
@@ -256,7 +418,7 @@ namespace DesktopUI.ViewModels
                 ProductDescription = ManualProductDescription,
                 AverageCost = ManualCost,
                 Price = ManualPrice,
-                DepartmentId = Department
+                Department = Department
             };
             return product;
         }
@@ -295,11 +457,72 @@ namespace DesktopUI.ViewModels
                 };
 
                 Cart.Add(item);
-
-                CalculateCartTotal();
-                CalculateSubtotal(_cartTotal, 1.2m);
-                CalculateTax();
+                OnPropertyChanged(nameof(CartTotal));
+                OnPropertyChanged(nameof(Subtotal));
+                OnPropertyChanged(nameof(Tax));
+                CheckCashOnlySale();
+                CheckPaymentSum();
+                ClearManualFields();
             } 
+        }
+
+        private void ClearManualFields()
+        {
+            ManualProductName = null;
+            ManualProductDescription = null;
+            ManualCost = 0m;
+            ManualPrice = 0m;
+            ManualQuantity = 1;
+            Department = null;
+            DepartmentChecked = null;
+        }
+
+        public void EditSelectedCartItem()
+        {
+            CartItemEditSetup();
+            RemoveItemFromCart();
+        }
+
+        private void CartItemEditSetup()
+        {
+            ManualProductName = SelectedCartItem.Product.ProductName;
+            ManualProductDescription = SelectedCartItem.Product.ProductDescription;
+            ManualCost = SelectedCartItem.Product.AverageCost;
+            ManualPrice = SelectedCartItem.Product.Price;
+            ManualQuantity = SelectedCartItem.Quantity;
+
+            ManualEntryLable = "Edit Product";
+
+            if (SelectedCartItem.Product.Id != -1)
+            {
+                // For products from database - only edit description, price and quantity
+                // Disable Name and cost textboxes
+                EnableManualName = false;
+                EnableManualCost = false;
+            }
+            else
+            {
+                EnableManualName = true;
+                EnableManualCost = true;
+            }
+        }
+
+        private void UpdateSelectedCartItem()
+        {
+            // Once selected item is edited, update the item in cart
+        }
+
+        public void SaveSale()
+        {
+            // Check if sum of payment methods == to CartTotal
+            // yes-Save sale to database
+            // or point to the error
+        }
+        private void CheckPaymentSum()
+        {
+            decimal total = _cardPayment + _cashPayment + _creditPayment;
+
+            SumPayment = Math.Round(total, 2);
         }
 
         /// <summary>
@@ -308,6 +531,30 @@ namespace DesktopUI.ViewModels
         public void RemoveItemFromCart()
         {
             Cart.Remove(SelectedCartItem);
+
+            OnPropertyChanged(nameof(CartTotal));
+            OnPropertyChanged(nameof(Subtotal));
+            OnPropertyChanged(nameof(Tax));
+        }
+
+        private void CheckCashOnlySale()
+        {
+            if (CashOnlySale == true)
+            {
+                CashPayment = CartTotal;
+                CardPayment = 0m;
+
+                EnableCash = true;
+                EnableCard = false;
+            }
+            else
+            {
+                CashPayment = 0m;
+                CardPayment = 0m;
+
+                EnableCard = true;
+                EnableCash = true;
+            }
         }
 
         public void SelectMobile()

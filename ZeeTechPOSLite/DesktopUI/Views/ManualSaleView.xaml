@@ -12,14 +12,26 @@
              FontFamily="{materialDesign:MaterialDesignFont}"
              xmlns:local="clr-namespace:DesktopUI.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1100" >
+             d:DesignHeight="1000" d:DesignWidth="1700" >
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type viewModel:ManualSaleViewModel}">
             <local:ManualSaleView/>
         </DataTemplate>
-        
+
         <viewModel:ManualSaleViewModel x:Key="SaleVM" />
+
+        <Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
+            <Setter Property="FontSize" Value="25" />
+        </Style>
+
+        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+            <Setter Property="FontSize" Value="20" />
+        </Style>
+
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="FontSize" Value="20" />
+        </Style>
     </UserControl.Resources>
 
     <Grid Margin="10" DataContext="{StaticResource SaleVM}">
@@ -28,11 +40,16 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- Header -->
+        <TextBlock Text="New Sale"
+                   FontSize="40"/>
+        
         <!--#region Product Entry-->
-        <Grid Grid.Column="0" Grid.Row="1">
+        <Grid Grid.Column="0" Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
@@ -45,59 +62,62 @@
                                     materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                     UniformCornerRadius="15" >
 
-            <Grid Grid.Column="0" Grid.Row="1" Margin="0 0 10 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60" />
-                    <RowDefinition Height="60" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="60" />
-                </Grid.RowDefinitions>
+                <Grid Grid.Column="0" Grid.Row="1" Margin="0 0 10 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="60" />
+                    </Grid.RowDefinitions>
 
-                <!-- Lable -->
-                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
+                    <!-- Lable -->
+                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    Content="Search Entry" FontSize="16"/>
-                <!-- Product search box -->
-                <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="10"
+                    Content="Search Entry" />
+                    <!-- Product search box -->
+                    <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="10"
                         VerticalContentAlignment="Center"
                         materialDesign:HintAssist.Hint="Search product by Model/Barcode" />
 
-                <!-- Search ListBox -->
-                <ListBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
+                    <!-- Search ListBox -->
+                    <ListBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
                         Margin="10 0">
 
-                </ListBox>
+                    </ListBox>
 
-                <!-- Qty -->
-                <TextBox Grid.Column="0" Grid.Row="3" Margin="10"
+                    <!-- Qty -->
+                    <TextBox Grid.Column="0" Grid.Row="3" Margin="10"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                     materialDesign:HintAssist.Hint="Qty" />
 
-                <!-- Price -->
-                <TextBox Grid.Column="1" Grid.Row="3" Margin="10"
+                    <!-- Price -->
+                    <TextBox Grid.Column="1" Grid.Row="3" Margin="10"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                     materialDesign:HintAssist.Hint="Price" />
 
-                <!-- Cost -->
-                <TextBox Grid.Column="2" Grid.Row="3" Margin="10"
+                    <!-- Cost -->
+                    <TextBox Grid.Column="2" Grid.Row="3" Margin="10"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                     materialDesign:HintAssist.Hint="Cost" />
 
-                <!-- Add to cart Button -->
-                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    <!-- Add to cart Button -->
+                    <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     Grid.Column="3" Grid.Row="3"
-                    Margin="10"
-                    Content="Add"/>
-            </Grid>
+                            HorizontalAlignment="Right"
+                            Width="150"
+                            Margin="10"
+                            FontSize="20"
+                            Content="Add"/>
+                </Grid>
             </materialDesign:Card>
             <!--#endregion-->
-            
+
             <!--#region Manual entry-->
             <materialDesign:Card Grid.Row="2"
                                     Margin="10 10"
@@ -111,9 +131,8 @@
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="150" />
                         <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="60" />
@@ -122,16 +141,22 @@
                         <RowDefinition Height="80" />
                     </Grid.RowDefinitions>
 
-
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                    </Grid.Resources>
                     <!-- Lable -->
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    Content="Manual Entry" FontSize="16"/>
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           Content="{Binding ManualEntryLable}" 
+                           FontSize="25"/>
 
                     <!-- Name/Model -->
                     <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalContentAlignment="Center"
                              Margin="10"
                              Text="{Binding ManualProductName, Mode=TwoWay}"
+                             IsEnabled="{Binding EnableManualName}"
                              materialDesign:HintAssist.Hint="Name/Model" />
 
                     <!-- Description -->
@@ -144,12 +169,11 @@
                     <StackPanel Grid.Column="0" Grid.Row="3" Margin="5">
                         <Label Content="Quantity" HorizontalAlignment="Center"
                                Foreground="#FFA0A0A0"/>
-                        
+
                         <TextBox HorizontalContentAlignment="Center"
                                  VerticalContentAlignment="Center"
                                  Text="{Binding ManualQuantity, Mode=TwoWay}"/>
                     </StackPanel>
-                    
 
                     <!-- Price -->
                     <StackPanel Grid.Column="1" Grid.Row="3" Margin="5">
@@ -161,7 +185,7 @@
                                  Text="{Binding ManualPrice, Mode=TwoWay}"/>
 
                     </StackPanel>
-                   
+
                     <!-- Code -->
                     <StackPanel Grid.Column="0" Grid.Row="4" Margin="5">
                         <Label Content="Code" HorizontalAlignment="Center" 
@@ -170,60 +194,89 @@
                         <TextBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                              Text="{Binding ManualCode, Mode=TwoWay}" />
                     </StackPanel>
-                    
+
 
                     <!-- Cost -->
                     <StackPanel Grid.Column="1" Grid.Row="4" Margin="5">
                         <Label Content="Cost" HorizontalAlignment="Center" 
                                Foreground="#FFA0A0A0"/>
-                        
+
                         <TextBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                             Text="{Binding ManualCost, Mode=TwoWay}" />
+                                 Text="{Binding ManualCost, Mode=TwoWay}"
+                                 IsEnabled="{Binding EnableManualCost}" />
                     </StackPanel>
-                    
 
                     <!-- Add to cart button -->
                     <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                             Grid.Column="3" Grid.Row="4"
+                            HorizontalAlignment="Right"
                             Margin="10"
+                            Width="150"
                             Content="Add"
+                            FontSize="20"
                             Command="{Binding AddManualProduct}"/>
 
-                    <WrapPanel Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Right">
-                        <RadioButton Margin="5" 
+                    <Grid Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <RadioButton Grid.Column="0" Grid.Row="0"
+                                     Margin="5" 
+                                     IsChecked="{Binding DepartmentChecked}"
                                      Command="{Binding SelectMobileDepartment}">
                             Mobile
                         </RadioButton>
 
-                        <RadioButton Margin="5" 
+                        <RadioButton Grid.Column="1" Grid.Row="0"
+                                     Margin="5" 
+                                     IsChecked="{Binding DepartmentChecked}"
                                      Command="{Binding SelectCameraDepartment}">
                             Camera
                         </RadioButton>
 
-                        <RadioButton Margin="5" 
+                        <RadioButton Grid.Column="0" Grid.Row="1"
+                                     Margin="5" 
+                                     IsChecked="{Binding DepartmentChecked}"
                                      Command="{Binding SelectComputerDepartment}">
                             Computer
                         </RadioButton>
 
-                        <RadioButton Margin="5" 
+                        <RadioButton Grid.Column="1" Grid.Row="1" Margin="5" 
+                                     IsChecked="{Binding DepartmentChecked}"
                                      Command="{Binding SelectHomeDepartment}">
                             Home
                         </RadioButton>
 
-                        <RadioButton Margin="5" 
+                        <RadioButton Grid.Column="2" Grid.Row="0"
+                                     Margin="5" 
+                                     IsChecked="{Binding DepartmentChecked}"
                                      Command="{Binding SelectRepairDepartment}">
                             Repair
                         </RadioButton>
-                    </WrapPanel>
+
+                        <RadioButton Grid.Column="2" Grid.Row="1"
+                                     Margin="5" 
+                                     IsChecked="{Binding DepartmentChecked}"
+                                     Command="{Binding SelectRepairDepartment}">
+                            AV
+                        </RadioButton>
+                    </Grid>
 
                 </Grid>
             </materialDesign:Card>
             <!--#endregion-->
         </Grid>
         <!--#endregion-->
-        
+
         <!--#region Cart -->
-        <Grid Grid.Column="1" Grid.Row="1">
+        <Grid Grid.Column="1" Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="180" />
@@ -236,15 +289,14 @@
                                     UniformCornerRadius="15">
                 <StackPanel Orientation="Vertical">
                     <Label HorizontalAlignment="Center"
-                           Content="Cart"
-                           FontSize="20">
+                           Content="Cart">
                     </Label>
 
                     <Separator Margin="10 0" />
 
                     <!-- Cart ListBox -->
                     <ListBox Grid.Row="0" HorizontalContentAlignment="Stretch"
-                             Height="460"
+                             Height="650"
                              Margin="10,10,10,10"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ItemsSource="{Binding Cart}"
@@ -254,21 +306,22 @@
                                 <!-- Listbox grid -->
                                 <Grid>
                                     <Grid.Resources>
-                                        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}" >
-                                            <Setter Property="FontSize" Value="12" />
-                                            <Setter Property="VerticalContentAlignment" Value="Bottom" />
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody1TextBlock}" >
+                                            <Setter Property="FontSize" Value="18" />
                                         </Style>
 
                                         <Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
-                                            <Setter Property="FontSize" Value="12" />
                                             <Setter Property="Foreground" Value="#FFA0A0A0" />
+                                            <Setter Property="FontSize" Value="16" />
                                         </Style>
                                     </Grid.Resources>
-                                    
+
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="60" />
                                         <ColumnDefinition Width="60" />
+                                        <ColumnDefinition Width="80" />
                                         <ColumnDefinition Width="80" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -277,61 +330,80 @@
                                     </Grid.RowDefinitions>
 
                                     <!-- Name/model -->
-                                    <TextBox Grid.Column="0"
-                                             Text="{Binding Product.ProductName, Mode=TwoWay}" />
+                                    <StackPanel Grid.Column="0"
+                                                Orientation="Vertical">
+
+                                        <Label Content="Name/Model" />
+
+                                        <TextBlock Margin="5 0 0 0" 
+                                                   Text="{Binding Product.ProductName}" />
+                                    </StackPanel>
 
                                     <!-- Description and Remove Button Grid -->
-                                    <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="458*" />
-                                            <ColumnDefinition Width="50" />
-
-                                        </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4">
+                                        <Label Content="Description" />
 
                                         <!-- Description -->
-                                        <TextBox Grid.Column="0"
-                                                 TextWrapping="Wrap"
-                                                 Text="{Binding Product.ProductDescription, Mode=TwoWay}" />
+                                        <TextBlock Margin="5 0 0 0"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding Product.ProductDescription}" />
+                                    </StackPanel>
 
-                                        <!-- Remove Button -->
-                                        <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                                Grid.Column="2"
-                                                
-                                                Command="{Binding RemoveFromCart}"
-                                                Margin="5 5 0 0"
-                                                Content="X"/>
-                                    </Grid>
+                                    <!-- Edit Button -->
+                                    <Button Grid.Column="5" Grid.Row="0"
+                                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                            Command="{Binding EditCartItem, Source={StaticResource SaleVM}}"
+                                            Width="50">
+                                        <StackPanel>
+                                            <materialDesign:PackIcon Kind="BoxEditOutline"
+                                                                     Height="20"
+                                                                     Width="20"/>
+                                        </StackPanel>
+                                    </Button>
                                     
-                                    <!-- Qty-->
+                                    <!-- Remove Button -->
+                                    <Button Grid.Column="5" Grid.Row="1"
+                                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                            Command="{Binding RemoveFromCart, Source={StaticResource SaleVM}}"
+                                            Width="50"
+                                            Content="X"/>
+
+                                    <!-- Department -->
                                     <StackPanel Grid.Column="1" Orientation="Vertical"
+                                                Margin="2 0 0 0">
+                                        <Label HorizontalAlignment="Center" Content="Department" />
+
+                                        <TextBlock  HorizontalAlignment="Center"
+                                                  Text="{Binding Product.Department}" />
+                                    </StackPanel>
+
+                                    <!-- Qty-->
+                                    <StackPanel Grid.Column="2" Orientation="Vertical"
                                                 Margin="2 0 0 0">
                                         <Label HorizontalAlignment="Center" Content="Qty" />
 
-                                        <TextBox  HorizontalContentAlignment="Center"
-                                                  HorizontalAlignment="Center"
+                                        <TextBlock  HorizontalAlignment="Center"
                                                   Text="{Binding Quantity, Mode=TwoWay}" />
                                     </StackPanel>
-                                    
-                                    
+
+
                                     <!-- Price -->
-                                    <StackPanel Grid.Column="2"
+                                    <StackPanel Grid.Column="3"
                                                 Margin="2 0 0 0">
                                         <Label HorizontalAlignment="Center" Content="Price" />
 
-                                        <TextBox HorizontalContentAlignment="Center"
+                                        <TextBlock HorizontalAlignment="Center"
                                                  Text="{Binding Price, Mode=TwoWay}" />
                                     </StackPanel>
-                                    
+
                                     <!-- Total -->
-                                    <StackPanel Grid.Column="3"
+                                    <StackPanel Grid.Column="4"
                                                 Margin="2 0 0 0">
                                         <Label HorizontalAlignment="Center" Content="Total" />
 
-                                        <TextBox HorizontalContentAlignment="Center"
+                                        <TextBlock HorizontalAlignment="Center"
                                                  Text="{Binding Total, Mode=TwoWay}" />
                                     </StackPanel>
-                                    
-
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -339,9 +411,9 @@
                 </StackPanel>
 
             </materialDesign:Card>
-            
+
             <!--#endregion-->
-            
+
             <!--#region Payment-->
             <materialDesign:Card Grid.Row="1"
                                  Margin="10 10"
@@ -358,32 +430,31 @@
                     <StackPanel Orientation="Vertical"
                                 Grid.Column="1"
                                 VerticalAlignment="Bottom">
-                        <ToggleButton Margin="0 10">
-                            
+                        <ToggleButton Margin="0 10"
+                                      IsChecked="{Binding CashOnlySale, Mode=TwoWay}">
                         </ToggleButton>
-                        
+
                         <!-- Pay Button -->
                         <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                Command="{Binding Pay}"
                                 MinHeight="100"
                                 Content="Pay"
                                 FontSize="30" FontWeight="Bold"/>
                     </StackPanel>
-                   
+
 
                     <!-- Payment Grid -->
                     <Grid Grid.Column="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-
 
                         <Grid Grid.Column="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
-
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
@@ -394,133 +465,131 @@
                             <Label Grid.Column="0" Grid.Row="0"
                                    Content="Card" 
                                    VerticalContentAlignment="Center"
-                                   FontSize="16">
+                                   MouseDoubleClick="{Binding}"
+                                   IsHitTestVisible="True">
                             </Label>
                             <StackPanel Grid.Column="1" Grid.Row="0"
                                         Orientation="Horizontal" HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
 
-                                <TextBox Text="£"
-                                         HorizontalContentAlignment="Center"
-                                         FontSize="16">
-                                </TextBox>
+                                <Label Content="£"
+                                         HorizontalContentAlignment="Center">
+                                </Label>
 
-                                <TextBox Text="0.00"
+                                <TextBox Text="{Binding CardPayment, Mode=TwoWay}"
+                                         IsEnabled="{Binding EnableCard, Mode=TwoWay}"
                                          HorizontalContentAlignment="Center"
-                                         FontSize="16">
-                                </TextBox>
+                                         VerticalContentAlignment="Bottom"/>
                             </StackPanel>
 
                             <!-- Cash -->
                             <Label Grid.Column="0" Grid.Row="1"
                                    Content="Cash" 
-                                   VerticalAlignment="Center"
-                                   FontSize="16"/>
+                                   VerticalAlignment="Center"/>
                             <StackPanel Grid.Column="1" Grid.Row="1"
                                         Orientation="Horizontal" HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
-                                <TextBox Text="£"
-                                         HorizontalContentAlignment="Center"
-                                         FontSize="16">
-                                </TextBox>
+                                <Label Content="£"
+                                         HorizontalContentAlignment="Center">
+                                </Label>
 
-                                <TextBox Text="0.00"
-                                 HorizontalContentAlignment="Center"
-                                 FontSize="16">
+                                <TextBox Text="{Binding CashPayment, Mode=TwoWay}"
+                                         IsEnabled="{Binding EnableCash, Mode=TwoWay}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Bottom">
                                 </TextBox>
                             </StackPanel>
 
-                            <!-- Cheque -->
+                            <!-- Credit -->
                             <Label Grid.Column="0" Grid.Row="2"
-                                   Content="Cheque"
-                                   VerticalAlignment="Center"
-                                   FontSize="16">
-                            </Label>
-
+                                   Content="Credit" 
+                                   VerticalAlignment="Center"/>
                             <StackPanel Grid.Column="1" Grid.Row="2"
                                         Orientation="Horizontal" HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
-                                <TextBox Text="£"
-                                 HorizontalContentAlignment="Center"
-                                 FontSize="16"/>
+                                <Label Content="£"
+                                         HorizontalContentAlignment="Center">
+                                </Label>
 
-                                <TextBox Text="00.00"
-                                 HorizontalContentAlignment="Center"
-                                 FontSize="16"/>
+                                <TextBox Text="{Binding CreditPayment, Mode=TwoWay}"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Bottom">
+                                </TextBox>
                             </StackPanel>
                         </Grid>
 
                         <!-- Totals -->
-                        <Grid Grid.Column="1" HorizontalAlignment="Stretch">
+                        <Grid Grid.Column="1" HorizontalAlignment="Right"
+                              Margin="10 0 10 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="45" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
+                            <Grid.Resources>
+                                <Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
+                                    <Setter Property="FontSize" Value="20" />
+                                </Style>
+
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+                                    <Setter Property="FontSize" Value="22" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Style>
+                            </Grid.Resources>
                             <!-- Sub Total -->
                             <Label Grid.Column="0" Grid.Row="0" 
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Right"
-                                   Content="Sub:"
-                                   FontSize="16"/>
-                            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                                   Content="SubTotal:"/>
+                            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
                                 <TextBlock Text="£"
-                                           VerticalAlignment="Center"
-                                           FontSize="20"/>
+                                           VerticalAlignment="Center"/>
 
                                 <TextBlock Margin="0 10" VerticalAlignment="Center" MinWidth="100"
-                                       Text="{Binding Subtotal}"
-                                       FontSize="20"/>
+                                       Text="{Binding Subtotal}"/>
                             </StackPanel>
 
                             <!-- tax -->
                             <Label Grid.Column="0" Grid.Row="1" 
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Right"
-                                   Content="Tax:"
-                                   FontSize="16"/>
+                                   Content="Tax:"/>
 
-                            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                                
+                            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+
                                 <TextBlock Text="£"
-                                           VerticalAlignment="Center"
-                                           FontSize="20"/>
+                                           VerticalAlignment="Center"/>
 
-                                <TextBlock Margin="0 10" VerticalAlignment="Center" MinWidth="150"
-                                       Text="{Binding Tax}"
-                                       FontSize="20"/>
+                                <TextBlock Margin="0 10" VerticalAlignment="Center" MinWidth="100"
+                                       Text="{Binding Tax}"/>
                             </StackPanel>
 
                             <!-- Total -->
                             <Label Grid.Column="0" Grid.Row="2" 
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Right"
-                                   Content="Total:"
-                                   FontSize="16"/>
-                            <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left">
-                                
+                                   Content="Total:"/>
+                            <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+
 
                                 <TextBlock Text="£"
-                                           VerticalAlignment="Center"
-                                           FontSize="20"/>
+                                           VerticalAlignment="Center"/>
 
-                                <TextBlock Margin="0 10" VerticalAlignment="Center" MinWidth="150"
-                                       Text="{Binding CartTotal}"
-                                       FontSize="20"/>
+                                <TextBlock Margin="0 10" VerticalAlignment="Center" MinWidth="100"
+                                       Text="{Binding CartTotal}"/>
                             </StackPanel>
-                            
+
                         </Grid>
                     </Grid>
                 </Grid>
 
             </materialDesign:Card>
-            
+
             <!--#endregion-->
         </Grid>
         <!--#endregion-->
