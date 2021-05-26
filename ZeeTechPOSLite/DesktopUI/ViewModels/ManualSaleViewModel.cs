@@ -307,7 +307,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private bool _cashOnlySale;
 
         public bool CashOnlySale
@@ -516,6 +515,19 @@ namespace DesktopUI.ViewModels
         {
             // Check if sum of payment methods == to CartTotal
             // yes-Save sale to database
+            SaleDBModel sale = new SaleDBModel
+            {
+                Card = Convert.ToInt32(CardPayment),
+                Cash = Convert.ToInt32(CashPayment),
+                Credit = Convert.ToInt32(CreditPayment),
+                Total = Convert.ToInt32(CartTotal),
+                Tax = Convert.ToInt32(Tax),
+                Profit = Convert.ToInt32()
+
+            };
+
+
+
             // or point to the error
         }
         private void CheckPaymentSum()
