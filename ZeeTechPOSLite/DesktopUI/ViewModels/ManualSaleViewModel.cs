@@ -506,15 +506,41 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private void UpdateSelectedCartItem()
+        private decimal CalculateTotalProfit()
         {
-            // Once selected item is edited, update the item in cart
+
+            decimal totalCost = 0m;
+
+            decimal output = CartTotal - totalCost;
+
+            return output;
+        }
+
+        private decimal CalculateTotalCartCost()
+        {
+            foreach (var item in Cart)
+            {
+                item.TotalCost = (item.Product.AverageCost * item.Quantity);
+            }
+
+            decimal cartCost = 0m;
+
+            foreach (var item in Cart)
+            {
+                cartCost += item.TotalCost;
+            }
+
+            return cartCost;
         }
 
         public void SaveSale()
         {
             // Check if sum of payment methods == to CartTotal
             // yes-Save sale to database
+
+            decimal cartProfit = CartTotal - CalculateTotalCartCost();
+
+            // Enter data in SaleDBModel
             SaleDBModel sale = new SaleDBModel
             {
                 Card = Convert.ToInt32(CardPayment),
@@ -522,14 +548,25 @@ namespace DesktopUI.ViewModels
                 Credit = Convert.ToInt32(CreditPayment),
                 Total = Convert.ToInt32(CartTotal),
                 Tax = Convert.ToInt32(Tax),
-                Profit = Convert.ToInt32()
-
+                Profit = Convert.ToInt32(cartProfit),
+                CashOnly = CashOnlySale
             };
 
+            // Enter data in SaleDetailsDBModel
+            List<SaleProductModel> saleProducts = new List<SaleProductModel>();
 
+            foreach (var item in Cart)
+            {
+                item.Product 
+            }
+
+
+            
+           
 
             // or point to the error
         }
+
         private void CheckPaymentSum()
         {
             decimal total = _cardPayment + _cashPayment + _creditPayment;

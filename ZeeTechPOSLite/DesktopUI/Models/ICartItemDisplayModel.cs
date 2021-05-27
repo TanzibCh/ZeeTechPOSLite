@@ -8,5 +8,6 @@ namespace DesktopUI.Models
         ProductModel Product { get; set; }
         int Quantity { get; set; }
         decimal Total { get; set; }
+        decimal TotalCost { get; set; }
     }
 }

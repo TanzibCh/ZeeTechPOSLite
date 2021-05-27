@@ -15,6 +15,6 @@ namespace DataAccessLibrary.Models
         public int Total { get; set; }
         public int Tax { get; set; }
         public int Profit { get; set; }
-        public bool CashIn { get; set; }
+        public bool CashOnly { get; set; }
     }
 }

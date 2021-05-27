@@ -9,23 +9,19 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 {
     public class SalesDataAccess
     {
-        SQLiteDataAccess db = new SQLiteDataAccess();
+        SQLiteDataAccess _db = new SQLiteDataAccess();
 
-        
-        public void SaveSale(SaleDBModel saleInfo)
+        public void SaveSale(SaleDBModel saleInfo, List<SaleProductModel> saleProducts)
         {
 
             // TODO: Make it SOLID in the future
 
             // Get new Invoice number
-            int newInvoiceNo = GetNewInvoiceNo(saleInfo.CashIn);
-
-            saleInfo.SaleDate = DateTime.UtcNow.Date.ToString();
-            saleInfo.SaleTime = DateTime.UtcNow.TimeOfDay.ToString();
+            saleInfo.InvoiceNo = GetNewInvoiceNo(saleInfo.CashOnly);
 
             // Set CashIn as int to save in database
             //int cashInInvoice = 0;
-            //if (saleInfo.CashIn == true)
+            //if (saleInfo.CashOnly == true)
             //{
             //    cashInInvoice = 1;
             //}
@@ -40,47 +36,79 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                           values (@invoiceNo, @saleDate, @saleTime, @card, @cash, @credit, @total, @tax, @profit, @cashIn);";
  
             // Insert sale data into the database
-            db.SaveData(sql, saleInfo, "Default");
+            _db.SaveData(sql, new 
+                {
+                    invoiceNo = saleInfo.InvoiceNo,
+                    saleDate = saleInfo.SaleDate,
+                    saleTime = saleInfo.SaleTime,
+                    card = saleInfo.Card,
+                    cash = saleInfo.Cash,
+                    credit = saleInfo.Credit,
+                    total = saleInfo.Total,
+                    tax = saleInfo.Tax,
+                    profit = saleInfo.Profit,
+                    cashIn = saleInfo.CashOnly
+            }, "Default");
+
+            int saleId = GetLatestSaleId();
+
+            SaveSaleDetails(saleProducts, saleId);
+        }
+
+        private int GetLatestSaleId()
+        {
+            string sql = @"SELECT max(SaleId) from
+                          Sale;";
+
+            return _db.LoadData<dynamic, dynamic>(sql, new { }, "Default").FirstOrDefault();
         }
 
         // Queries for the last Invoice in the database and adds 1 to it to get the new Invoice number
-        private int GetNewInvoiceNo(bool cashIn)
+        private int GetNewInvoiceNo(bool cashOnly)
         {
-            string sqlIn = @"SELECT max(InvoiceNo) from
-                          sale
-                          WHERE CashIn = 1;";
+            string sqlCashOnlyTrue = @"SELECT max(InvoiceNo) from
+                                      sale
+                                      WHERE CashIn = 1;";
 
-            string sqlOut = @"SELECT max(InvoiceNo) from
-                          sale
-                          WHERE CashIn = 0;";
+            string sqlCashOnlyFalse = @"SELECT max(InvoiceNo) from
+                                       sale
+                                       WHERE CashIn = 0;";
 
             int lastInvoiceNo = 0;
 
-            if (cashIn == true)
+            if (cashOnly == true)
             {
-                lastInvoiceNo = db.LoadData<dynamic, dynamic>(sqlIn, new { }, "Default").FirstOrDefault();
+                lastInvoiceNo = _db.LoadData<dynamic, dynamic>(sqlCashOnlyTrue, new { }, "Default").FirstOrDefault();
             }
             else
             {
-                lastInvoiceNo = db.LoadData<dynamic, dynamic>(sqlOut, new { }, "Default").FirstOrDefault();
+                lastInvoiceNo = _db.LoadData<dynamic, dynamic>(sqlCashOnlyFalse, new { }, "Default").FirstOrDefault();
             }
 
             int output = lastInvoiceNo + 1;
             return output;
         }
 
-        private void SaveSaleDetails(List<SaleDetailsModel> saleDetails, int saleId)
+        private void SaveSaleDetails(List<SaleProductModel> saleProducts, int saleId)
         {
             string sql = @"INSERT INTO SaleProduct
                           (SaleId, ProductId, ProductName, ProductDescription, SalePrice, ProductCost, Department)
                           values (@saleId, @productId, @Name, @description, @price, @cost, @department);";
 
 
-            foreach (var item in saleDetails)
+            foreach (var item in saleProducts)
             {
-                db.SaveData(sql, new { saleId = saleId, productId = saleDetails. , @Name, @description, @price, @cost, @department }, "Default");
+                _db.SaveData(sql, new 
+                    {
+                        saleId = saleId, 
+                        productId = item.ProductId, 
+                        Name = item.ProductName, 
+                        description = item.ProductDescription, 
+                        price = item.SalePrice, 
+                        cost = item.ProductCost, 
+                        department = item.Department 
+                    }, "Default");
             }
-
         }
     }
 }
