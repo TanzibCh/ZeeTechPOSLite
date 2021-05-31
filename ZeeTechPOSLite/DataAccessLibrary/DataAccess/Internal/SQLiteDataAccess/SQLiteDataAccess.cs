@@ -25,7 +25,7 @@ namespace DataAccessLibrary.DataAccess.Internal.SQLiteDataAccess
             return output;
         }
 
-        public List<T> LoadData<T, U>(string sqlStatement, U parameters, string connectionStringName = "Default")
+        public List<T> LoadData<T, U>(string sqlStatement, U parameters, string connectionStringName)
         {
             string connectionString = GetConnectionString(connectionStringName);
 
@@ -36,7 +36,7 @@ namespace DataAccessLibrary.DataAccess.Internal.SQLiteDataAccess
             }
         }
 
-        public void SaveData<T>(string sqlStatement, T parameters, string connectionStringName = "Default")
+        public void SaveData<T>(string sqlStatement, T parameters, string connectionStringName)
         {
             string connectionString = GetConnectionString(connectionStringName);
 

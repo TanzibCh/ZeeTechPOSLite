@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Windows;
+using DataAccessLibrary.DataAccess.SalesQueries;
 
 namespace DesktopUI.ViewModels
 {
@@ -23,6 +24,8 @@ namespace DesktopUI.ViewModels
         private string _department;
 
         private BindingList<CartItemDisplayModel> _cart;
+
+        private SalesDataAccess _salesData = new SalesDataAccess();
 
         #endregion
 
@@ -366,6 +369,8 @@ namespace DesktopUI.ViewModels
             SaleDate = DateTime.Now.ToString("dd,MM,yyyy");
             CurrentTime = DateTime.UtcNow.ToString("hh:mm:ss");
 
+            
+
             CashOnlySale = false;
             SumPayment = 0m;
             ManualQuantity = 1;
@@ -533,38 +538,75 @@ namespace DesktopUI.ViewModels
             return cartCost;
         }
 
-        public void SaveSale()
+        public void CompleteSale()
         {
             // Check if sum of payment methods == to CartTotal
-            // yes-Save sale to database
+            if (CartTotal == SumPayment)
+            {
+                _salesData.SaveSale(CreateSaleForDB(), CreateSaleProductsForDB());
+            }
+            else
+            {
+                //throw exception
+                MessageBox.Show("Full payment was not taken. Please enter correct Card, Cash or Credit amount");
+            }
+        }
 
+        private SaleDBModel CreateSaleForDB()
+        {
             decimal cartProfit = CartTotal - CalculateTotalCartCost();
 
-            // Enter data in SaleDBModel
+            // Set CashIn as int to save in database
+            int cashOnly = 0;
+            if (CashOnlySale == true)
+            {
+                cashOnly = 1;
+            }
+            else
+            {
+                cashOnly = 0;
+            }
+
             SaleDBModel sale = new SaleDBModel
             {
-                Card = Convert.ToInt32(CardPayment),
-                Cash = Convert.ToInt32(CashPayment),
-                Credit = Convert.ToInt32(CreditPayment),
-                Total = Convert.ToInt32(CartTotal),
-                Tax = Convert.ToInt32(Tax),
-                Profit = Convert.ToInt32(cartProfit),
-                CashOnly = CashOnlySale
+                Card = ConvertDecimalToInt(CardPayment),
+                Cash = ConvertDecimalToInt(CashPayment),
+                Credit = ConvertDecimalToInt(CreditPayment),
+                Total = ConvertDecimalToInt(CartTotal),
+                Tax = ConvertDecimalToInt(Tax),
+                Profit = ConvertDecimalToInt(cartProfit),
+                CashOnly = cashOnly
             };
 
-            // Enter data in SaleDetailsDBModel
-            List<SaleProductModel> saleProducts = new List<SaleProductModel>();
+            return sale;
+        }
+
+        private List<SaleProductDBModel> CreateSaleProductsForDB()
+        {
+            List<SaleProductDBModel> saleProducts = new List<SaleProductDBModel>();
 
             foreach (var item in Cart)
             {
-                item.Product 
+                saleProducts.Add(new SaleProductDBModel
+                {
+                    ProductId = item.Product.Id,
+                    ProductName = item.Product.ProductName,
+                    ProductDescription = item.Product.ProductDescription,
+                    ProductCost = ConvertDecimalToInt(item.Product.AverageCost),
+                    SalePrice = ConvertDecimalToInt(item.Price),
+                    QuantitySold = item.Quantity,
+                    Department = item.Product.Department
+                });
             }
 
+            return saleProducts;
+        }
 
-            
-           
+        private int ConvertDecimalToInt(decimal decimalValue)
+        {
+            int intValue = Convert.ToInt32(Math.Truncate(decimalValue * 100m));
 
-            // or point to the error
+            return intValue;
         }
 
         private void CheckPaymentSum()

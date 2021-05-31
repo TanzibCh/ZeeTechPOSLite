@@ -465,7 +465,6 @@
                             <Label Grid.Column="0" Grid.Row="0"
                                    Content="Card" 
                                    VerticalContentAlignment="Center"
-                                   MouseDoubleClick="{Binding}"
                                    IsHitTestVisible="True">
                             </Label>
                             <StackPanel Grid.Column="1" Grid.Row="0"

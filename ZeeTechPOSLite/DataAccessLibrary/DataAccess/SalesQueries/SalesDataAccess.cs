@@ -11,48 +11,20 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
     {
         SQLiteDataAccess _db = new SQLiteDataAccess();
 
-        public void SaveSale(SaleDBModel saleInfo, List<SaleProductModel> saleProducts)
+        public void SaveSale(SaleDBModel saleInfo, List<SaleProductDBModel> saleProducts)
         {
-
             // TODO: Make it SOLID in the future
-
             // Get new Invoice number
             saleInfo.InvoiceNo = GetNewInvoiceNo(saleInfo.CashOnly);
 
-            // Set CashIn as int to save in database
-            //int cashInInvoice = 0;
-            //if (saleInfo.CashOnly == true)
-            //{
-            //    cashInInvoice = 1;
-            //}
-            //else
-            //{
-            //    cashInInvoice = 0;
-            //}
+            // Save the sale with the new Invoice Number
+            SaveSaleDetails(saleInfo);
 
-            // Create Sale and save it in database
-            string sql = @"INSERT INTO Sale
-                          (InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, Total, Tax, Profit, CashIn)
-                          values (@invoiceNo, @saleDate, @saleTime, @card, @cash, @credit, @total, @tax, @profit, @cashIn);";
- 
-            // Insert sale data into the database
-            _db.SaveData(sql, new 
-                {
-                    invoiceNo = saleInfo.InvoiceNo,
-                    saleDate = saleInfo.SaleDate,
-                    saleTime = saleInfo.SaleTime,
-                    card = saleInfo.Card,
-                    cash = saleInfo.Cash,
-                    credit = saleInfo.Credit,
-                    total = saleInfo.Total,
-                    tax = saleInfo.Tax,
-                    profit = saleInfo.Profit,
-                    cashIn = saleInfo.CashOnly
-            }, "Default");
-
+            // Get the latest created Saleid
             int saleId = GetLatestSaleId();
 
-            SaveSaleDetails(saleProducts, saleId);
+            // save the list of Sale Products with the newly created SaleId
+            SaveSaleProducts(saleProducts, saleId);
         }
 
         private int GetLatestSaleId()
@@ -60,54 +32,67 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             string sql = @"SELECT max(SaleId) from
                           Sale;";
 
-            return _db.LoadData<dynamic, dynamic>(sql, new { }, "Default").FirstOrDefault();
+            return _db.LoadData<dynamic, dynamic>(sql, new { }, "SQLiteDB").FirstOrDefault();
         }
 
         // Queries for the last Invoice in the database and adds 1 to it to get the new Invoice number
-        private int GetNewInvoiceNo(bool cashOnly)
+        private int GetNewInvoiceNo(int cashOnly)
         {
-            string sqlCashOnlyTrue = @"SELECT max(InvoiceNo) from
-                                      sale
-                                      WHERE CashIn = 1;";
+            string sql = @"SELECT InvoiceNo
+                           FROM sale
+                           WHERE CashIn = @cashOnly
+                           ORDER BY InvoiceNo DESC
+                           LIMIT 1;";
 
-            string sqlCashOnlyFalse = @"SELECT max(InvoiceNo) from
-                                       sale
-                                       WHERE CashIn = 0;";
+            SaleDBModel sale = _db.LoadData<SaleDBModel, dynamic>(sql, new { cashOnly }, "SQLiteDB").First();
 
-            int lastInvoiceNo = 0;
+            int output = sale.InvoiceNo + 1;
 
-            if (cashOnly == true)
-            {
-                lastInvoiceNo = _db.LoadData<dynamic, dynamic>(sqlCashOnlyTrue, new { }, "Default").FirstOrDefault();
-            }
-            else
-            {
-                lastInvoiceNo = _db.LoadData<dynamic, dynamic>(sqlCashOnlyFalse, new { }, "Default").FirstOrDefault();
-            }
-
-            int output = lastInvoiceNo + 1;
             return output;
         }
 
-        private void SaveSaleDetails(List<SaleProductModel> saleProducts, int saleId)
+        private void SaveSaleDetails(SaleDBModel saleInfo)
+        {
+            // Create Sale and save it in database
+            string sql = @"INSERT INTO Sale
+                          (InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, Total, Tax, Profit, CashIn)
+                          values (@invoiceNo, @saleDate, @saleTime, @card, @cash, @credit, @total, @tax, @profit, @cashIn);";
+
+            // Insert sale data into the database
+            _db.SaveData(sql, new
+            {
+                invoiceNo = saleInfo.InvoiceNo,
+                saleDate = saleInfo.SaleDate,
+                saleTime = saleInfo.SaleTime,
+                card = saleInfo.Card,
+                cash = saleInfo.Cash,
+                credit = saleInfo.Credit,
+                total = saleInfo.Total,
+                tax = saleInfo.Tax,
+                profit = saleInfo.Profit,
+                cashIn = saleInfo.CashOnly
+            },  "SQLiteDB");
+        }
+
+        private void SaveSaleProducts(List<SaleProductDBModel> saleProducts, int saleId)
         {
             string sql = @"INSERT INTO SaleProduct
-                          (SaleId, ProductId, ProductName, ProductDescription, SalePrice, ProductCost, Department)
-                          values (@saleId, @productId, @Name, @description, @price, @cost, @department);";
-
+                          (SaleId, ProductId, ProductName, ProductDescription, SalePrice, ProductCost, QuantitySold, Department)
+                          values (@saleId, @productId, @Name, @description, @price, @cost, @quantitySold, @department);";
 
             foreach (var item in saleProducts)
             {
                 _db.SaveData(sql, new 
                     {
-                        saleId = saleId, 
-                        productId = item.ProductId, 
-                        Name = item.ProductName, 
-                        description = item.ProductDescription, 
-                        price = item.SalePrice, 
-                        cost = item.ProductCost, 
-                        department = item.Department 
-                    }, "Default");
+                        saleId = saleId,
+                        productId = item.ProductId,
+                        Name = item.ProductName,
+                        description = item.ProductDescription,
+                        price = item.SalePrice,
+                        cost = item.ProductCost,
+                        quantitySold = item.QuantitySold,
+                        department = item.Department
+                    },  "SQLiteDB");
             }
         }
     }
