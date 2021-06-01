@@ -6,6 +6,7 @@ namespace DataAccessLibrary.Models
 {
     public class SaleDBModel
     {
+        public int Id { get; set; }
         public int InvoiceNo { get; set; }
         public string SaleDate { get; set; } = DateTime.UtcNow.Date.ToString();
         public string SaleTime { get; set; } = DateTime.UtcNow.TimeOfDay.ToString();

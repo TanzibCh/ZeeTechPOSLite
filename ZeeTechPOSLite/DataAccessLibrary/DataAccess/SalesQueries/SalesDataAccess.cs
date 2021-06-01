@@ -10,6 +10,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
     public class SalesDataAccess
     {
         SQLiteDataAccess _db = new SQLiteDataAccess();
+        private const string connectionStringName = "SQLiteDB";
 
         public void SaveSale(SaleDBModel saleInfo, List<SaleProductDBModel> saleProducts)
         {
@@ -29,10 +30,14 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 
         private int GetLatestSaleId()
         {
-            string sql = @"SELECT max(SaleId) from
-                          Sale;";
+            string sql = @"SELECT Id 
+                           FROM Sale
+                           ORDER BY Id DESC
+                           LIMIT 1;";
 
-            return _db.LoadData<dynamic, dynamic>(sql, new { }, "SQLiteDB").FirstOrDefault();
+            SaleDBModel sale = _db.LoadData<SaleDBModel, dynamic>(sql, new { }, connectionStringName).FirstOrDefault();
+
+            return sale.Id;
         }
 
         // Queries for the last Invoice in the database and adds 1 to it to get the new Invoice number
@@ -40,14 +45,22 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
         {
             string sql = @"SELECT InvoiceNo
                            FROM sale
-                           WHERE CashIn = @cashOnly
+                           WHERE CashOnly = @cashOnly
                            ORDER BY InvoiceNo DESC
                            LIMIT 1;";
 
-            SaleDBModel sale = _db.LoadData<SaleDBModel, dynamic>(sql, new { cashOnly }, "SQLiteDB").First();
+            SaleDBModel sale = _db.LoadData<SaleDBModel, dynamic>(sql, new { cashOnly }, connectionStringName).FirstOrDefault();
 
-            int output = sale.InvoiceNo + 1;
-
+            int output;
+            if (sale == null)
+            {
+                output = 1;
+            }
+            else
+            {
+                output = sale.InvoiceNo + 1;
+            }
+            
             return output;
         }
 
@@ -55,8 +68,8 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
         {
             // Create Sale and save it in database
             string sql = @"INSERT INTO Sale
-                          (InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, Total, Tax, Profit, CashIn)
-                          values (@invoiceNo, @saleDate, @saleTime, @card, @cash, @credit, @total, @tax, @profit, @cashIn);";
+                          (InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, Total, Tax, Profit, CashOnly)
+                          values (@invoiceNo, @saleDate, @saleTime, @card, @cash, @credit, @total, @tax, @profit, @cashOnly);";
 
             // Insert sale data into the database
             _db.SaveData(sql, new
@@ -70,8 +83,8 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                 total = saleInfo.Total,
                 tax = saleInfo.Tax,
                 profit = saleInfo.Profit,
-                cashIn = saleInfo.CashOnly
-            },  "SQLiteDB");
+                cashOnly = saleInfo.CashOnly
+            }, connectionStringName);
         }
 
         private void SaveSaleProducts(List<SaleProductDBModel> saleProducts, int saleId)
@@ -92,7 +105,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                         cost = item.ProductCost,
                         quantitySold = item.QuantitySold,
                         department = item.Department
-                    },  "SQLiteDB");
+                    }, connectionStringName);
             }
         }
     }

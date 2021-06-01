@@ -544,10 +544,18 @@ namespace DesktopUI.ViewModels
             if (CartTotal == SumPayment)
             {
                 _salesData.SaveSale(CreateSaleForDB(), CreateSaleProductsForDB());
+
+                // Clear out items from the cart list
+                Cart.Clear();
+
+                // Clear out payment o method fields
+                CardPayment = 0m;
+                CashPayment = 0m;
+                CreditPayment = 0m;
             }
             else
             {
-                //throw exception
+                // Show MessageBox asaking to enter payment method
                 MessageBox.Show("Full payment was not taken. Please enter correct Card, Cash or Credit amount");
             }
         }

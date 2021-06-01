@@ -6,6 +6,7 @@ namespace DataAccessLibrary.Models
 {
     public class SaleProductDBModel
     {
+        public int Id { get; set; }
         public int SaleId { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
