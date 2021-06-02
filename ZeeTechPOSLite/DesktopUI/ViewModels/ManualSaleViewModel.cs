@@ -560,7 +560,7 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private SaleDBModel CreateSaleForDB()
+        private SaleModel CreateSaleForDB()
         {
             decimal cartProfit = CartTotal - CalculateTotalCartCost();
 
@@ -575,7 +575,7 @@ namespace DesktopUI.ViewModels
                 cashOnly = 0;
             }
 
-            SaleDBModel sale = new SaleDBModel
+            SaleModel sale = new SaleModel
             {
                 Card = ConvertDecimalToInt(CardPayment),
                 Cash = ConvertDecimalToInt(CashPayment),
@@ -589,13 +589,13 @@ namespace DesktopUI.ViewModels
             return sale;
         }
 
-        private List<SaleProductDBModel> CreateSaleProductsForDB()
+        private List<SaleProductModel> CreateSaleProductsForDB()
         {
-            List<SaleProductDBModel> saleProducts = new List<SaleProductDBModel>();
+            List<SaleProductModel> saleProducts = new List<SaleProductModel>();
 
             foreach (var item in Cart)
             {
-                saleProducts.Add(new SaleProductDBModel
+                saleProducts.Add(new SaleProductModel
                 {
                     ProductId = item.Product.Id,
                     ProductName = item.Product.ProductName,

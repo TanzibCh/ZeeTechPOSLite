@@ -12,7 +12,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
         SQLiteDataAccess _db = new SQLiteDataAccess();
         private const string connectionStringName = "SQLiteDB";
 
-        public void SaveSale(SaleDBModel saleInfo, List<SaleProductDBModel> saleProducts)
+        public void SaveSale(SaleModel saleInfo, List<SaleProductModel> saleProducts)
         {
             // TODO: Make it SOLID in the future
             // Get new Invoice number
@@ -35,7 +35,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                            ORDER BY Id DESC
                            LIMIT 1;";
 
-            SaleDBModel sale = _db.LoadData<SaleDBModel, dynamic>(sql, new { }, connectionStringName).FirstOrDefault();
+            SaleModel sale = _db.LoadData<SaleModel, dynamic>(sql, new { }, connectionStringName).FirstOrDefault();
 
             return sale.Id;
         }
@@ -49,7 +49,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                            ORDER BY InvoiceNo DESC
                            LIMIT 1;";
 
-            SaleDBModel sale = _db.LoadData<SaleDBModel, dynamic>(sql, new { cashOnly }, connectionStringName).FirstOrDefault();
+            SaleModel sale = _db.LoadData<SaleModel, dynamic>(sql, new { cashOnly }, connectionStringName).FirstOrDefault();
 
             int output;
             if (sale == null)
@@ -64,7 +64,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             return output;
         }
 
-        private void SaveSaleDetails(SaleDBModel saleInfo)
+        private void SaveSaleDetails(SaleModel saleInfo)
         {
             // Create Sale and save it in database
             string sql = @"INSERT INTO Sale
@@ -87,7 +87,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             }, connectionStringName);
         }
 
-        private void SaveSaleProducts(List<SaleProductDBModel> saleProducts, int saleId)
+        private void SaveSaleProducts(List<SaleProductModel> saleProducts, int saleId)
         {
             string sql = @"INSERT INTO SaleProduct
                           (SaleId, ProductId, ProductName, ProductDescription, SalePrice, ProductCost, QuantitySold, Department)

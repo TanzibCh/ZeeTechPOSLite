@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
+             xmlns:viewModel="clr-namespace:DesktopUI.ViewModels"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
@@ -12,9 +13,15 @@
              xmlns:local="clr-namespace:DesktopUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1500" >
-    
+
     <!-- Custom Styles -->
     <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewModel:BankingViewModel}">
+            <local:BankingView/>
+        </DataTemplate>
+
+        <viewModel:BankingViewModel x:Key="bankingVM" />
+
         <Style TargetType="Label" x:Key="HeadingSmall" 
                BasedOn="{StaticResource MaterialDesignLabel}">
             <Setter Property="FontSize" Value="10" />
@@ -22,11 +29,11 @@
             <Setter Property="VerticalAlignment" Value="Bottom" />
             <Setter Property="Margin" Value="0 0 0 -5" />
         </Style>
-        
+
         <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
                BasedOn="{StaticResource MaterialDesignTextBox}">
             <Setter Property="HorizontalContentAlignment" Value="Center"  />
-            
+
         </Style>
 
         <Style TargetType="TextBlock" x:Key="ListBoxTextBlock"
@@ -35,8 +42,8 @@
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
     </UserControl.Resources>
-    
-    <Grid Margin="10">
+
+    <Grid Margin="10" DataContext="{StaticResource bankingVM}">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
@@ -61,8 +68,9 @@
                     </Button>
 
                     <DatePicker Margin="10 0"
-                                Width="150" >
-                        
+                                Width="150" 
+                                SelectedDate="{Binding SelectedDate}">
+
                     </DatePicker>
 
                     <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
@@ -77,7 +85,7 @@
                        FontSize="16"
                        Foreground="{StaticResource MaterialDesignLightForeground}" />
                 </Viewbox>
-                
+
 
                 <ToggleButton Grid.Column="2"
                               Margin="10 0"
@@ -85,7 +93,7 @@
                               IsChecked="True"/>
             </Grid>
         </materialDesign:Card>
-        
+
         <!-- Main body Grid -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -276,7 +284,7 @@
                     </StackPanel>
                 </materialDesign:Card>
                 <!--#endregion-->
-                
+
                 <!--#region  Departments -->
                 <materialDesign:Card Grid.Row="1" Margin="0 5"
                                  UniformCornerRadius="15"
@@ -295,6 +303,7 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
                         <!-- Mobile -->
@@ -389,7 +398,7 @@
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Text="£1000.00"
                                    FontSize="16"/>
-                        
+
                         <!-- Repair -->
                         <materialDesign:Card Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3"
                                              Margin="0 5"
@@ -412,8 +421,31 @@
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Text="£1000.00"
                                    FontSize="16"/>
-                    </Grid>
+
+                        <!-- AV -->
+                        <materialDesign:Card Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3"
+                                             Margin="0 5"
+                                             UniformCornerRadius="15"
+                                             Background="#FFF1B2B2"
+                                             materialDesign:ShadowAssist.ShadowDepth="Depth1">
                         </materialDesign:Card>
+                        <Label Grid.Column="0" Grid.Row="5"
+                                   Margin="5 0"
+                                   VerticalAlignment="Center"
+                                   Content="AV"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="1" Grid.Row="5"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="10"
+                                   FontSize="16"/>
+                        <TextBlock Grid.Column="2" Grid.Row="5"
+                                   Margin="10 0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="£1000.00"
+                                   FontSize="16"/>
+                    </Grid>
+                </materialDesign:Card>
                 <!--#endregion-->
 
                 <!--#region  New Expense -->
@@ -423,7 +455,7 @@
                     <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
                         <Label Content="New Expense" 
                                HorizontalAlignment="Center"/>
-                        
+
                         <StackPanel Orientation="Horizontal">
                             <ComboBox Width="100"
                                       materialDesign:HintAssist.Hint="Payment"
@@ -455,7 +487,9 @@
                                  UniformCornerRadius="15"
                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
 
-                    <ListBox Margin="10" HorizontalContentAlignment="Stretch">
+                    <ListBox Margin="10" HorizontalContentAlignment="Stretch"
+                             ItemsSource="{Binding Sales}">
+                        <!-- ListBox Headers -->
                         <ListBox.Template>
                             <ControlTemplate>
                                 <DockPanel LastChildFill="True">
@@ -466,6 +500,8 @@
                                             <ColumnDefinition MinWidth="90" />
                                             <ColumnDefinition MinWidth="90" />
                                             <ColumnDefinition MinWidth="90" />
+                                            <ColumnDefinition MinWidth="90"/>
+                                            <ColumnDefinition MinWidth="90"/>
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
 
@@ -488,53 +524,85 @@
                                         <Label Grid.Column="4"
                                                HorizontalAlignment="Center"
                                                Content="Total" />
+
+                                        <Label Grid.Column="5"
+                                               HorizontalAlignment="Center"
+                                               Content="Cost" />
+
+                                        <Label Grid.Column="6"
+                                               HorizontalAlignment="Center"
+                                               Content="Profit" />
                                     </Grid>
                                     <ItemsPresenter></ItemsPresenter>
                                 </DockPanel>
                             </ControlTemplate>
                         </ListBox.Template>
-                        <ListBoxItem>
-                            <Grid Margin="0 2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition MinWidth="90" />
-                                    <ColumnDefinition MinWidth="90" />
-                                    <ColumnDefinition MinWidth="90" />
-                                    <ColumnDefinition MinWidth="90" />
-                                    <ColumnDefinition MinWidth="90" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" Margin="0 0 5 0"
+                        <!-- ListBox Items -->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0 2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition MinWidth="90" />
+                                        <ColumnDefinition MinWidth="90" />
+                                        <ColumnDefinition MinWidth="90" />
+                                        <ColumnDefinition MinWidth="90" />
+                                        <ColumnDefinition MinWidth="90" />
+                                        <ColumnDefinition MinWidth="90"/>
+                                        <ColumnDefinition MinWidth="90"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- InvoiceNo -->
+                                    <TextBlock Grid.Column="0" Margin="0 0 5 0"
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
-                                           Text="123456" />
+                                           Text="{Binding InvoiceNo}" />
 
-                                <TextBlock Grid.Column="1" Margin="0 0 5 0"
+                                    <!-- Card -->
+                                    <TextBlock Grid.Column="1" Margin="9,5,0,0"
+                                           Style="{StaticResource ListBoxTextBlock}"
+                                           HorizontalAlignment="Left"
+                                           Text="{Binding Card}" VerticalAlignment="Stretch" />
+
+                                    <!-- Cash -->
+                                    <TextBlock Grid.Column="2" Margin="0 0 5 0"
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Center"
-                                           Text="£1000.00" />
+                                           Text="{Binding Cash}" />
 
-                                <TextBlock Grid.Column="2" Margin="0 0 5 0"
+                                    <!-- Credit -->
+                                    <TextBlock Grid.Column="3" Margin="0 0 5 0"
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Center"
-                                           Text="£1000.00" />
+                                           Text="{Binding Credit}" />
 
-                                <TextBlock Grid.Column="3" Margin="0 0 5 0"
+                                    <!-- Total -->
+                                    <TextBlock Grid.Column="4" Margin="0 0 5 0"
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Center"
-                                           Text="£1000.00" />
+                                           Text="{Binding Total}" />
 
-                                <TextBlock Grid.Column="4" Margin="0 0 5 0"
+                                    <!-- Cost -->
+                                    <TextBlock Grid.Column="5" Margin="0 0 5 0"
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Center"
-                                           Text="£1000.00" />
+                                           Text="add" />
 
-                                <Button Grid.Column="5"
-                                        Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-                                        HorizontalAlignment="Right"
-                                        Content="Edit" />
-                            </Grid>
-                        </ListBoxItem>
+                                    <!-- Profit -->
+                                    <TextBlock Grid.Column="6" Margin="0 0 5 0"
+                                           Style="{StaticResource ListBoxTextBlock}"
+                                           HorizontalAlignment="Center"
+                                           Text="{Binding Profit}" />
+
+                                    <!-- Edit Button -->
+                                    <Button Grid.Column="7"
+                                            Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                            HorizontalAlignment="Right"
+                                            Content="Edit" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
 
                 </materialDesign:Card>
@@ -547,14 +615,14 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                
+
                 <!--#region Sale Products -->
                 <materialDesign:Card Grid.Row="0" Margin="5 0 0 5"
                                  UniformCornerRadius="15"
                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
 
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="10">
-                        
+
                         <Label Content="Selected Sale Products" HorizontalAlignment="Center" />
 
                         <ListBox HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -694,7 +762,7 @@
 
                                     <TextBox Grid.Column="0" Grid.Row="0"
                                              Margin="0 0 5 0" />
-                                    
+
                                     <TextBox Grid.Column="1" Grid.Row="0"
                                              Margin="5 0 0 0" />
 
@@ -715,15 +783,15 @@
                                 </Grid>
                             </ListBoxItem>
                         </ListBox>
-                        
+
                     </StackPanel>
                 </materialDesign:Card>
                 <!--#endregion-->
-                
+
             </Grid>
             <!--#endregion-->
         </Grid>
-        
-        
+
+
     </Grid>
 </UserControl>
