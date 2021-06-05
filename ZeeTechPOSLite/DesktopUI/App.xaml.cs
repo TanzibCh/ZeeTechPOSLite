@@ -1,4 +1,7 @@
-﻿using DesktopUI.Models;
+﻿using AutoMapper;
+using DataAccessLibrary.DataAccess.SalesQueries;
+using DataAccessLibrary.Models;
+using DesktopUI.Models;
 using DesktopUI.ViewModels;
 using DesktopUI.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +26,8 @@ namespace DesktopUI
     /// </summary>
     public partial class App : Application
     {
-        private readonly IHost _host;
+        //private readonly IHost _host;
+        private ServiceProvider _serviceProvider;
 
         // Constructor
         public App()
@@ -32,24 +36,23 @@ namespace DesktopUI
             ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
             Thread.CurrentThread.CurrentCulture = ci;
 
-            _host = Host.CreateDefaultBuilder()
-                .ConfigureServices((context, services) =>
-                {
-                    ConfigureServices(services);
-                })
-                .Build();
+            ServiceCollection services = new ServiceCollection();
+            ConfigureServices(services);
+            _serviceProvider = services.BuildServiceProvider();
         }
 
-        private void ConfigureServices(IServiceCollection servicees)
+        private void ConfigureServices(ServiceCollection services)
         {
-            servicees.AddSingleton<MainView>();
+            services.AddAutoMapper(typeof(App));
+
+            services.AddSingleton<MainView>();
+
+            
         }
 
-        protected override async void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
-            await _host.StartAsync();
-
-            var mainView = _host.Services.GetRequiredService<MainView>();
+            var mainView = _serviceProvider.GetService<MainView>();
             mainView.Show();
 
             // Select all the text in a TextBox when it receives focus.
@@ -65,17 +68,21 @@ namespace DesktopUI
                 new RoutedEventHandler((x, _) => (x as ListBoxItem).IsSelected = true));
 
             base.OnStartup(e);
+
+            ConfigureServices();
         }
 
-        protected override async void OnExit(ExitEventArgs e)
-        {
-            using (_host)
-            {
-                await _host.StopAsync();
-            }
+        //private IMapper ConfigureAutomapper()
+        //{
+        //    var config = new MapperConfiguration(cfg =>
+        //    {
+        //        cfg.CreateMap<SaleModel, SaleDisplayModel>();
+        //    });
 
-            base.OnExit(e);
-        }
+        //    var output = config.CreateMapper();
+
+        //    return output;
+        //}
 
         void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
         {
