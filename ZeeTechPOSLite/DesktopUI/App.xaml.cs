@@ -26,63 +26,44 @@ namespace DesktopUI
     /// </summary>
     public partial class App : Application
     {
-        //private readonly IHost _host;
-        private ServiceProvider _serviceProvider;
-
         // Constructor
         public App()
         {
             CultureInfo ci = CultureInfo.CreateSpecificCulture(CultureInfo.CurrentCulture.Name);
             ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
             Thread.CurrentThread.CurrentCulture = ci;
-
-            ServiceCollection services = new ServiceCollection();
-            ConfigureServices(services);
-            _serviceProvider = services.BuildServiceProvider();
-        }
-
-        private void ConfigureServices(ServiceCollection services)
-        {
-            services.AddAutoMapper(typeof(App));
-
-            services.AddSingleton<MainView>();
-
-            
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var mainView = _serviceProvider.GetService<MainView>();
+            // Dependency Injection setup
+            var host = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddSingleton<MainView>();
+                })
+                .Build();
+
+            // Launch Main Window at the start of the app
+            var mainView = host.Services.GetRequiredService<MainView>();
             mainView.Show();
 
             // Select all the text in a TextBox when it receives focus.
             EventManager.RegisterClassHandler(typeof(TextBox), TextBox.PreviewMouseLeftButtonDownEvent,
                 new MouseButtonEventHandler(SelectivelyIgnoreMouseButton));
+
             EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotKeyboardFocusEvent,
                 new RoutedEventHandler(SelectAllText));
+
             EventManager.RegisterClassHandler(typeof(TextBox), TextBox.MouseDoubleClickEvent,
                 new RoutedEventHandler(SelectAllText));
 
             // Select the item in a ListBox when clicked on any controles within that item.
             EventManager.RegisterClassHandler(typeof(ListBoxItem), ListBoxItem.PreviewGotKeyboardFocusEvent,
                 new RoutedEventHandler((x, _) => (x as ListBoxItem).IsSelected = true));
-
+  
             base.OnStartup(e);
-
-            ConfigureServices();
         }
-
-        //private IMapper ConfigureAutomapper()
-        //{
-        //    var config = new MapperConfiguration(cfg =>
-        //    {
-        //        cfg.CreateMap<SaleModel, SaleDisplayModel>();
-        //    });
-
-        //    var output = config.CreateMapper();
-
-        //    return output;
-        //}
 
         void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
         {
@@ -94,7 +75,7 @@ namespace DesktopUI
             if (parent != null)
             {
                 var textBox = (TextBox)parent;
-                if (!textBox.IsKeyboardFocusWithin)
+                if (textBox.IsKeyboardFocusWithin == false)
                 {
                     // If the text box is not yet focused, give it the focus and
                     // stop further processing of this click event.
