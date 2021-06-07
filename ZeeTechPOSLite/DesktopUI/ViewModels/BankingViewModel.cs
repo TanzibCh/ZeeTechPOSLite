@@ -10,7 +10,7 @@ using System.Text;
 
 namespace DesktopUI.ViewModels
 {
-    public class BankingViewModel : INotifyPropertyChanged
+    public class BankingViewModel : INotifyPropertyChanged, IBankingViewModel
     {
         #region private Properties
 
@@ -116,7 +116,7 @@ namespace DesktopUI.ViewModels
             SelectedDate = DateTime.UtcNow.Date;
             //_mapper = mapper;
             LoadSales();
-            
+
         }
 
         #endregion

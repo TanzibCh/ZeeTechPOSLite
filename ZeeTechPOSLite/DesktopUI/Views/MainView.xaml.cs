@@ -18,10 +18,13 @@ namespace DesktopUI.Views
     /// </summary>
     public partial class MainView : Window
     {
-        public MainView()
+        IMainViewModel _mainVM;
+        public MainView(IMainViewModel mainVM)
         {
+            _mainVM = mainVM;
+
             InitializeComponent();
-            this.DataContext = new MainViewModel();
+            this.DataContext = _mainVM;
         }
     }
 }

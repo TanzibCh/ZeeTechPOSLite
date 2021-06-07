@@ -11,7 +11,7 @@ using DataAccessLibrary.DataAccess.SalesQueries;
 
 namespace DesktopUI.ViewModels
 {
-    public class ManualSaleViewModel : INotifyPropertyChanged
+    public class ManualSaleViewModel : INotifyPropertyChanged, IManualSaleViewModel
     {
         #region Private properties
 
@@ -25,7 +25,7 @@ namespace DesktopUI.ViewModels
 
         private BindingList<CartItemDisplayModel> _cart;
 
-        private SalesDataAccess _salesData = new SalesDataAccess();
+        ISalesDataAccess _salesData;
 
         #endregion
 
@@ -118,7 +118,7 @@ namespace DesktopUI.ViewModels
         public bool EnableManualName
         {
             get { return _enableManualName; }
-            set 
+            set
             {
                 _enableManualName = value;
                 OnPropertyChanged(nameof(EnableManualName));
@@ -130,7 +130,7 @@ namespace DesktopUI.ViewModels
         public bool EnableManualCost
         {
             get { return _enableManualCost; }
-            set 
+            set
             {
                 _enableManualCost = value;
                 OnPropertyChanged(nameof(EnableManualCost));
@@ -142,8 +142,8 @@ namespace DesktopUI.ViewModels
         public string ManualEntryLable
         {
             get { return _manualEntryLable; }
-            set 
-            { 
+            set
+            {
                 _manualEntryLable = value;
                 OnPropertyChanged(nameof(ManualEntryLable));
             }
@@ -175,8 +175,8 @@ namespace DesktopUI.ViewModels
         public RemoveFromCartCommand RemoveFromCart
         {
             get { return _removeFromCart; }
-            set 
-            { 
+            set
+            {
                 _removeFromCart = value;
                 OnPropertyChanged(nameof(RemoveFromCart));
             }
@@ -198,8 +198,8 @@ namespace DesktopUI.ViewModels
         public BindingList<CartItemDisplayModel> Cart
         {
             get { return _cart; }
-            set 
-            { 
+            set
+            {
                 _cart = value;
                 OnPropertyChanged(nameof(Cart));
             }
@@ -246,7 +246,7 @@ namespace DesktopUI.ViewModels
 
         public decimal Subtotal
         {
-            get 
+            get
             {
                 decimal divideBy = 1.2m;
 
@@ -260,7 +260,7 @@ namespace DesktopUI.ViewModels
 
         public decimal Tax
         {
-            get 
+            get
             {
                 _tax = _cartTotal - _subtotal;
 
@@ -276,8 +276,8 @@ namespace DesktopUI.ViewModels
         public decimal CardPayment
         {
             get { return _cardPayment; }
-            set 
-            { 
+            set
+            {
                 _cardPayment = value;
                 OnPropertyChanged(nameof(CardPayment));
                 CheckPaymentSum();
@@ -302,8 +302,8 @@ namespace DesktopUI.ViewModels
         public decimal CreditPayment
         {
             get { return _creditPayment; }
-            set 
-            { 
+            set
+            {
                 _creditPayment = value;
                 OnPropertyChanged(nameof(CreditPayment));
                 CheckPaymentSum();
@@ -315,11 +315,11 @@ namespace DesktopUI.ViewModels
         public bool CashOnlySale
         {
             get { return _cashOnlySale; }
-            set 
-            { 
+            set
+            {
                 _cashOnlySale = value;
                 OnPropertyChanged(nameof(CashOnlySale));
-                CheckCashOnlySale(); 
+                CheckCashOnlySale();
                 CheckPaymentSum();
             }
         }
@@ -329,8 +329,8 @@ namespace DesktopUI.ViewModels
         public bool EnableCash
         {
             get { return _enableCash; }
-            set 
-            { 
+            set
+            {
                 _enableCash = value;
                 OnPropertyChanged(nameof(EnableCash));
             }
@@ -341,8 +341,8 @@ namespace DesktopUI.ViewModels
         public bool EnableCard
         {
             get { return _enableCard; }
-            set 
-            { 
+            set
+            {
                 _enableCard = value;
                 OnPropertyChanged(nameof(EnableCard));
             }
@@ -353,7 +353,7 @@ namespace DesktopUI.ViewModels
         public decimal SumPayment
         {
             get { return _sumPayment; }
-            set 
+            set
             {
                 _sumPayment = value;
                 OnPropertyChanged(nameof(SumPayment));
@@ -364,12 +364,12 @@ namespace DesktopUI.ViewModels
 
         #region Constructor
 
-        public ManualSaleViewModel()
+        public ManualSaleViewModel(ISalesDataAccess salesData)
         {
+            _salesData = salesData;
+
             SaleDate = DateTime.Now.ToString("dd,MM,yyyy");
             CurrentTime = DateTime.UtcNow.ToString("hh:mm:ss");
-
-            
 
             CashOnlySale = false;
             SumPayment = 0m;
@@ -467,7 +467,7 @@ namespace DesktopUI.ViewModels
                 CheckCashOnlySale();
                 CheckPaymentSum();
                 ClearManualFields();
-            } 
+            }
         }
 
         private void ClearManualFields()

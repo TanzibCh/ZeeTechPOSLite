@@ -1,19 +1,12 @@
-﻿using AutoMapper;
-using DataAccessLibrary.DataAccess.SalesQueries;
-using DataAccessLibrary.Models;
-using DesktopUI.Models;
+﻿
+using Autofac;
 using DesktopUI.ViewModels;
 using DesktopUI.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -37,16 +30,28 @@ namespace DesktopUI
         protected override void OnStartup(StartupEventArgs e)
         {
             // Dependency Injection setup
-            var host = Host.CreateDefaultBuilder()
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddSingleton<MainView>();
-                })
-                .Build();
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule<ProgramModule>();
+            var container = containerBuilder.Build();
+
+            var mainView = container.Resolve<MainView>();
+            mainView.Show();
+
+
+            //var host = Host.CreateDefaultBuilder()
+            //    .ConfigureServices((context, services) =>
+            //    {
+            //        services.AddSingleton<MainView>();
+
+            //        // VewModels
+            //        services.AddTransient<IMainViewModel, MainViewModel>();
+            //        services.AddTransient<IBankingViewModel, BankingViewModel>();
+            //    })
+            //    .Build();
 
             // Launch Main Window at the start of the app
-            var mainView = host.Services.GetRequiredService<MainView>();
-            mainView.Show();
+            //var mainView = host.Services.GetRequiredService<MainView>();
+            //mainView.Show();
 
             // Select all the text in a TextBox when it receives focus.
             EventManager.RegisterClassHandler(typeof(TextBox), TextBox.PreviewMouseLeftButtonDownEvent,
