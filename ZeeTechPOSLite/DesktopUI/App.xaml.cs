@@ -43,7 +43,7 @@ namespace DesktopUI
 
         private void ConfigureServices(ServiceCollection services)
         {
-            services.AddAutoMapper(typeof(App));
+            //services.AddAutoMapper(typeof(App));
 
             services.AddSingleton<MainView>();
 
@@ -69,7 +69,7 @@ namespace DesktopUI
 
             base.OnStartup(e);
 
-            ConfigureServices();
+            //ConfigureServices();
         }
 
         //private IMapper ConfigureAutomapper()

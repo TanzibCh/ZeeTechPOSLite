@@ -19,7 +19,7 @@ namespace DesktopUI.ViewModels
         // Need to use DI in the future
         private SalesDataAccess _salesData = new SalesDataAccess();
 
-        private readonly IMapper _mapper;
+        
 
         #endregion
 
@@ -83,9 +83,9 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private ObservableCollection<ExpenseModel> _expensesar;
+        private BindingList<ExpenseModel> _expensesar;
 
-        public ObservableCollection<ExpenseModel> Expenses
+        public BindingList<ExpenseModel> Expenses
         {
             get { return _expensesar; }
             set
@@ -111,10 +111,10 @@ namespace DesktopUI.ViewModels
 
         #region Constructor
 
-        public BankingViewModel(IMapper mapper)
+        public BankingViewModel()
         {
             SelectedDate = DateTime.UtcNow.Date;
-            _mapper = mapper;
+            
             LoadSales();
             
         }
@@ -127,17 +127,28 @@ namespace DesktopUI.ViewModels
         {
             var saleList = _salesData.GetAllSalesByDate(SelectedDate.ToString());
 
-            List<SaleModel> sales = new List<SaleModel>(saleList);
+            BindingList<SaleDisplayModel> displaySales = new BindingList<SaleDisplayModel>();
 
-            foreach (var item in sales)
+            foreach (var item in saleList)
             {
-                item.Card = Convert.ToDecimal(item.Card, 2);
+                displaySales.Add(new SaleDisplayModel
+                {
+                    Id = item.Id,
+                    InvoiceNo = item.InvoiceNo,
+                    SaleDate = item.SaleDate,
+                    SaleTime = item.SaleTime,
+                    Card = item.Card / 100,
+                    Cash = item.Cash / 100,
+                    Credit = item.Credit / 100,
+                    SaleTotal = item.SaleTotal / 100,
+                    Tax = item.Tax / 100,
+                    TotalCost = item.TotalCost / 100,
+                    Profit = item.Profit /100,
+                    CashOnly = Convert.ToBoolean(item.CashOnly)
+                });
             }
 
-            //var sales = _mapper.Map<List<SaleDisplayModel>>(saleList);
-
-
-            Sales = new BindingList<SaleDisplayModel>(saleList);
+            Sales = new BindingList<SaleDisplayModel>(displaySales);
         }
 
         public void EditSale()

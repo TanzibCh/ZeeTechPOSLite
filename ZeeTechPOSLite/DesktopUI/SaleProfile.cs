@@ -11,7 +11,7 @@ namespace DesktopUI
     {
         public SaleProfile()
         {
-            CreateMap<SaleModel, SaleDisplayModel>();
+            //CreateMap<SaleModel, SaleModel>();
         }
     }
 }

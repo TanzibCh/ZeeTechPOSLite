@@ -11,6 +11,7 @@ namespace DesktopUI.Models
         public string SaleDate { get; set; }
         public string SaleTime { get; set; }
         public decimal Cash { get; set; }
+        public decimal Card { get; set; }
         public decimal Credit { get; set; }
         public decimal SaleTotal { get; set; }
         public decimal Tax { get; set; }
