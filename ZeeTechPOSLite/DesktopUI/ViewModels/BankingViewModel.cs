@@ -111,10 +111,10 @@ namespace DesktopUI.ViewModels
 
         #region Constructor
 
-        public BankingViewModel()
+        public BankingViewModel(IMapper mapper)
         {
             SelectedDate = DateTime.UtcNow.Date;
-            //_mapper = mapper;
+            _mapper = mapper;
             LoadSales();
             
         }
@@ -129,15 +129,15 @@ namespace DesktopUI.ViewModels
 
             List<SaleModel> sales = new List<SaleModel>(saleList);
 
-            //foreach (var item in sales)
-            //{
-            //    item.Card = Convert.ToDecimal(item.Card, 2);
-            //}
+            foreach (var item in sales)
+            {
+                item.Card = Convert.ToDecimal(item.Card, 2);
+            }
 
             //var sales = _mapper.Map<List<SaleDisplayModel>>(saleList);
 
 
-            Sales = new BindingList<SaleDisplayModel>();
+            Sales = new BindingList<SaleDisplayModel>(saleList);
         }
 
         public void EditSale()
