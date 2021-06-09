@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using DataAccessLibrary.DataAccess.SalesQueries;
-using DataAccessLibrary.Models;
-using DesktopUI.Models;
+﻿using DataAccessLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,16 +7,9 @@ using System.Text;
 
 namespace DesktopUI.ViewModels
 {
-    public class BankingViewModel : INotifyPropertyChanged
+    class BankingViewModel : INotifyPropertyChanged
     {
         #region private Properties
-
-        //ISalesDataAccess _salesData;
-
-        // Need to use DI in the future
-        private SalesDataAccess _salesData = new SalesDataAccess();
-
-        private readonly IMapper _mapper;
 
         #endregion
 
@@ -59,9 +49,9 @@ namespace DesktopUI.ViewModels
         // Properties for Sales and SaleProducts List
         #region List Properties
 
-        private BindingList<SaleProductModel> _saleProducts;
+        private ObservableCollection<SaleProductModel> _saleProducts;
 
-        public BindingList<SaleProductModel> SaleProducts
+        public ObservableCollection<SaleProductModel> SaleProducts
         {
             get { return _saleProducts; }
             set
@@ -71,9 +61,9 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private BindingList<SaleDisplayModel> _sales;
+        private ObservableCollection<SaleModel> _sales;
 
-        public BindingList<SaleDisplayModel> Sales
+        public ObservableCollection<SaleModel> Sales
         {
             get { return _sales; }
             set
@@ -111,34 +101,16 @@ namespace DesktopUI.ViewModels
 
         #region Constructor
 
-        public BankingViewModel(IMapper mapper)
+        public BankingViewModel()
         {
             SelectedDate = DateTime.UtcNow.Date;
-            _mapper = mapper;
-            LoadSales();
-            
+
+            Sales = new ObservableCollection<SaleModel>();
         }
 
         #endregion
 
         #region Methods
-
-        private void LoadSales()
-        {
-            var saleList = _salesData.GetAllSalesByDate(SelectedDate.ToString());
-
-            List<SaleModel> sales = new List<SaleModel>(saleList);
-
-            foreach (var item in sales)
-            {
-                item.Card = Convert.ToDecimal(item.Card, 2);
-            }
-
-            //var sales = _mapper.Map<List<SaleDisplayModel>>(saleList);
-
-
-            Sales = new BindingList<SaleDisplayModel>(saleList);
-        }
 
         public void EditSale()
         {
@@ -175,10 +147,10 @@ namespace DesktopUI.ViewModels
 
         }
 
-        //public void GetAllSaleByDate()
-        //{
+        public void GetAllSaleByDate()
+        {
 
-        //}
+        }
 
         public void GetAllSaleProducts()
         {

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using DesktopUI.Commands.NavigationCommands;
+﻿using DesktopUI.Commands.NavigationCommands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

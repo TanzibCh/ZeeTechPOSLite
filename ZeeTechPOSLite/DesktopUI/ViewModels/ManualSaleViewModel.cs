@@ -525,7 +525,7 @@ namespace DesktopUI.ViewModels
         {
             foreach (var item in Cart)
             {
-                item.TotalCost = item.Product.AverageCost * item.Quantity;
+                item.TotalCost = (item.Product.AverageCost * item.Quantity);
             }
 
             decimal cartCost = 0m;
@@ -580,9 +580,8 @@ namespace DesktopUI.ViewModels
                 Card = ConvertDecimalToInt(CardPayment),
                 Cash = ConvertDecimalToInt(CashPayment),
                 Credit = ConvertDecimalToInt(CreditPayment),
-                SaleTotal = ConvertDecimalToInt(CartTotal),
+                Total = ConvertDecimalToInt(CartTotal),
                 Tax = ConvertDecimalToInt(Tax),
-                TotalCost = ConvertDecimalToInt(CalculateTotalCartCost()),
                 Profit = ConvertDecimalToInt(cartProfit),
                 CashOnly = cashOnly
             };

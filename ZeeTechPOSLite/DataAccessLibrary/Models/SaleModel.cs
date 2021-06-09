@@ -13,9 +13,8 @@ namespace DataAccessLibrary.Models
         public int Card { get; set; }
         public int Cash { get; set; }
         public int Credit { get; set; }
-        public int SaleTotal { get; set; }
+        public int Total { get; set; }
         public int Tax { get; set; }
-        public int TotalCost { get; set; }
         public int Profit { get; set; }
         public int CashOnly { get; set; }
     }
