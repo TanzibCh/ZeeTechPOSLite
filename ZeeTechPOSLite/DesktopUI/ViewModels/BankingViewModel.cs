@@ -10,7 +10,7 @@ using System.Text;
 
 namespace DesktopUI.ViewModels
 {
-    public class BankingViewModel : INotifyPropertyChanged
+    public class BankingViewModel : INotifyPropertyChanged, IBankingViewModel
     {
         #region private Properties
 
@@ -114,9 +114,13 @@ namespace DesktopUI.ViewModels
         public BankingViewModel()
         {
             SelectedDate = DateTime.UtcNow.Date;
+<<<<<<< HEAD
             
+=======
+            //_mapper = mapper;
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
             LoadSales();
-            
+
         }
 
         #endregion
@@ -129,6 +133,7 @@ namespace DesktopUI.ViewModels
 
             BindingList<SaleDisplayModel> displaySales = new BindingList<SaleDisplayModel>();
 
+<<<<<<< HEAD
             foreach (var item in saleList)
             {
                 displaySales.Add(new SaleDisplayModel
@@ -149,6 +154,17 @@ namespace DesktopUI.ViewModels
             }
 
             Sales = new BindingList<SaleDisplayModel>(displaySales);
+=======
+            //foreach (var item in sales)
+            //{
+            //    item.Card = Convert.ToDecimal(item.Card, 2);
+            //}
+
+            //var sales = _mapper.Map<List<SaleDisplayModel>>(saleList);
+
+
+            Sales = new BindingList<SaleDisplayModel>();
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
         }
 
         public void EditSale()
