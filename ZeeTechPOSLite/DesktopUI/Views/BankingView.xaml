@@ -581,7 +581,7 @@
                                     <TextBlock Grid.Column="4" Margin="0 0 5 0"
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Center"
-                                           Text="{Binding Total}" />
+                                           Text="{Binding SaleTotal}" />
 
                                     <!-- Cost -->
                                     <TextBlock Grid.Column="5" Margin="0 0 5 0"

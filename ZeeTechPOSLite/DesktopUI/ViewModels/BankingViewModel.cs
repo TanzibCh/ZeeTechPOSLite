@@ -7,10 +7,24 @@ using System.Text;
 
 namespace DesktopUI.ViewModels
 {
+<<<<<<< HEAD
     class BankingViewModel : INotifyPropertyChanged
     {
         #region private Properties
 
+=======
+    public class BankingViewModel : INotifyPropertyChanged, IBankingViewModel
+    {
+        #region private Properties
+
+        //ISalesDataAccess _salesData;
+
+        // Need to use DI in the future
+        private SalesDataAccess _salesData = new SalesDataAccess();
+
+        
+
+>>>>>>> 3afcf790f0db64ae09d8432f50771d2732bf9625
         #endregion
 
         // Properties for Totals
@@ -73,9 +87,9 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private ObservableCollection<ExpenseModel> _expensesar;
+        private BindingList<ExpenseModel> _expensesar;
 
-        public ObservableCollection<ExpenseModel> Expenses
+        public BindingList<ExpenseModel> Expenses
         {
             get { return _expensesar; }
             set
@@ -104,14 +118,81 @@ namespace DesktopUI.ViewModels
         public BankingViewModel()
         {
             SelectedDate = DateTime.UtcNow.Date;
+<<<<<<< HEAD
 
             Sales = new ObservableCollection<SaleModel>();
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+            
+=======
+            //_mapper = mapper;
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
+=======
+            //_mapper = mapper;
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
+            LoadSales();
+
+>>>>>>> 3afcf790f0db64ae09d8432f50771d2732bf9625
         }
 
         #endregion
 
         #region Methods
 
+<<<<<<< HEAD
+=======
+        private void LoadSales()
+        {
+            var saleList = _salesData.GetAllSalesByDate(SelectedDate.ToString());
+
+            BindingList<SaleDisplayModel> displaySales = new BindingList<SaleDisplayModel>();
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+            foreach (var item in saleList)
+            {
+                displaySales.Add(new SaleDisplayModel
+                {
+                    Id = item.Id,
+                    InvoiceNo = item.InvoiceNo,
+                    SaleDate = item.SaleDate,
+                    SaleTime = item.SaleTime,
+                    Card = item.Card / 100,
+                    Cash = item.Cash / 100,
+                    Credit = item.Credit / 100,
+                    SaleTotal = item.SaleTotal / 100,
+                    Tax = item.Tax / 100,
+                    TotalCost = item.TotalCost / 100,
+                    Profit = item.Profit /100,
+                    CashOnly = Convert.ToBoolean(item.CashOnly)
+                });
+            }
+=======
+            //foreach (var item in sales)
+            //{
+            //    item.Card = Convert.ToDecimal(item.Card, 2);
+            //}
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
+
+            Sales = new BindingList<SaleDisplayModel>(displaySales);
+=======
+            //foreach (var item in sales)
+            //{
+            //    item.Card = Convert.ToDecimal(item.Card, 2);
+            //}
+
+            //var sales = _mapper.Map<List<SaleDisplayModel>>(saleList);
+
+
+            Sales = new BindingList<SaleDisplayModel>();
+<<<<<<< HEAD
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
+=======
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
+        }
+
+>>>>>>> 3afcf790f0db64ae09d8432f50771d2732bf9625
         public void EditSale()
         {
 
