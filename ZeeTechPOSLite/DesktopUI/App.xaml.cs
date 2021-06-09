@@ -29,6 +29,7 @@ namespace DesktopUI
 
         protected override void OnStartup(StartupEventArgs e)
         {
+<<<<<<< HEAD
             //services.AddAutoMapper(typeof(App));
 
 
@@ -37,6 +38,22 @@ namespace DesktopUI
             //    {
             //        services.AddSingleton<MainView>();
 
+=======
+            // Dependency Injection setup
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule<ProgramModule>();
+            var container = containerBuilder.Build();
+
+            var mainView = container.Resolve<MainView>();
+            mainView.Show();
+
+
+            //var host = Host.CreateDefaultBuilder()
+            //    .ConfigureServices((context, services) =>
+            //    {
+            //        services.AddSingleton<MainView>();
+
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
             //        // VewModels
             //        services.AddTransient<IMainViewModel, MainViewModel>();
             //        services.AddTransient<IBankingViewModel, BankingViewModel>();
@@ -62,8 +79,6 @@ namespace DesktopUI
                 new RoutedEventHandler((x, _) => (x as ListBoxItem).IsSelected = true));
   
             base.OnStartup(e);
-
-            ConfigureServices();
         }
 
         void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)

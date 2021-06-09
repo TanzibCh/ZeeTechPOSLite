@@ -115,7 +115,11 @@ namespace DesktopUI.ViewModels
         {
             SelectedDate = DateTime.UtcNow.Date;
 <<<<<<< HEAD
+<<<<<<< HEAD
             
+=======
+            //_mapper = mapper;
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
 =======
             //_mapper = mapper;
 >>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
@@ -133,6 +137,7 @@ namespace DesktopUI.ViewModels
 
             BindingList<SaleDisplayModel> displaySales = new BindingList<SaleDisplayModel>();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
             foreach (var item in saleList)
             {
@@ -152,6 +157,12 @@ namespace DesktopUI.ViewModels
                     CashOnly = Convert.ToBoolean(item.CashOnly)
                 });
             }
+=======
+            //foreach (var item in sales)
+            //{
+            //    item.Card = Convert.ToDecimal(item.Card, 2);
+            //}
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
 
             Sales = new BindingList<SaleDisplayModel>(displaySales);
 =======
@@ -164,6 +175,9 @@ namespace DesktopUI.ViewModels
 
 
             Sales = new BindingList<SaleDisplayModel>();
+<<<<<<< HEAD
+>>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
+=======
 >>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
         }
 
