@@ -19,13 +19,11 @@ namespace DesktopUI.Views
     /// </summary>
     public partial class ManualSaleView : UserControl
     {
-        IManualSaleViewModel _manualSaleVM;
-        public ManualSaleView(IManualSaleViewModel manualSaleVM)
+        public ManualSaleView()
         {
-            _manualSaleVM = manualSaleVM;
 
             InitializeComponent();
-            this.DataContext =_manualSaleVM;
+            this.DataContext = new ManualSaleViewModel();
         }
     }
 }

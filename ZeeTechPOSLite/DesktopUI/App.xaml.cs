@@ -1,9 +1,5 @@
-<<<<<<< HEAD
+
 ﻿using DesktopUI.Models;
-=======
-﻿
-using Autofac;
->>>>>>> 3afcf790f0db64ae09d8432f50771d2732bf9625
 using DesktopUI.ViewModels;
 using DesktopUI.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +28,7 @@ namespace DesktopUI
             ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
             Thread.CurrentThread.CurrentCulture = ci;
 
-<<<<<<< HEAD
+
             _host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
@@ -41,54 +37,18 @@ namespace DesktopUI
                 .Build();
         }
 
-        private void ConfigureServices(IServiceCollection servicees)
+        private void ConfigureServices(IServiceCollection services)
         {
-            servicees.AddSingleton<MainView>();
+            services.AddSingleton<MainView>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
 
-            var mainView = _host.Services.GetRequiredService<MainView>();
-=======
-        protected override void OnStartup(StartupEventArgs e)
-        {
-<<<<<<< HEAD
-            //services.AddAutoMapper(typeof(App));
-
-
-            //var host = Host.CreateDefaultBuilder()
-            //    .ConfigureServices((context, services) =>
-            //    {
-            //        services.AddSingleton<MainView>();
-
-=======
-            // Dependency Injection setup
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterModule<ProgramModule>();
-            var container = containerBuilder.Build();
-
-            var mainView = container.Resolve<MainView>();
->>>>>>> 3afcf790f0db64ae09d8432f50771d2732bf9625
-            mainView.Show();
-
-
-            //var host = Host.CreateDefaultBuilder()
-            //    .ConfigureServices((context, services) =>
-            //    {
-            //        services.AddSingleton<MainView>();
-
->>>>>>> b6ea7cdd0281ab171603194bf5a36a2b8338070d
-            //        // VewModels
-            //        services.AddTransient<IMainViewModel, MainViewModel>();
-            //        services.AddTransient<IBankingViewModel, BankingViewModel>();
-            //    })
-            //    .Build();
-
             // Launch Main Window at the start of the app
-            //var mainView = host.Services.GetRequiredService<MainView>();
-            //mainView.Show();
+            var mainView = _host.Services.GetRequiredService<MainView>();
+            mainView.Show();
 
             // Select all the text in a TextBox when it receives focus.
             EventManager.RegisterClassHandler(typeof(TextBox), TextBox.PreviewMouseLeftButtonDownEvent,

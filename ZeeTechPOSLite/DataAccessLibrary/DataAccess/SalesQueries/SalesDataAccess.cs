@@ -10,7 +10,44 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
     public class SalesDataAccess
     {
         SQLiteDataAccess _db = new SQLiteDataAccess();
-        private const string connectionStringName = "SQLiteDB";
+        private const string _connectionStringName = "SQLiteDB";
+
+        public List<SaleModel> GetCashOnlySalesByDate(string selectedDate)
+        {
+            string sql = @"SELECT Id, InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly
+                          FROM Sale
+                          WHERE SaleDate = @selectedDate
+                          AND CashOnly = 1;";
+
+            List<SaleModel> sales = _db.LoadData<SaleModel, dynamic>(sql, new { selectedDate }, _connectionStringName);
+
+            return sales;
+        }
+
+        public List<SaleProductDBModel> GetSalesByDepartmentAndDate(string selectedDate, string departmentName)
+        {
+            string sql = @"SELECT sp.SaleId, s.InvoiceNo, s.SaleDate, sp.ProductId, sp.ProductName,
+                           sp.ProductDescription, sp.SalePrice, sp.ProductCost, sp.QuantitySold, sp.Department
+                           FROM Sale s
+                           INNER JOIN SaleProduct sp on sp.SaleId = s.Id
+                           WHERE s.SaleDate = @selectedDate
+                           AND sp.Department = @departmentName;";
+
+            List<SaleProductDBModel> sales = _db.LoadData<SaleProductDBModel, dynamic>(sql, new { selectedDate, departmentName }, _connectionStringName);
+
+            return sales;
+        }
+
+        public List<SaleModel> GetAllSalesByDate(string selectedDate)
+        {
+            string sql = @"SELECT Id, InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly
+                          FROM Sale
+                          WHERE SaleDate = @selectedDate";
+
+            List<SaleModel> sales = _db.LoadData<SaleModel, dynamic > (sql, new { selectedDate }, _connectionStringName);
+
+            return sales;
+        }
 
         public void SaveSale(SaleModel saleInfo, List<SaleProductModel> saleProducts)
         {
@@ -35,7 +72,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                            ORDER BY Id DESC
                            LIMIT 1;";
 
-            SaleModel sale = _db.LoadData<SaleModel, dynamic>(sql, new { }, connectionStringName).FirstOrDefault();
+            SaleModel sale = _db.LoadData<SaleModel, dynamic>(sql, new { }, _connectionStringName).FirstOrDefault();
 
             return sale.Id;
         }
@@ -49,7 +86,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                            ORDER BY InvoiceNo DESC
                            LIMIT 1;";
 
-            SaleModel sale = _db.LoadData<SaleModel, dynamic>(sql, new { cashOnly }, connectionStringName).FirstOrDefault();
+            SaleModel sale = _db.LoadData<SaleModel, dynamic>(sql, new { cashOnly }, _connectionStringName).FirstOrDefault();
 
             int output;
             if (sale == null)
@@ -60,7 +97,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             {
                 output = sale.InvoiceNo + 1;
             }
-            
+
             return output;
         }
 
@@ -68,8 +105,8 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
         {
             // Create Sale and save it in database
             string sql = @"INSERT INTO Sale
-                          (InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, Total, Tax, Profit, CashOnly)
-                          values (@invoiceNo, @saleDate, @saleTime, @card, @cash, @credit, @total, @tax, @profit, @cashOnly);";
+                          (InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly)
+                          values (@invoiceNo, @saleDate, @saleTime, @card, @cash, @credit, @saleTotal, @tax, @totalCost, @profit, @cashOnly);";
 
             // Insert sale data into the database
             _db.SaveData(sql, new
@@ -80,11 +117,12 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                 card = saleInfo.Card,
                 cash = saleInfo.Cash,
                 credit = saleInfo.Credit,
-                total = saleInfo.Total,
+                saleTotal = saleInfo.SaleTotal,
                 tax = saleInfo.Tax,
+                totalCost = saleInfo.TotalCost,
                 profit = saleInfo.Profit,
                 cashOnly = saleInfo.CashOnly
-            }, connectionStringName);
+            }, _connectionStringName);
         }
 
         private void SaveSaleProducts(List<SaleProductModel> saleProducts, int saleId)
@@ -95,17 +133,17 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 
             foreach (var item in saleProducts)
             {
-                _db.SaveData(sql, new 
-                    {
-                        saleId = saleId,
-                        productId = item.ProductId,
-                        Name = item.ProductName,
-                        description = item.ProductDescription,
-                        price = item.SalePrice,
-                        cost = item.ProductCost,
-                        quantitySold = item.QuantitySold,
-                        department = item.Department
-                    }, connectionStringName);
+                _db.SaveData(sql, new
+                {
+                    saleId = saleId,
+                    productId = item.ProductId,
+                    Name = item.ProductName,
+                    description = item.ProductDescription,
+                    price = item.SalePrice,
+                    cost = item.ProductCost,
+                    quantitySold = item.QuantitySold,
+                    department = item.Department
+                }, _connectionStringName);
             }
         }
     }

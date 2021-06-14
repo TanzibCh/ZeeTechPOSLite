@@ -25,7 +25,7 @@ namespace DesktopUI.ViewModels
 
         private BindingList<CartItemDisplayModel> _cart;
 
-        ISalesDataAccess _salesData;
+        private SalesDataAccess _salesData = new SalesDataAccess();
 
         #endregion
 
@@ -364,10 +364,8 @@ namespace DesktopUI.ViewModels
 
         #region Constructor
 
-        public ManualSaleViewModel(ISalesDataAccess salesData)
+        public ManualSaleViewModel()
         {
-            _salesData = salesData;
-
             SaleDate = DateTime.Now.ToString("dd,MM,yyyy");
             CurrentTime = DateTime.UtcNow.ToString("hh:mm:ss");
 
@@ -511,16 +509,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private decimal CalculateTotalProfit()
-        {
-
-            decimal totalCost = 0m;
-
-            decimal output = CartTotal - totalCost;
-
-            return output;
-        }
-
         private decimal CalculateTotalCartCost()
         {
             foreach (var item in Cart)
@@ -580,8 +568,9 @@ namespace DesktopUI.ViewModels
                 Card = ConvertDecimalToInt(CardPayment),
                 Cash = ConvertDecimalToInt(CashPayment),
                 Credit = ConvertDecimalToInt(CreditPayment),
-                Total = ConvertDecimalToInt(CartTotal),
+                SaleTotal = ConvertDecimalToInt(CartTotal),
                 Tax = ConvertDecimalToInt(Tax),
+                TotalCost = ConvertDecimalToInt(CalculateTotalCartCost()),
                 Profit = ConvertDecimalToInt(cartProfit),
                 CashOnly = cashOnly
             };

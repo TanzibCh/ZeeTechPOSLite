@@ -10,13 +10,13 @@ namespace DesktopUI.Models
         public int InvoiceNo { get; set; }
         public string SaleDate { get; set; }
         public string SaleTime { get; set; }
-        public decimal Cash { get; set; }
-        public decimal Card { get; set; }
-        public decimal Credit { get; set; }
-        public decimal SaleTotal { get; set; }
-        public decimal Tax { get; set; }
-        public decimal TotalCost { get; set; }
-        public decimal Profit { get; set; }
+        public string Cash { get; set; }
+        public string Card { get; set; }
+        public string Credit { get; set; }
+        public string SaleTotal { get; set; }
+        public string Tax { get; set; }
+        public string TotalCost { get; set; }
+        public string Profit { get; set; }
         public bool CashOnly { get; set; }
     }
 }

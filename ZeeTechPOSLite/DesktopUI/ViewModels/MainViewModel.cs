@@ -6,22 +6,17 @@ using System.Text;
 
 namespace DesktopUI.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged, IMainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
         #region Private Properties
 
         private object _selectedViewModel;
-        IBankingViewModel _bankingVM;
-        IManualSaleViewModel _manualSaleVM;
         #endregion
 
         #region Construtors
-        public MainViewModel(IBankingViewModel bankingVM, IManualSaleViewModel manualSaleVM)
+        public MainViewModel()
         {
-            _bankingVM = bankingVM;
-            _manualSaleVM = manualSaleVM;
-
-            SelectedViewModel = _manualSaleVM;
+            SelectedViewModel = new ManualSaleViewModel();
 
             OpenManualSales = new OpenManualSalesCommand(this);
 
@@ -49,12 +44,12 @@ namespace DesktopUI.ViewModels
         #region Methods
         public void OpenManualSalesPage()
         {
-            SelectedViewModel = _manualSaleVM;
+            SelectedViewModel = new ManualSaleViewModel();
         }
 
         public void OpenBankingPage()
         {
-            SelectedViewModel = _bankingVM;
+            SelectedViewModel = new BankingViewModel();
         }
 
         #endregion
