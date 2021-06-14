@@ -18,6 +18,7 @@ namespace DesktopUI.ViewModels
 
         // Need to use DI in the future
         private SalesDataAccess _salesData = new SalesDataAccess();
+        private SaleProductDataAccess _saleProductData = new SaleProductDataAccess();
 
         #endregion
 
@@ -315,6 +316,20 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        private SaleDisplayModel _selectedSale;
+
+        public SaleDisplayModel SelectedSale
+        {
+            get { return _selectedSale; }
+            set
+            {
+                _selectedSale = value;
+                OnPropertyChanged(nameof(SelectedSale));
+                LoadSaleProducts();
+            }
+        }
+
+
         #endregion
 
         #region Date and Time properties
@@ -338,6 +353,7 @@ namespace DesktopUI.ViewModels
             SelectedDate = DateTime.UtcNow.Date;
 
             Sales = new BindingList<SaleDisplayModel>();
+            SaleProducts = new BindingList<SaleProductModel>();
 
             LoadSales();
         }
@@ -346,6 +362,13 @@ namespace DesktopUI.ViewModels
 
         #region Methods
 
+        private void LoadSaleProducts()
+        {
+            int saleId = SelectedSale.Id;
+            List<SaleProductModel> saleProducts = _saleProductData.GetSaleProductBySaleId(saleId);
+
+            SaleProducts = new BindingList<SaleProductModel>(saleProducts);
+        }
 
         private void LoadSales()
         {

@@ -20,14 +20,15 @@
             <local:BankingView/>
         </DataTemplate>
 
-        <viewModel:BankingViewModel x:Key="bankingVM" />
+        <viewModel:BankingViewModel x:Key="BankingVM" />
 
         <Style TargetType="Label" x:Key="HeadingSmall" 
                BasedOn="{StaticResource MaterialDesignLabel}">
-            <Setter Property="FontSize" Value="10" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
-            <Setter Property="Margin" Value="0 0 0 -5" />
+            <Setter Property="Margin" Value="0 0 0 -3" />
         </Style>
 
         <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
@@ -38,12 +39,12 @@
 
         <Style TargetType="TextBlock" x:Key="ListBoxTextBlock"
                BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="10" DataContext="{StaticResource bankingVM}">
+    <Grid Margin="10" DataContext="{StaticResource BankingVM}">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
@@ -488,7 +489,8 @@
                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
 
                     <ListBox Margin="10" HorizontalContentAlignment="Stretch"
-                             ItemsSource="{Binding Sales}">
+                             ItemsSource="{Binding Sales}"
+                             SelectedItem="{Binding SelectedSale}">
                         <!-- ListBox Headers -->
                         <ListBox.Template>
                             <ControlTemplate>
@@ -670,111 +672,113 @@
 
                         <Label Content="Selected Sale Products" HorizontalAlignment="Center" />
 
-                        <ListBox HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
-                            <ListBoxItem>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition MinWidth="150" />
-                                        <ColumnDefinition MinWidth="60" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-
-                                    <!-- Model/Name -->
-                                    <StackPanel Grid.Column="0" Grid.Row="0"
-                                                Orientation="Vertical">
-
-                                        <Label Style="{StaticResource HeadingSmall}"
-                                           Content="Name/Model"/>
-
-                                        <TextBox Text="Logitech G150S" />
-                                    </StackPanel>
-
-                                    <!-- Buttons -->
-                                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal"
-                                                HorizontalAlignment="Right">
-                                        <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                                Content="{materialDesign:PackIcon Kind=ContentSaveOutline}" />
-
-                                        <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                                Content="{materialDesign:PackIcon Kind=CloseCircleOutline}" 
-                                                Margin="5 0" />
-                                    </StackPanel>
-
-                                    <!-- Description -->
-                                    <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
-                                                Orientation="Vertical">
-
-                                        <Label Style="{StaticResource HeadingSmall}"
-                                               Content="Description" 
-                                               HorizontalAlignment="Left" />
-
-                                        <TextBox TextWrapping="Wrap"
-                                                 Text="Logitech Gaming keyboard with custom keys, Backlit and Mechanical" />
-                                    </StackPanel>
-
-                                    <!-- Currency Grid -->
-                                    <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4">
+                        <ListBox HorizontalContentAlignment="Stretch"
+                                 HorizontalAlignment="Stretch"
+                                 ItemsSource="{Binding SaleProducts}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
 
-                                        <!-- Cost -->
+                                        <!-- Model/Name -->
                                         <StackPanel Grid.Column="0" Grid.Row="0"
                                                 Orientation="Vertical">
 
                                             <Label Style="{StaticResource HeadingSmall}"
-                                                   Content="Cost" />
+                                           Content="Name/Model"/>
 
-                                            <TextBox Style="{StaticResource ListSmallTextBox}"
-                                                     Margin="5 0 0 0"
-                                                     Text="£1000.00"/>
+                                            <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                                   Text="{Binding ProductName}" />
                                         </StackPanel>
 
-                                        <!-- Price -->
+                                        <!-- Department -->
                                         <StackPanel Grid.Column="1" Grid.Row="0"
                                                 Orientation="Vertical">
 
                                             <Label Style="{StaticResource HeadingSmall}"
+                                           Content="Department"/>
+
+                                            <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                                   Text="{Binding Department}" />
+                                        </StackPanel>
+
+                                        <!-- Description -->
+                                        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                                                Orientation="Vertical">
+
+                                            <Label Style="{StaticResource HeadingSmall}"
+                                               Content="Description" 
+                                               HorizontalAlignment="Left" />
+
+                                            <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding ProductDescription}" />
+                                        </StackPanel>
+
+                                        <!-- Currency Grid -->
+                                        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Cost -->
+                                            <StackPanel Grid.Column="0" Grid.Row="0"
+                                                Orientation="Vertical">
+
+                                                <Label Style="{StaticResource HeadingSmall}"
+                                                   Content="Cost" />
+
+                                                <TextBlock Margin="5 0 0 0"
+                                                       Text="{Binding ProductCost}"/>
+                                            </StackPanel>
+
+                                            <!-- Price -->
+                                            <StackPanel Grid.Column="1" Grid.Row="0"
+                                                Orientation="Vertical">
+
+                                                <Label Style="{StaticResource HeadingSmall}"
                                                    Content="Price" />
 
-                                            <TextBox Style="{StaticResource ListSmallTextBox}"
-                                                     Margin="5 0 0 0"
-                                                     Text="£2000.00" />
-                                        </StackPanel>
+                                                <TextBlock Margin="5 0 0 0"
+                                                       Text="{Binding SalePrice}" />
+                                            </StackPanel>
 
-                                        <!-- Quantity -->
-                                        <StackPanel Grid.Column="2" Grid.Row="0"
+                                            <!-- Quantity -->
+                                            <StackPanel Grid.Column="2" Grid.Row="0"
                                                 Orientation="Vertical">
 
-                                            <Label Style="{StaticResource HeadingSmall}"
+                                                <Label Style="{StaticResource HeadingSmall}"
                                                    Content="Qty" />
 
-                                            <TextBox Style="{StaticResource ListSmallTextBox}"
-                                                     Margin="5 0 0 0"
-                                                     Text="2" />
-                                        </StackPanel>
+                                                <TextBlock Margin="5 0 0 0"
+                                                       Text="{Binding QuantitySold}" />
+                                            </StackPanel>
 
-                                        <!-- Total -->
-                                        <StackPanel Grid.Column="3" Grid.Row="0"
+                                            <!-- Total -->
+                                            <StackPanel Grid.Column="3" Grid.Row="0"
                                                 Orientation="Vertical">
 
-                                            <Label Style="{StaticResource HeadingSmall}"
+                                                <Label Style="{StaticResource HeadingSmall}"
                                                    Content="Total" />
 
-                                            <TextBox Style="{StaticResource ListSmallTextBox}"
-                                                     Margin="5 0 0 0"
-                                                     Text="£4000.00" />
-                                        </StackPanel>
+                                                <TextBlock Margin="5 0 0 0"
+                                                       Text="{Binding Total}" />
+                                            </StackPanel>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </ListBoxItem>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
                 </materialDesign:Card>

@@ -129,7 +129,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
         {
             string sql = @"INSERT INTO SaleProduct
                           (SaleId, ProductId, ProductName, ProductDescription, SalePrice, ProductCost, QuantitySold, Department)
-                          values (@saleId, @productId, @Name, @description, @price, @cost, @quantitySold, @department);";
+                          values (@saleId, @productId, @Name, @description, @price, @cost, @quantitySold, @total, @department);";
 
             foreach (var item in saleProducts)
             {
@@ -142,6 +142,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                     price = item.SalePrice,
                     cost = item.ProductCost,
                     quantitySold = item.QuantitySold,
+                    total = item.SalePrice * item.QuantitySold,
                     department = item.Department
                 }, _connectionStringName);
             }
