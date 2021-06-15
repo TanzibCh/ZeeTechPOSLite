@@ -27,8 +27,8 @@
             <Setter Property="Foreground" Value="Gray" />
             <Setter Property="FontSize" Value="11" />
             <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-            <Setter Property="Margin" Value="0 0 0 -3" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="-5 0 0 -5" />
         </Style>
 
         <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
@@ -569,10 +569,6 @@
 
                                     <!-- Card -->
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <TextBlock 
-                                           Style="{StaticResource ListBoxTextBlock}"
-                                           HorizontalAlignment="Left"
-                                           Text="£" />
                                         <TextBlock Grid.Column="1" Margin="0 5 5 0"
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
@@ -585,20 +581,12 @@
                                         <TextBlock 
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
-                                           Text="£" />
-                                        <TextBlock 
-                                           Style="{StaticResource ListBoxTextBlock}"
-                                           HorizontalAlignment="Left"
                                            Text="{Binding Cash}" />
                                     </StackPanel>
 
 
                                     <!-- Credit -->
                                     <StackPanel Grid.Column="3" Orientation="Horizontal">
-                                        <TextBlock 
-                                           Style="{StaticResource ListBoxTextBlock}"
-                                           HorizontalAlignment="Left"
-                                           Text="£" />
                                         <TextBlock 
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
@@ -610,19 +598,11 @@
                                         <TextBlock 
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
-                                           Text="£" />
-                                        <TextBlock 
-                                           Style="{StaticResource ListBoxTextBlock}"
-                                           HorizontalAlignment="Left"
                                            Text="{Binding SaleTotal}" />
                                     </StackPanel>
 
                                     <!-- Cost -->
                                     <StackPanel Grid.Column="5" Orientation="Horizontal">
-                                        <TextBlock 
-                                           Style="{StaticResource ListBoxTextBlock}"
-                                           HorizontalAlignment="Left"
-                                           Text="£" />
                                         <TextBlock 
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
@@ -632,10 +612,6 @@
 
                                     <!-- Profit -->
                                     <StackPanel Grid.Column="6" Orientation="Horizontal">
-                                        <TextBlock 
-                                           Style="{StaticResource ListBoxTextBlock}"
-                                           HorizontalAlignment="Left"
-                                           Text="£" />
                                         <TextBlock Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding Profit}" />
@@ -684,98 +660,110 @@
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="auto" />
                                         </Grid.RowDefinitions>
 
-                                        <!-- Model/Name -->
-                                        <StackPanel Grid.Column="0" Grid.Row="0"
-                                                Orientation="Vertical">
+                                        <!-- Name, Department and Description -->
+                                        <StackPanel Grid.Column="0"
+                                                    Orientation="Vertical">
 
-                                            <Label Style="{StaticResource HeadingSmall}"
-                                           Content="Name/Model"/>
+                                            <Grid Margin="0 0 20 0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="200" />
+                                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock Style="{StaticResource ListBoxTextBlock}"
-                                                   Text="{Binding ProductName}" />
+                                                <!-- Model/Name -->
+                                                <StackPanel Grid.Column="0"
+                                                            Orientation="Vertical">
+
+                                                    <Label Style="{StaticResource HeadingSmall}"
+                                                           Content="Name/Model"/>
+
+                                                    <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                                               Text="{Binding ProductName}" />
+                                                </StackPanel>
+
+                                                <!-- Department -->
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Vertical" HorizontalAlignment="Right">
+
+                                                    <Label Style="{StaticResource HeadingSmall}"
+                                                           Content="Department"/>
+
+                                                    <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                                               Text="{Binding Department}" />
+                                                </StackPanel>
+                                            </Grid>
+                                            
+                                            <!-- Description -->
+                                            <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                                                        Orientation="Vertical">
+
+                                                <Label Style="{StaticResource HeadingSmall}"
+                                                       Content="Description" 
+                                                       HorizontalAlignment="Left" />
+
+                                                <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                                           TextWrapping="Wrap"
+                                                           Text="{Binding ProductDescription}" />
+                                            </StackPanel>
                                         </StackPanel>
+                                        
+                                        <StackPanel Orientation="Vertical"
+                                                    Grid.Column="1">
+                                            <!-- Quantity -->
+                                            <DockPanel Grid.Column="2" Grid.Row="0"
+                                                       Margin="0 2">
 
-                                        <!-- Department -->
-                                        <StackPanel Grid.Column="1" Grid.Row="0"
-                                                Orientation="Vertical">
+                                                <Label Style="{StaticResource HeadingSmall}"
+                                                       Content="Qty:" />
 
-                                            <Label Style="{StaticResource HeadingSmall}"
-                                           Content="Department"/>
-
-                                            <TextBlock Style="{StaticResource ListBoxTextBlock}"
-                                                   Text="{Binding Department}" />
-                                        </StackPanel>
-
-                                        <!-- Description -->
-                                        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
-                                                Orientation="Vertical">
-
-                                            <Label Style="{StaticResource HeadingSmall}"
-                                               Content="Description" 
-                                               HorizontalAlignment="Left" />
-
-                                            <TextBlock Style="{StaticResource ListBoxTextBlock}"
-                                                   TextWrapping="Wrap"
-                                                   Text="{Binding ProductDescription}" />
-                                        </StackPanel>
-
-                                        <!-- Currency Grid -->
-                                        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="100" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
+                                                <TextBlock Margin="5 0 0 0"
+                                                           Text="{Binding QuantitySold}"
+                                                           HorizontalAlignment="Right" />
+                                            </DockPanel>
 
                                             <!-- Cost -->
-                                            <StackPanel Grid.Column="0" Grid.Row="0"
-                                                Orientation="Vertical">
+                                            <DockPanel Grid.Column="0" Grid.Row="0"
+                                                       Margin="0 2">
 
                                                 <Label Style="{StaticResource HeadingSmall}"
-                                                   Content="Cost" />
+                                                   Content="Cost:" />
 
                                                 <TextBlock Margin="5 0 0 0"
-                                                       Text="{Binding ProductCost}"/>
-                                            </StackPanel>
+                                                           Text="{Binding ProductCost}"
+                                                           HorizontalAlignment="Right"/>
+                                            </DockPanel>
 
                                             <!-- Price -->
-                                            <StackPanel Grid.Column="1" Grid.Row="0"
-                                                Orientation="Vertical">
+                                            <DockPanel Grid.Column="1" Grid.Row="0"
+                                                       Margin="0 2">
 
                                                 <Label Style="{StaticResource HeadingSmall}"
-                                                   Content="Price" />
+                                                   Content="Price:" />
 
                                                 <TextBlock Margin="5 0 0 0"
-                                                       Text="{Binding SalePrice}" />
-                                            </StackPanel>
-
-                                            <!-- Quantity -->
-                                            <StackPanel Grid.Column="2" Grid.Row="0"
-                                                Orientation="Vertical">
-
-                                                <Label Style="{StaticResource HeadingSmall}"
-                                                   Content="Qty" />
-
-                                                <TextBlock Margin="5 0 0 0"
-                                                       Text="{Binding QuantitySold}" />
-                                            </StackPanel>
+                                                           Text="{Binding SalePrice}"
+                                                           HorizontalAlignment="Right" />
+                                            </DockPanel>
 
                                             <!-- Total -->
-                                            <StackPanel Grid.Column="3" Grid.Row="0"
-                                                Orientation="Vertical">
+                                            <DockPanel Grid.Column="3" Grid.Row="0"
+                                                       Margin="0 2">
 
                                                 <Label Style="{StaticResource HeadingSmall}"
-                                                   Content="Total" />
+                                                   Content="Total:" />
 
                                                 <TextBlock Margin="5 0 0 0"
-                                                       Text="{Binding Total}" />
-                                            </StackPanel>
-                                        </Grid>
+                                                           Text="{Binding Total}" 
+                                                           HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+
+                                        <Separator Grid.Row="1" Grid.ColumnSpan="2">
+                                            
+                                        </Separator>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>

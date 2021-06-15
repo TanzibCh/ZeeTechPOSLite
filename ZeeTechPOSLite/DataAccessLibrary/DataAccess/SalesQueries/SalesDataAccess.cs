@@ -128,7 +128,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
         private void SaveSaleProducts(List<SaleProductModel> saleProducts, int saleId)
         {
             string sql = @"INSERT INTO SaleProduct
-                          (SaleId, ProductId, ProductName, ProductDescription, SalePrice, ProductCost, QuantitySold, Department)
+                          (SaleId, ProductId, ProductName, ProductDescription, SalePrice, ProductCost, QuantitySold, Total, Department)
                           values (@saleId, @productId, @Name, @description, @price, @cost, @quantitySold, @total, @department);";
 
             foreach (var item in saleProducts)

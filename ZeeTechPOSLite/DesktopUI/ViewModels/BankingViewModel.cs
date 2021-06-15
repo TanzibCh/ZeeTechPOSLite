@@ -29,7 +29,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                decimal totalSale = Sales.Sum(x => Convert.ToDecimal(x.SaleTotal));
+                decimal totalSale = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.SaleTotal));
                 string output = string.Format("{0:0.00}", Convert.ToString(totalSale));
                 return $"£{output}";
             }
@@ -38,7 +38,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                decimal totalProfit = Sales.Sum(x => Convert.ToDecimal(x.Profit));
+                decimal totalProfit = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.Profit));
                 string output = string.Format("{0:0.00}", Convert.ToString(totalProfit));
                 return $"£{output}";
             }
@@ -57,7 +57,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                decimal totalCard = Sales.Sum(x => Convert.ToDecimal(x.Card));
+                decimal totalCard = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.Card));
                 string output = string.Format("{0:0.00}", Convert.ToString(totalCard));
                 return $"£{output}";
             }
@@ -66,7 +66,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                decimal totalCash = Sales.Sum(x => Convert.ToDecimal(x.Cash));
+                decimal totalCash = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.Cash));
                 string output = string.Format("{0:0.00}", Convert.ToString(totalCash));
                 return $"£{output}";
             }
@@ -75,22 +75,18 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                // TODO: Calculate total cash where cashOnly is true
                 List<SaleModel> sales = _salesData.GetCashOnlySalesByDate(SelectedDate.ToString());
 
                 int total = sales.Sum(x => x.SaleTotal);
                 string output = ConvertIntToCurrencyString(total);
-
-
-                //string output = string.Format("{0:0.00}", Convert.ToString(twoDecimalTotal));
-                return $"£{output}";
+                return output;
             }
         }
         public string TotalCredit
         {
             get
             {
-                decimal totalCredit = Sales.Sum(x => Convert.ToDecimal(x.Credit));
+                decimal totalCredit = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.Credit));
                 string output = string.Format("{0:0.00}", Convert.ToString(totalCredit));
                 return $"£{output}";
             }
@@ -280,9 +276,9 @@ namespace DesktopUI.ViewModels
         // Properties for Sales and SaleProducts List
         #region List Properties
 
-        private BindingList<SaleProductModel> _saleProducts;
+        private BindingList<SaleProductDisplayModel> _saleProducts;
 
-        public BindingList<SaleProductModel> SaleProducts
+        public BindingList<SaleProductDisplayModel> SaleProducts
         {
             get { return _saleProducts; }
             set
@@ -353,7 +349,7 @@ namespace DesktopUI.ViewModels
             SelectedDate = DateTime.UtcNow.Date;
 
             Sales = new BindingList<SaleDisplayModel>();
-            SaleProducts = new BindingList<SaleProductModel>();
+            SaleProducts = new BindingList<SaleProductDisplayModel>();
 
             LoadSales();
         }
@@ -367,7 +363,26 @@ namespace DesktopUI.ViewModels
             int saleId = SelectedSale.Id;
             List<SaleProductModel> saleProducts = _saleProductData.GetSaleProductBySaleId(saleId);
 
-            SaleProducts = new BindingList<SaleProductModel>(saleProducts);
+            BindingList<SaleProductDisplayModel> displaySaleProduct = new BindingList<SaleProductDisplayModel>();
+
+            foreach (var item in saleProducts)
+            {
+                displaySaleProduct.Add(new SaleProductDisplayModel
+                {
+                    Id = item.Id,
+                    SaleId = item.SaleId,
+                    ProductId = item.ProductId,
+                    ProductName = item.ProductName,
+                    ProductDescription = item.ProductDescription,
+                    ProductCost = ConvertIntToCurrencyString(item.ProductCost),
+                    SalePrice = ConvertIntToCurrencyString(item.SalePrice),
+                    QuantitySold = item.QuantitySold,
+                    Total = ConvertIntToCurrencyString(item.Total),
+                    Department = item.Department
+                });
+            }
+
+            SaleProducts = new BindingList<SaleProductDisplayModel>(displaySaleProduct);
         }
 
         private void LoadSales()
@@ -377,7 +392,7 @@ namespace DesktopUI.ViewModels
             BindingList<SaleDisplayModel> displaySales = new BindingList<SaleDisplayModel>();
 
 
-            foreach (var item in saleList)
+            foreach (SaleModel item in saleList)
             {
                 displaySales.Add(new SaleDisplayModel
                 {
@@ -405,7 +420,19 @@ namespace DesktopUI.ViewModels
             decimal twoDecimalplaceValue = decimal.Divide(decimalValue, 100m);
             decimal currencyValue = Math.Round(twoDecimalplaceValue, 2);
 
-            return string.Format("{0:0.00}", currencyValue);
+            return $"£{string.Format("{0:0.00}", currencyValue)}";
+        }
+
+        private decimal ConvertCurrencyStringToDecimal(string stringValue)
+        {
+            if (stringValue.StartsWith("£"))
+            {
+                stringValue = stringValue.Remove(0, 1);
+            }
+
+            decimal decimalValue = Convert.ToDecimal(stringValue);
+
+            return decimalValue;
         }
 
         public void EditSale()
@@ -439,16 +466,6 @@ namespace DesktopUI.ViewModels
         }
 
         public void NextDay()
-        {
-
-        }
-
-        public void GetAllSaleByDate()
-        {
-
-        }
-
-        public void GetAllSaleProducts()
         {
 
         }
