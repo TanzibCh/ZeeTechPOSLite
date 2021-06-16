@@ -25,7 +25,7 @@ namespace DesktopUI.ViewModels
 
         private BindingList<CartItemDisplayModel> _cart;
 
-        private SalesDataAccess _salesData = new SalesDataAccess();
+        private SalesData _salesData = new SalesData();
 
         #endregion
 

@@ -1,5 +1,7 @@
-﻿using DataAccessLibrary.DataAccess.SalesQueries;
+﻿using DataAccessLibrary.DataAccess.ExpenseQueries;
+using DataAccessLibrary.DataAccess.SalesQueries;
 using DataAccessLibrary.Models;
+using DesktopUI.Commands.BankingCommands;
 using DesktopUI.Models;
 using System;
 using System.Collections.Generic;
@@ -7,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace DesktopUI.ViewModels
 {
@@ -17,8 +20,9 @@ namespace DesktopUI.ViewModels
         //ISalesDataAccess _salesData;
 
         // Need to use DI in the future
-        private SalesDataAccess _salesData = new SalesDataAccess();
-        private SaleProductDataAccess _saleProductData = new SaleProductDataAccess();
+        private SalesData _salesData = new SalesData();
+        private SaleProductData _saleProductData = new SaleProductData();
+        private ExpenseData _expenseData = new ExpenseData();
 
         #endregion
 
@@ -273,6 +277,56 @@ namespace DesktopUI.ViewModels
 
         #endregion
 
+        // Properties for Expenses
+        #region Expense properties
+
+        private string _cardExpense;
+
+        public string CardExpense
+        {
+            get { return _cardExpense; }
+            set
+            {
+                _cardExpense = value;
+                OnPropertyChanged(nameof(CardExpense));
+            }
+        }
+
+        private string _cashExpense;
+
+        public string CashExpense
+        {
+            get { return _cashExpense; }
+            set
+            {
+                _cashExpense = value;
+                OnPropertyChanged(nameof(CashExpense));
+            }
+        }
+
+        private string _expenseDetails;
+
+        public string ExpenseDetails
+        {
+            get { return _expenseDetails; }
+            set
+            {
+                _expenseDetails = value;
+                OnPropertyChanged(nameof(ExpenseDetails));
+            }
+        }
+
+        public string ExpenseTotal
+        {
+            get
+            {
+                decimal total = ConvertCurrencyStringToDecimal(CardExpense) + ConvertCurrencyStringToDecimal(CashExpense);
+                return ConvertDecimalToCurrencyString(total);
+            }
+        }
+
+        #endregion
+
         // Properties for Sales and SaleProducts List
         #region List Properties
 
@@ -341,6 +395,12 @@ namespace DesktopUI.ViewModels
         }
         #endregion
 
+        #region Commands Properties
+
+        public AddExpenseCommand AddExpenseCmd { get; set; }
+
+        #endregion
+
         // Default Constructor
         #region Constructor
 
@@ -348,9 +408,17 @@ namespace DesktopUI.ViewModels
         {
             SelectedDate = DateTime.UtcNow.Date;
 
+            // Expense default value
+            CardExpense = "£0.00";
+            CashExpense = "£0.00";
+
             Sales = new BindingList<SaleDisplayModel>();
             SaleProducts = new BindingList<SaleProductDisplayModel>();
 
+            // Commands
+            AddExpenseCmd = new AddExpenseCommand(this);
+
+            // Populate Sale ListBox
             LoadSales();
         }
 
@@ -413,6 +481,11 @@ namespace DesktopUI.ViewModels
             Sales = new BindingList<SaleDisplayModel>(displaySales);
         }
 
+        private string ConvertDecimalToCurrencyString(decimal decimalValue)
+        {
+            return $"£{string.Format("{0:0.00}", decimalValue)}";
+        }
+
         // Converts an int value to a decimal value and returns a sting formtted as 0.00
         private string ConvertIntToCurrencyString(int intValue)
         {
@@ -423,6 +496,7 @@ namespace DesktopUI.ViewModels
             return $"£{string.Format("{0:0.00}", currencyValue)}";
         }
 
+        // Checks if string Value precedes with £, removes it and converts the string value to decimal value.
         private decimal ConvertCurrencyStringToDecimal(string stringValue)
         {
             if (stringValue.StartsWith("£"))
@@ -435,6 +509,19 @@ namespace DesktopUI.ViewModels
             return decimalValue;
         }
 
+        private int ConvertCurrencyStringToInt(string stringValue)
+        {
+            if (stringValue != null && stringValue.StartsWith("£"))
+            {
+                stringValue = stringValue.Remove(0, 1);
+            }
+
+            decimal decimalValue = Convert.ToDecimal(stringValue);
+            int intValue = Convert.ToInt32(Math.Truncate(decimalValue * 100m));
+
+            return intValue;
+        }
+
         public void EditSale()
         {
 
@@ -442,7 +529,23 @@ namespace DesktopUI.ViewModels
 
         public void AddExpense()
         {
+            if (CardExpense == "0.00" && CashExpense == "0.00")
+            {
+                MessageBox.Show("Please enter a value in either Card or Cash");
+            }
+            else
+            {
+                ExpenseModel expense = new ExpenseModel
+                {
+                    ExpenseDate = DateTime.UtcNow.Date,
+                    ExpenseDetails = ExpenseDetails,
+                    Card = ConvertCurrencyStringToInt(CardExpense),
+                    Cash = ConvertCurrencyStringToInt(CashExpense),
+                    Total = ConvertCurrencyStringToInt(CardExpense) + ConvertCurrencyStringToInt(CashExpense)
+                };
 
+                _expenseData.SaveExpense(expense);
+            }
         }
 
         public void EditExpense()

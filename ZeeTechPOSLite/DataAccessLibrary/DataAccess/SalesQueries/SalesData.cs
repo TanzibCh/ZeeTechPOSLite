@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DataAccessLibrary.DataAccess.SalesQueries
 {
-    public class SalesDataAccess
+    public class SalesData
     {
         SQLiteDataAccess _db = new SQLiteDataAccess();
         private const string _connectionStringName = "SQLiteDB";

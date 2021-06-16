@@ -458,24 +458,38 @@
                                HorizontalAlignment="Center"/>
 
                         <StackPanel Orientation="Horizontal">
-                            <ComboBox Width="100"
-                                      materialDesign:HintAssist.Hint="Payment"
-                                      Margin="10"/>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Card"
+                                       FontSize="12"
+                                       HorizontalAlignment="Center"/>
 
-                            <TextBox MinWidth="100"
-                                     materialDesign:HintAssist.Hint="Amount"
-                                     TextWrapping="Wrap"
-                                     Margin="10"/>
+                                <TextBox MinWidth="100"
+                                         Margin="10"
+                                         HorizontalContentAlignment="Center"
+                                         Text="{Binding CardExpense, Mode=TwoWay}"/>
+                            </StackPanel>
 
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Cash"
+                                       FontSize="12"
+                                       HorizontalAlignment="Center"/>
+
+                                <TextBox MinWidth="100"
+                                         Margin="10"
+                                         HorizontalContentAlignment="Center"
+                                         Text="{Binding CashExpense, Mode=TwoWay}"/>
+                            </StackPanel>
                         </StackPanel>
 
                         <TextBox MinWidth="100" 
-                                 materialDesign:HintAssist.Hint="Description"
-                                 Margin="10"/>
+                                 materialDesign:HintAssist.Hint="Detail"
+                                 Margin="10"
+                                 Text="{Binding ExpenseDetails}"/>
 
                         <Button Style="{StaticResource MaterialDesignFlatDarkBgButton}"
                                 Margin="10"                                
-                                Content="Add" />
+                                Content="Add"
+                                Command="{Binding AddExpenseCmd}"/>
                     </StackPanel>
                 </materialDesign:Card>
                 <!--#endregion-->
