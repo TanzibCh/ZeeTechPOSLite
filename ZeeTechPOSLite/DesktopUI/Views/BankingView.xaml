@@ -69,7 +69,8 @@
                     </Button>
 
                     <DatePicker Margin="10 0"
-                                Width="150" 
+                                Width="150"
+                                FontSize="20"
                                 SelectedDate="{Binding SelectedDate}">
 
                     </DatePicker>
@@ -98,16 +99,16 @@
         <!-- Main body Grid -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition MinWidth="400" />
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition MinWidth="750" />
+                <ColumnDefinition Width="500" />
             </Grid.ColumnDefinitions>
 
             <!--#region Totals -->
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition MinHeight="290" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="300" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -116,13 +117,13 @@
                                  UniformCornerRadius="15"
                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
 
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch"
                                 Margin="10">
 
-                        <Grid >
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
 
                             <Grid.RowDefinitions>
@@ -141,9 +142,10 @@
                             <!-- Total Text -->
                             <TextBlock Grid.Column="1"
                                        Margin="13 0 0 0"
-                                   Text="{Binding Total}"
-                                   FontSize="20"
-                                   VerticalAlignment="Center"/>
+                                       Text="{Binding Total}"
+                                       FontSize="20"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Right"/>
 
                             <!-- Profit Label-->
                             <Label Grid.Column="0" Grid.Row="1"
@@ -157,7 +159,8 @@
                                        Margin="13 0 0 0"
                                        Text="{Binding TotalProfit}"
                                        FontSize="20"
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Right"/>
 
                             <!-- Till Cash Label-->
                             <Label Grid.Column="0" Grid.Row="2"
@@ -461,12 +464,20 @@
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Card"
                                        FontSize="12"
-                                       HorizontalAlignment="Center"/>
+                                       HorizontalAlignment="Left"
+                                       Margin="10 0 0 0"/>
 
-                                <TextBox MinWidth="100"
-                                         Margin="10"
-                                         HorizontalContentAlignment="Center"
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="£"
+                                           FontSize="14"
+                                           HorizontalAlignment="Center"
+                                           Margin="10 0 -5 0"/>
+
+                                    <TextBox MinWidth="80"
+                                         Margin="0 0 10 0"
+                                         HorizontalContentAlignment="Left"
                                          Text="{Binding CardExpense, Mode=TwoWay}"/>
+                                </StackPanel>
                             </StackPanel>
 
                             <StackPanel Orientation="Vertical">
@@ -474,10 +485,18 @@
                                        FontSize="12"
                                        HorizontalAlignment="Center"/>
 
-                                <TextBox MinWidth="100"
-                                         Margin="10"
-                                         HorizontalContentAlignment="Center"
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="£"
+                                           FontSize="14"
+                                           HorizontalAlignment="Center"
+                                           Margin="10 0 -5 0"/>
+
+                                    <TextBox MinWidth="80"
+                                         Margin="0 0 10 0"
+                                         HorizontalContentAlignment="Left"
                                          Text="{Binding CashExpense, Mode=TwoWay}"/>
+                                </StackPanel>
+                                
                             </StackPanel>
                         </StackPanel>
 
@@ -796,45 +815,75 @@
                         <Label HorizontalAlignment="Center"
                                Content="Expenses"/>
 
-                        <ListBox HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
-                            <ListBoxItem>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="150" />
-                                        <ColumnDefinition Width="150" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
+                        <!-- Expense List-->
+                        <ListBox HorizontalContentAlignment="Stretch" 
+                                 HorizontalAlignment="Stretch"
+                                 ItemsSource="{Binding Expenses}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80" />
+                                            <ColumnDefinition Width="80" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <!-- Card -->
+                                        <StackPanel Orientation="Vertical"
+                                                    Grid.Column="0" Grid.Row="0">
+                                            <TextBlock Margin="0 0 5 0" 
+                                                       Text="Card"/>
 
-                                    <TextBox Grid.Column="0" Grid.Row="0"
-                                             Margin="0 0 5 0" />
+                                            <TextBlock Margin="0 0 5 0" 
+                                                       Text="{Binding Card}"/>
+                                        </StackPanel>
 
-                                    <TextBox Grid.Column="1" Grid.Row="0"
-                                             Margin="5 0 0 0" />
+                                        <!-- Cash -->
+                                        <StackPanel Orientation="Vertical" 
+                                                    Grid.Column="1" Grid.Row="0">
+                                            <TextBlock Margin="0 0 5 0" 
+                                                       Text="Cash"/>
+                                            
+                                            <TextBlock Grid.Column="1" Grid.Row="0"
+                                                 Margin="0 0 5 0"
+                                                 Text="{Binding Cash}"/>
+                                        </StackPanel>
 
-                                    <Button Grid.Column="3"
-                                                Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                                Content="{materialDesign:PackIcon Kind=ContentSaveOutline}"
-                                                Margin="5 5 0 0"/>
+                                        <!-- Details -->
+                                        <StackPanel Orientation="Vertical"
+                                                    Grid.Column="2">
+                                            <TextBlock Margin="0 0 5 0" 
+                                                       Text="Details"/>
 
-                                    <Button Grid.Column="4"
-                                                Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                                Content="{materialDesign:PackIcon Kind=CloseCircleOutline}" 
-                                                Margin="5 5 0 0"/>
+                                            <TextBlock Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2"
+                                                   MinWidth="300"
+                                                   Text="{Binding ExpenseDetails}"
+                                                   TextWrapping="Wrap"/>
+                                        </StackPanel>
 
-                                    <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5"
-                                                 MinWidth="300" 
-                                                 TextWrapping="Wrap"/>
-
-                                </Grid>
-                            </ListBoxItem>
+                                        <Separator Grid.Row="1" Grid.ColumnSpan="3"></Separator>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
+                        <!-- Buttons -->
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right">
+                            <!-- Edit -->
+                            <Button Width="50"
+                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                    Content="{materialDesign:PackIcon Kind=ContentSaveOutline}"
+                                    Margin="5 0"/>
 
+                            <!-- Delete Expense -->
+                            <Button Width="50"
+                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                    Content="{materialDesign:PackIcon Kind=CloseCircleOutline}" 
+                                    Margin="5 0"/>
+                        </StackPanel>
                     </StackPanel>
                 </materialDesign:Card>
                 <!--#endregion-->

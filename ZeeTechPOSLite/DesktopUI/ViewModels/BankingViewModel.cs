@@ -34,8 +34,8 @@ namespace DesktopUI.ViewModels
             get
             {
                 decimal totalSale = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.SaleTotal));
-                string output = string.Format("{0:0.00}", Convert.ToString(totalSale));
-                return $"£{output}";
+                string output = ConvertDecimalToCurrencyString(totalSale);
+                return output;
             }
         }
         public string TotalProfit
@@ -43,8 +43,8 @@ namespace DesktopUI.ViewModels
             get
             {
                 decimal totalProfit = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.Profit));
-                string output = string.Format("{0:0.00}", Convert.ToString(totalProfit));
-                return $"£{output}";
+                string output = ConvertDecimalToCurrencyString(totalProfit);
+                return output;
             }
         }
         public string TotalTillCash
@@ -62,8 +62,8 @@ namespace DesktopUI.ViewModels
             get
             {
                 decimal totalCard = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.Card));
-                string output = string.Format("{0:0.00}", Convert.ToString(totalCard));
-                return $"£{output}";
+                string output = ConvertDecimalToCurrencyString(totalCard);
+                return output;
             }
         }
         public string TotalCash
@@ -71,8 +71,8 @@ namespace DesktopUI.ViewModels
             get
             {
                 decimal totalCash = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.Cash));
-                string output = string.Format("{0:0.00}", Convert.ToString(totalCash));
-                return $"£{output}";
+                string output = ConvertDecimalToCurrencyString(totalCash);
+                return output;
             }
         }
         public string TotalCashOnly
@@ -91,8 +91,8 @@ namespace DesktopUI.ViewModels
             get
             {
                 decimal totalCredit = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.Credit));
-                string output = string.Format("{0:0.00}", Convert.ToString(totalCredit));
-                return $"£{output}";
+                string output = ConvertDecimalToCurrencyString(totalCredit);
+                return output;
             }
         }
         public string TotalRefund
@@ -354,14 +354,14 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private BindingList<ExpenseModel> _expensesar;
+        private BindingList<ExpenseDisplayModel> _expenses;
 
-        public BindingList<ExpenseModel> Expenses
+        public BindingList<ExpenseDisplayModel> Expenses
         {
-            get { return _expensesar; }
+            get { return _expenses; }
             set
             {
-                _expensesar = value;
+                _expenses = value;
                 OnPropertyChanged(nameof(Expenses));
             }
         }
@@ -409,8 +409,8 @@ namespace DesktopUI.ViewModels
             SelectedDate = DateTime.UtcNow.Date;
 
             // Expense default value
-            CardExpense = "£0.00";
-            CashExpense = "£0.00";
+            CardExpense = "0.00";
+            CashExpense = "0.00";
 
             Sales = new BindingList<SaleDisplayModel>();
             SaleProducts = new BindingList<SaleProductDisplayModel>();
@@ -418,8 +418,9 @@ namespace DesktopUI.ViewModels
             // Commands
             AddExpenseCmd = new AddExpenseCommand(this);
 
-            // Populate Sale ListBox
+            // Populate Sale and Expenses ListBoxes
             LoadSales();
+            LoadExpense();
         }
 
         #endregion
@@ -537,15 +538,38 @@ namespace DesktopUI.ViewModels
             {
                 ExpenseModel expense = new ExpenseModel
                 {
-                    ExpenseDate = DateTime.UtcNow.Date,
+                    ExpenseDate = DateTime.UtcNow.Date.ToString(),
                     ExpenseDetails = ExpenseDetails,
                     Card = ConvertCurrencyStringToInt(CardExpense),
                     Cash = ConvertCurrencyStringToInt(CashExpense),
-                    Total = ConvertCurrencyStringToInt(CardExpense) + ConvertCurrencyStringToInt(CashExpense)
+                    ExpenseTotal = ConvertCurrencyStringToInt(CardExpense) + ConvertCurrencyStringToInt(CashExpense)
                 };
 
                 _expenseData.SaveExpense(expense);
+                
             }
+        }
+
+        private void LoadExpense()
+        {
+            List<ExpenseModel> expenses = _expenseData.LoadAllExpenseByDate(SelectedDate.ToString());
+
+            List<ExpenseDisplayModel> displayExpenses = new List<ExpenseDisplayModel>();
+
+            foreach (var expense in expenses)
+            {
+                displayExpenses.Add(new ExpenseDisplayModel
+                {
+                    Id = expense.Id,
+                    ExpenseDate = expense.ExpenseDate,
+                    ExpenseDetails = expense.ExpenseDetails,
+                    Card = ConvertIntToCurrencyString(expense.Card),
+                    Cash = ConvertIntToCurrencyString(expense.Cash),
+                    ExpenseTotal = ConvertIntToCurrencyString(expense.ExpenseTotal)
+                });
+            }
+
+            Expenses = new BindingList<ExpenseDisplayModel>(displayExpenses);
         }
 
         public void EditExpense()
