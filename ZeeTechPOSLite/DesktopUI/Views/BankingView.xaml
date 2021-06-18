@@ -457,7 +457,7 @@
                                  UniformCornerRadius="15"
                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
-                        <Label Content="New Expense" 
+                        <Label Content="{Binding ExpenseLable, Mode=TwoWay}" 
                                HorizontalAlignment="Center"/>
 
                         <StackPanel Orientation="Horizontal">
@@ -507,7 +507,7 @@
 
                         <Button Style="{StaticResource MaterialDesignFlatDarkBgButton}"
                                 Margin="10"                                
-                                Content="Add"
+                                Content="{Binding ExpenseButtonContent}"
                                 Command="{Binding AddExpenseCmd}"/>
                     </StackPanel>
                 </materialDesign:Card>
@@ -818,7 +818,8 @@
                         <!-- Expense List-->
                         <ListBox HorizontalContentAlignment="Stretch" 
                                  HorizontalAlignment="Stretch"
-                                 ItemsSource="{Binding Expenses}">
+                                 ItemsSource="{Binding Expenses}"
+                                 SelectedItem="{Binding SelectedExpense, Mode=TwoWay}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -871,18 +872,22 @@
                         </ListBox>
                         <!-- Buttons -->
                         <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Right">
+                                    HorizontalAlignment="Left">
                             <!-- Edit -->
                             <Button Width="50"
                                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                     Content="{materialDesign:PackIcon Kind=ContentSaveOutline}"
-                                    Margin="5 0"/>
+                                    Margin="5 0"
+                                    Command="{Binding EditExpenseCmd}"
+                                    CommandParameter="{Binding SelectedExpense}"/>
 
                             <!-- Delete Expense -->
                             <Button Width="50"
                                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                     Content="{materialDesign:PackIcon Kind=CloseCircleOutline}" 
-                                    Margin="5 0"/>
+                                    Margin="5 0"
+                                    Command="{Binding RemoveExpenseCmd}"
+                                    CommandParameter="{Binding SelectedExpense}"/>
                         </StackPanel>
                     </StackPanel>
                 </materialDesign:Card>

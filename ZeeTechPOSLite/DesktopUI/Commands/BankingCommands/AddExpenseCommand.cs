@@ -24,7 +24,16 @@ namespace DesktopUI.Commands.BankingCommands
 
         public void Execute(object parameter)
         {
-            BankingVM.AddExpense();
+            string expenseStatus = BankingVM.ExpenseLable;
+
+            if (expenseStatus == "New Expense")
+            {
+                BankingVM.AddExpense();
+            }
+            else
+            {
+                BankingVM.UpdateExpense();
+            }
         }
     }
 }

@@ -24,6 +24,8 @@ namespace DesktopUI.ViewModels
         private SaleProductData _saleProductData = new SaleProductData();
         private ExpenseData _expenseData = new ExpenseData();
 
+        private int _selectedExpenseId;
+
         #endregion
 
         // Properties for Totals
@@ -325,6 +327,31 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        private string _expenseLable;
+
+        public string ExpenseLable
+        {
+            get { return _expenseLable; }
+            set
+            {
+                _expenseLable = value;
+                OnPropertyChanged(nameof(ExpenseLable));
+            }
+        }
+
+        private string _expenseButtonContent;
+
+        public string ExpenseButtonContent
+        {
+            get { return _expenseButtonContent; }
+            set 
+            { 
+                _expenseButtonContent = value;
+                OnPropertyChanged(nameof(ExpenseButtonContent));
+            }
+        }
+
+
         #endregion
 
         // Properties for Sales and SaleProducts List
@@ -379,6 +406,18 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        private ExpenseDisplayModel _selectedExpense;
+
+        public ExpenseDisplayModel SelectedExpense
+        {
+            get { return _selectedExpense; }
+            set 
+            {
+                _selectedExpense = value;
+                OnPropertyChanged(nameof(SelectedExpense));
+            }
+        }
+
 
         #endregion
 
@@ -398,6 +437,8 @@ namespace DesktopUI.ViewModels
         #region Commands Properties
 
         public AddExpenseCommand AddExpenseCmd { get; set; }
+        public EditExpense EditExpenseCmd { get; set; }
+        public RemoveExpense RemoveExpenseCmd { get; set; }
 
         #endregion
 
@@ -407,7 +448,8 @@ namespace DesktopUI.ViewModels
         public BankingViewModel()
         {
             SelectedDate = DateTime.UtcNow.Date;
-
+            ExpenseLable = "New Expense";
+            ExpenseButtonContent = "Add";
             // Expense default value
             CardExpense = "0.00";
             CashExpense = "0.00";
@@ -417,6 +459,8 @@ namespace DesktopUI.ViewModels
 
             // Commands
             AddExpenseCmd = new AddExpenseCommand(this);
+            EditExpenseCmd = new EditExpense(this);
+            RemoveExpenseCmd = new RemoveExpense(this);
 
             // Populate Sale and Expenses ListBoxes
             LoadSales();
@@ -482,6 +526,16 @@ namespace DesktopUI.ViewModels
             Sales = new BindingList<SaleDisplayModel>(displaySales);
         }
 
+        private string RemoveCurrencyFromString(string stringValue)
+        {
+            if (stringValue.StartsWith("£"))
+            {
+                stringValue.Remove(0, 1);
+            }
+
+            return stringValue;
+        }
+
         private string ConvertDecimalToCurrencyString(decimal decimalValue)
         {
             return $"£{string.Format("{0:0.00}", decimalValue)}";
@@ -528,6 +582,13 @@ namespace DesktopUI.ViewModels
 
         }
 
+        private void ClearExpenseFIelds()
+        {
+            CardExpense = "0.00";
+            CashExpense = "0.00";
+            ExpenseDetails = "";
+        }
+
         public void AddExpense()
         {
             if (CardExpense == "0.00" && CashExpense == "0.00")
@@ -546,7 +607,8 @@ namespace DesktopUI.ViewModels
                 };
 
                 _expenseData.SaveExpense(expense);
-                
+                ClearExpenseFIelds();
+                LoadExpense();
             }
         }
 
@@ -574,12 +636,34 @@ namespace DesktopUI.ViewModels
 
         public void EditExpense()
         {
+            _selectedExpenseId = SelectedExpense.Id;
 
+            // Setup fileds for edit
+            ExpenseLable = "Edit Expense";
+            ExpenseButtonContent = "Update";
+            CardExpense = RemoveCurrencyFromString(SelectedExpense.Card);
+            CashExpense = RemoveCurrencyFromString(SelectedExpense.Cash);
+            ExpenseDetails = RemoveCurrencyFromString(SelectedExpense.ExpenseDetails);
+        }
+
+        public void UpdateExpense()
+        {
+            int card = ConvertCurrencyStringToInt(CardExpense);
+            int cash = ConvertCurrencyStringToInt(CashExpense);
+            int total = card + cash;
+
+            _expenseData.UpdateExpense(SelectedExpense.Id, card, cash, total, ExpenseDetails);
+
+            ExpenseLable = "New Expense";
+            ExpenseButtonContent = "Add";
+            LoadExpense();
+            ClearExpenseFIelds();
         }
 
         public void RemoveExpense()
         {
-
+            _expenseData.VoidExpense(SelectedExpense.Id);
+            LoadExpense();
         }
 
         public void ShowCashOnly()

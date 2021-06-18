@@ -31,11 +31,37 @@ namespace DataAccessLibrary.DataAccess.ExpenseQueries
         {
             string sql = @"SELECT Id, ExpenseDate, ExpenseDetails, Card, Cash, ExpenseTotal
                           FROM Expense
-                          WHERE ExpenseDate = @selectedDate;";
+                          WHERE VoidExpense= 0
+                          AND ExpenseDate = @selectedDate;";
 
             List<ExpenseModel> expenses = _db.LoadData<ExpenseModel, dynamic>(sql, new { selectedDate }, _connectionStringName);
 
             return expenses;
+        }
+
+        public void UpdateExpense(int id, int card, int cash, int total, string details)
+        {
+            string sql = @"UPDATE Expense
+                           SET Card = @CardExpense, Cash = @cashExpense, ExpenseTotal = @total, ExpenseDetails = @expenseDetails
+                           WHERE Id = @id";
+
+            _db.SaveData(sql, new 
+            {
+                cardExpense = card,
+                cashExpense = cash,
+                total= total,
+                expenseDetails = details,
+                id = id
+            }, _connectionStringName);
+        }
+
+        public void VoidExpense(int Id)
+        {
+            string sql = @"UPDATE Expense
+                           SET VoidExpense = 1
+                           WHERE Id = @id";
+
+            _db.SaveData(sql, new { Id }, _connectionStringName);
         }
     }
 }
