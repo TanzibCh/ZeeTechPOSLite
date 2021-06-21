@@ -53,10 +53,12 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleModel> sales = _salesData.GetCashOnlySalesByDate(SelectedDate.ToString());
+                List<SaleModel> cashOnlySales = _salesData.GetCashOnlySalesByDate(SelectedDate.ToString());
+                decimal totalCash = Sales.Sum(x => ConvertCurrencyStringToDecimal(x.Cash));
+                decimal totalCashOnly = cashOnlySales.Sum(x => ConvertCurrencyStringToDecimal(ConvertIntToCurrencyString(x.CashOnly)));
 
-
-                return "";
+                decimal tillCash = totalCash + totalCashOnly;
+                return ConvertDecimalToCurrencyString(tillCash);
             }
         }
         public string TotalCard
@@ -109,8 +111,12 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                // query for total expenses
-                return "";
+                decimal totalCard = Expenses.Sum(x => ConvertCurrencyStringToDecimal(x.Card));
+                decimal totalCash = Expenses.Sum(x => ConvertCurrencyStringToDecimal(x.Cash));
+
+                decimal totalExpense = totalCard + totalCash;
+
+                return ConvertDecimalToCurrencyString(totalExpense);
             }
         }
 
@@ -439,6 +445,7 @@ namespace DesktopUI.ViewModels
         public AddExpenseCommand AddExpenseCmd { get; set; }
         public EditExpense EditExpenseCmd { get; set; }
         public RemoveExpense RemoveExpenseCmd { get; set; }
+        public ClearExpenseCommand ClearExpense { get; set; }
 
         #endregion
 
@@ -461,6 +468,7 @@ namespace DesktopUI.ViewModels
             AddExpenseCmd = new AddExpenseCommand(this);
             EditExpenseCmd = new EditExpense(this);
             RemoveExpenseCmd = new RemoveExpense(this);
+            ClearExpense = new ClearExpenseCommand(this);
 
             // Populate Sale and Expenses ListBoxes
             LoadSales();
@@ -498,6 +506,14 @@ namespace DesktopUI.ViewModels
             SaleProducts = new BindingList<SaleProductDisplayModel>(displaySaleProduct);
         }
 
+        private string ConvertToLocalTime(string timeValue)
+        {
+            var utcTime = Convert.ToDateTime(timeValue);
+            var localTime = utcTime.ToLocalTime();
+
+            return localTime.ToString("hh:mm tt");
+        }
+
         private void LoadSales()
         {
             var saleList = _salesData.GetAllSalesByDate(SelectedDate.ToString());
@@ -512,7 +528,7 @@ namespace DesktopUI.ViewModels
                     Id = item.Id,
                     InvoiceNo = item.InvoiceNo,
                     SaleDate = item.SaleDate,
-                    SaleTime = item.SaleTime,
+                    SaleTime = ConvertToLocalTime(item.SaleTime),
                     Card = ConvertIntToCurrencyString(item.Card),
                     Cash = ConvertIntToCurrencyString(item.Cash),
                     Credit = ConvertIntToCurrencyString(item.Credit),
@@ -582,7 +598,7 @@ namespace DesktopUI.ViewModels
 
         }
 
-        private void ClearExpenseFIelds()
+        public void ClearExpenseFIelds()
         {
             CardExpense = "0.00";
             CashExpense = "0.00";

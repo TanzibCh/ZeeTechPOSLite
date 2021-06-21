@@ -280,9 +280,9 @@
                             <TextBlock Grid.Column="1" Grid.Row="5"
                                        HorizontalAlignment="Right"
                                        Margin="10 0 0 0"
-                                   Text="£10000.00"
-                                   FontSize="16"
-                                   VerticalAlignment="Center"/>
+                                       Text="{Binding TotalExpense}"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"/>
                         </Grid>
 
                     </StackPanel>
@@ -291,8 +291,8 @@
 
                 <!--#region  Departments -->
                 <materialDesign:Card Grid.Row="1" Margin="0 5"
-                                 UniformCornerRadius="15"
-                                 materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                                     UniformCornerRadius="15"
+                                     materialDesign:ShadowAssist.ShadowDepth="Depth1">
 
                     <Grid Margin="10">
                         <Grid.ColumnDefinitions>
@@ -319,10 +319,10 @@
                         </materialDesign:Card>
 
                         <Label Grid.Column="0" Grid.Row="0"
-                                   Margin="5 0"
-                                   VerticalAlignment="Center"
-                                   Content="Mobile"
-                                   FontSize="16"/>
+                               Margin="5 0"
+                               VerticalAlignment="Center"
+                               Content="Mobile"
+                               FontSize="16"/>
                         <TextBlock Grid.Column="1" Grid.Row="0"
                                    Margin="10 0"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -496,7 +496,7 @@
                                          HorizontalContentAlignment="Left"
                                          Text="{Binding CashExpense, Mode=TwoWay}"/>
                                 </StackPanel>
-                                
+
                             </StackPanel>
                         </StackPanel>
 
@@ -505,10 +505,21 @@
                                  Margin="10"
                                  Text="{Binding ExpenseDetails}"/>
 
-                        <Button Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-                                Margin="10"                                
-                                Content="{Binding ExpenseButtonContent}"
-                                Command="{Binding AddExpenseCmd}"/>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <Button Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                    Margin="10"
+                                    Width="100"
+                                    Content="Clear"
+                                    Command="{Binding ClearExpense}"/>
+
+                            <Button Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                    Margin="10"
+                                    Width="100"                                
+                                    Content="{Binding ExpenseButtonContent}"
+                                    Command="{Binding AddExpenseCmd}"/>
+                        </StackPanel>
+
                     </StackPanel>
                 </materialDesign:Card>
                 <!--#endregion-->
@@ -530,6 +541,7 @@
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Height="30">
                                         <Grid.ColumnDefinitions>
+                                            <ColumnDefinition MinWidth="100"/>
                                             <ColumnDefinition MinWidth="100" />
                                             <ColumnDefinition MinWidth="100" />
                                             <ColumnDefinition MinWidth="100" />
@@ -537,39 +549,41 @@
                                             <ColumnDefinition MinWidth="100" />
                                             <ColumnDefinition MinWidth="100"/>
                                             <ColumnDefinition MinWidth="100"/>
-                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-
                                         <Label Grid.Column="0"
                                                HorizontalAlignment="Left"
-                                               Content="Invoice no." />
-
+                                               Content="Time" />
+                                        
                                         <Label Grid.Column="1"
-                                               Margin="5 0 0 0"
                                                HorizontalAlignment="Left"
-                                               Content="Card" />
+                                               Content="Invoice no." />
 
                                         <Label Grid.Column="2"
                                                Margin="5 0 0 0"
                                                HorizontalAlignment="Left"
-                                               Content="Cash" />
+                                               Content="Card" />
 
                                         <Label Grid.Column="3"
                                                Margin="5 0 0 0"
                                                HorizontalAlignment="Left"
-                                               Content="Credit" />
+                                               Content="Cash" />
 
                                         <Label Grid.Column="4"
                                                Margin="5 0 0 0"
                                                HorizontalAlignment="Left"
-                                               Content="Total" />
+                                               Content="Credit" />
 
                                         <Label Grid.Column="5"
+                                               Margin="15 0 0 0"
+                                               HorizontalAlignment="Left"
+                                               Content="Total" />
+
+                                        <Label Grid.Column="6"
                                                Margin="5 0 0 0"
                                                HorizontalAlignment="Left"
                                                Content="Cost" />
 
-                                        <Label Grid.Column="6"
+                                        <Label Grid.Column="7"
                                                Margin="5 0 0 0"
                                                HorizontalAlignment="Left"
                                                Content="Profit" />
@@ -589,37 +603,40 @@
                                         <ColumnDefinition MinWidth="100" />
                                         <ColumnDefinition MinWidth="100" />
                                         <ColumnDefinition MinWidth="100" />
-                                        <ColumnDefinition MinWidth="100"/>
-                                        <ColumnDefinition MinWidth="100"/>
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition MinWidth="100" />
+                                        <ColumnDefinition MinWidth="100" />
+                                        <ColumnDefinition MinWidth="100" />
                                     </Grid.ColumnDefinitions>
-
-                                    <!-- InvoiceNo -->
+                                    <!-- Time -->
                                     <TextBlock Grid.Column="0" Margin="0 5 5 0"
+                                           Style="{StaticResource ListBoxTextBlock}"
+                                           HorizontalAlignment="Left"
+                                           Text="{Binding SaleTime}" />
+                                    
+                                    <!-- InvoiceNo -->
+                                    <TextBlock Grid.Column="1" Margin="0 5 5 0"
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding InvoiceNo}" />
 
                                     <!-- Card -->
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
                                         <TextBlock Grid.Column="1" Margin="0 5 5 0"
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding Card}" />
                                     </StackPanel>
 
-
                                     <!-- Cash -->
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal">
                                         <TextBlock 
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding Cash}" />
                                     </StackPanel>
 
-
                                     <!-- Credit -->
-                                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                    <StackPanel Grid.Column="4" Orientation="Horizontal">
                                         <TextBlock 
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
@@ -627,7 +644,8 @@
                                     </StackPanel>
 
                                     <!-- Total -->
-                                    <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                    <StackPanel Grid.Column="5" Orientation="Horizontal"
+                                                Margin="10 0 0 0">
                                         <TextBlock 
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
@@ -635,27 +653,19 @@
                                     </StackPanel>
 
                                     <!-- Cost -->
-                                    <StackPanel Grid.Column="5" Orientation="Horizontal">
+                                    <StackPanel Grid.Column="6" Orientation="Horizontal">
                                         <TextBlock 
                                            Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding TotalCost}" />
                                     </StackPanel>
 
-
                                     <!-- Profit -->
-                                    <StackPanel Grid.Column="6" Orientation="Horizontal">
+                                    <StackPanel Grid.Column="7" Orientation="Horizontal">
                                         <TextBlock Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding Profit}" />
                                     </StackPanel>
-
-
-                                    <!-- Edit Button -->
-                                    <Button Grid.Column="7"
-                                            Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-                                            HorizontalAlignment="Right"
-                                            Content="Edit" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -728,7 +738,7 @@
                                                                Text="{Binding Department}" />
                                                 </StackPanel>
                                             </Grid>
-                                            
+
                                             <!-- Description -->
                                             <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
                                                         Orientation="Vertical">
@@ -742,7 +752,7 @@
                                                            Text="{Binding ProductDescription}" />
                                             </StackPanel>
                                         </StackPanel>
-                                        
+
                                         <StackPanel Orientation="Vertical"
                                                     Grid.Column="1">
                                             <!-- Quantity -->
@@ -795,7 +805,7 @@
                                         </StackPanel>
 
                                         <Separator Grid.Row="1" Grid.ColumnSpan="2">
-                                            
+
                                         </Separator>
                                     </Grid>
                                 </DataTemplate>
@@ -847,7 +857,7 @@
                                                     Grid.Column="1" Grid.Row="0">
                                             <TextBlock Margin="0 0 5 0" 
                                                        Text="Cash"/>
-                                            
+
                                             <TextBlock Grid.Column="1" Grid.Row="0"
                                                  Margin="0 0 5 0"
                                                  Text="{Binding Cash}"/>
