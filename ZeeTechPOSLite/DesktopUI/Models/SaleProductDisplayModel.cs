@@ -16,5 +16,6 @@ namespace DesktopUI.Models
         public int QuantitySold { get; set; }
         public string Total { get; set; }
         public string Department { get; set; }
+        public bool IsSelected { get; set; }
     }
 }

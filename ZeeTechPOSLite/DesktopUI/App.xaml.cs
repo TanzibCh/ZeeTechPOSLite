@@ -40,6 +40,7 @@ namespace DesktopUI
         private void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<MainView>();
+            services.AddSingleton<EditSaleView>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)

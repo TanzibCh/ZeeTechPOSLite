@@ -2,15 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
+using DesktopUI.Models;
 
 namespace DesktopUI.Commands.BankingCommands
 {
-    public class AddExpenseCommand : ICommand
+    public class EditSaleCommand : ICommand
     {
         public BankingViewModel BankingVM { get; set; }
 
-        public AddExpenseCommand(BankingViewModel bankingVM)
+        public EditSaleCommand(BankingViewModel bankingVM)
         {
             BankingVM = bankingVM;
         }
@@ -24,16 +26,10 @@ namespace DesktopUI.Commands.BankingCommands
 
         public void Execute(object parameter)
         {
-            string expenseStatus = BankingVM.ExpenseLable;
+            SaleDisplayModel sale = BankingVM.SelectedSale;
+            EditSaleViewModel editSaleVM = new EditSaleViewModel(sale.Id);
 
-            if (expenseStatus == "New Expense")
-            {
-                BankingVM.AddNewExpense();
-            }
-            else
-            {
-                BankingVM.UpdateExpense();
-            }
+            Window win = new Window
         }
     }
 }

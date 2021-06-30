@@ -141,11 +141,6 @@
                         <RowDefinition Height="80" />
                     </Grid.RowDefinitions>
 
-                    <Grid.Resources>
-                        <Style TargetType="Label">
-                            <Setter Property="FontSize" Value="20"/>
-                        </Style>
-                    </Grid.Resources>
                     <!-- Lable -->
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"

@@ -77,6 +77,17 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             return sale.Id;
         }
 
+        public SaleModel GetSaleById(int id)
+        {
+            string sql = @"SELECT Id, InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly
+                          FROM Sale
+                          WHERE Id = @id";
+
+            SaleModel sale = _db.LoadData<SaleModel, dynamic>(sql, new { id }, _connectionStringName).FirstOrDefault();
+
+            return sale;
+        }
+
         // Queries for the last Invoice in the database and adds 1 to it to get the new Invoice number
         private int GetNewInvoiceNo(int cashOnly)
         {

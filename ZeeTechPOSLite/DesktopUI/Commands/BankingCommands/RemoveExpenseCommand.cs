@@ -7,11 +7,11 @@ using System.Windows.Input;
 
 namespace DesktopUI.Commands.BankingCommands
 {
-    public class EditExpense : ICommand
+    public class RemoveExpenseCommand : ICommand
     {
         public BankingViewModel BankingVM { get; set; }
 
-        public EditExpense(BankingViewModel bankingVM)
+        public RemoveExpenseCommand(BankingViewModel bankingVM)
         {
             BankingVM = bankingVM;
         }
@@ -34,11 +34,12 @@ namespace DesktopUI.Commands.BankingCommands
             {
                 return true;
             }
+            
         }
 
         public void Execute(object parameter)
         {
-            BankingVM.EditExpense();
+            BankingVM.RemoveSelectedExpense();
         }
     }
 }

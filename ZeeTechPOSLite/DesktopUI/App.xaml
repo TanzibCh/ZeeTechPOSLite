@@ -6,28 +6,27 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="#37474F" SecondaryColor="#bfb78d" />
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="LightBlue" SecondaryColor="Amber" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-        
-        
-         <!--Colours--> 
-             <!--Light--> 
+            <FontFamily x:Key="MaterialDesignFont">pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto</FontFamily>
+            <!--Colours--> 
+             <!--Light--><!-- 
             <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#CFD8DC" />
             <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#37474F" />
             
-             <!--Mid--> 
+             --><!--Mid--><!-- 
             <SolidColorBrush x:Key="PrimaryHueMidtBrush" Color="#78909C" />
             <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#37474F" />
 
-             <!--Dark--> 
+             --><!--Dark--><!-- 
             <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#37474F" />
             <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#bfb78d" />
 
-             <!--Accent--> 
+             --><!--Accent--><!-- 
             <SolidColorBrush x:Key="PrimaryHueAccentBrush" Color="#bfb78d" />
-            <SolidColorBrush x:Key="PrimaryHueAccentForegroundBrush" Color="#37474F" />
+            <SolidColorBrush x:Key="PrimaryHueAccentForegroundBrush" Color="#37474F" />-->
 
         </ResourceDictionary>
     </Application.Resources>

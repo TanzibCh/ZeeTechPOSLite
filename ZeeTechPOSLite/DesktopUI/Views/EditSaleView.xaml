@@ -1,0 +1,405 @@
+﻿<Window x:Class="DesktopUI.Views.EditSaleView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:DesktopUI.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        xmlns:local="clr-namespace:DesktopUI.Views"
+        mc:Ignorable="d"
+        Title="EditSaleView" Height="430" Width="730" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <!-- Default Lable style -->
+        <Style TargetType="Label"
+               BasedOn="{StaticResource MaterialDesignLabel}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
+        </Style>
+
+        <!-- Default TextBlock style -->
+        <Style TargetType="TextBlock"
+               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Default TextBox style -->
+        <Style TargetType="TextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="FontSize" Value="20" />
+        </Style>
+        
+        <!-- Floating Hint TextBox -->
+        <Style TargetType="TextBox" x:Key="floatingHintBox"
+               BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <Style TargetType="Label" x:Key="HeadingSmall" 
+               BasedOn="{StaticResource MaterialDesignLabel}">
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="-5 0 0 -5" />
+        </Style>
+
+        <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"  />
+
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="ListBoxTextBlock"
+               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+    </Window.Resources>
+    
+    <!-- Main Grid -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <materialDesign:ColorZone Grid.Row="0"
+                                  Mode="PrimaryDark">
+            <TextBlock HorizontalAlignment="Center" 
+                       Text="Edit Sales" />
+
+        </materialDesign:ColorZone>
+
+        <!-- Body Grid -->
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Sale Info Grid -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Invoice, Date and Time -->
+                <materialDesign:Card Grid.Row="0"
+                                 Margin="0 0 5 5"
+                                 HorizontalAlignment="Stretch"
+                                 UniformCornerRadius="15">
+                    <StackPanel Orientation="Horizontal">
+                        <!-- Invoice no. -->
+                        <StackPanel Orientation="Vertical"
+                                Margin="10">
+                            <Label Content="Invoice no:" 
+                               Margin="-3 0 0 -7"/>
+                            <TextBlock Text="12461" />
+                        </StackPanel>
+
+                        <!-- Date -->
+                        <StackPanel Orientation="Vertical"
+                                Margin="10">
+                            <Label Content="Date:" 
+                               Margin="-3 0 0 -7"/>
+                            <TextBlock Text="12461" />
+                        </StackPanel>
+
+                        <!-- Time -->
+                        <StackPanel Orientation="Vertical"
+                                Margin="10">
+                            <Label Content="Time:" 
+                               Margin="-3 0 0 -7"/>
+                            <TextBlock Text="12461" />
+                        </StackPanel>
+
+                        <!-- Customer -->
+                        <StackPanel Orientation="Vertical"
+                                Margin="10">
+                            <Label Content="Customer:" 
+                               Margin="-3 0 0 -7"/>
+                            <TextBlock Text="James" />
+                        </StackPanel>
+                    </StackPanel>
+
+                </materialDesign:Card>
+
+                <!-- Totals -->
+                <materialDesign:Card Grid.Row="1"
+                                 Margin="0 5 5 5"
+                                 HorizontalAlignment="Stretch"
+                                 UniformCornerRadius="15">
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <!-- Invoice no. -->
+                        <StackPanel Orientation="Vertical"
+                                Margin="10">
+                            <Label Content="Total Cost:" 
+                               Margin="-3 0 0 -7"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="£" />
+                                <TextBlock Text="1000.00" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Date -->
+                        <StackPanel Orientation="Vertical"
+                                Margin="10">
+                            <Label Content="Total Profit:" 
+                               Margin="-3 0 0 -7"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="£" />
+                                <TextBlock Text="1000.00" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Time -->
+                        <StackPanel Orientation="Vertical"
+                                Margin="10">
+                            <Label Content="Total:" 
+                               Margin="-3 0 0 -7"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="£" />
+                                <TextBlock Text="1000.00" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <materialDesign:Card Grid.Row="2"
+                                     Margin="0 5 5 0"
+                                     UniformCornerRadius="15">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="80" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Grid.ColumnSpan="3"
+                                       HorizontalAlignment="Center"
+                                       Text="Payment type"
+                                       FontSize="16"/>
+
+                        
+                        <TextBox Grid.Column="0" Grid.Row="1" 
+                                 materialDesign:HintAssist.Hint="Cost"
+                                 Style="{StaticResource floatingHintBox}"
+                                 Text="1000.00"
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Center"/>
+
+                        <TextBox Grid.Column="1" Grid.Row="1"
+                                 materialDesign:HintAssist.Hint="Cost"
+                                 Style="{StaticResource floatingHintBox}"
+                                 Text="1000.00"
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Center"/>
+
+                        <TextBox Grid.Column="2" Grid.Row="1"
+                                 materialDesign:HintAssist.Hint="Cost"
+                                 Style="{StaticResource floatingHintBox}"
+                                 Text="1000.00"
+                                 VerticalAlignment="Center" 
+                                 HorizontalAlignment="Center"/>
+
+
+
+                    </Grid>
+
+                </materialDesign:Card>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <materialDesign:Card  Grid.Row="0"
+                                      Margin="5 0 0 5"
+                                      UniformCornerRadius="15">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="270" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ListBox Grid.Row="0" HorizontalContentAlignment="Stretch"
+                                 Margin="0 0 0 10"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <ListBoxItem>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Name, Department and Description -->
+                                    <StackPanel Grid.Row="0"
+                                                    Orientation="Vertical">
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="100" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Model/Name -->
+                                            <TextBox Grid.Column="0" 
+                                                     materialDesign:HintAssist.Hint="Name/Model"
+                                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                     Text="Logitech G150"
+                                                     VerticalAlignment="Center" />
+
+                                            <!-- Department -->
+                                            <ComboBox Grid.Column="1" materialDesign:HintAssist.Hint="Department"
+                                                      />
+                                        </Grid>
+
+                                        <!-- Description -->
+                                        <TextBox materialDesign:HintAssist.Hint="Floating Hint"
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                 Text="test description"
+                                                 VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                    <Grid Grid.Row="2" Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <!-- Quantity -->
+                                        <TextBox Grid.Column="0" materialDesign:HintAssist.Hint="Quantity"
+                                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                     Text="20"
+                                                     VerticalAlignment="Center" 
+                                                     HorizontalAlignment="Left"/>
+
+                                        <!-- Cost -->
+                                        <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Cost"
+                                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                     Text="1000.00"
+                                                     VerticalAlignment="Center" 
+                                                     HorizontalAlignment="Left"/>
+
+                                        <!-- Price -->
+                                        <TextBox Grid.Column="2" materialDesign:HintAssist.Hint="Price"
+                                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                     Text="1000.00"
+                                                     VerticalAlignment="Center" 
+                                                     HorizontalAlignment="Left"/>
+
+                                        <!-- Total -->
+                                        <StackPanel Grid.Column="3" Orientation="Vertical"
+                                                    HorizontalAlignment="Right"
+                                                    Margin="0 2">
+                                            <Label Style="{StaticResource HeadingSmall}"
+                                                   Margin="0 2 0 -5"
+                                                   Content="Total" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                     Text="£"
+                                                     VerticalAlignment="Center"
+                                                     HorizontalAlignment="Right"/>
+                                                <TextBlock
+                                                     Text="1000.00"
+                                                     VerticalAlignment="Center"
+                                                     HorizontalAlignment="Right"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Separator Grid.Row="3" Grid.ColumnSpan="2">
+
+                                    </Separator>
+                                </Grid>
+                            </ListBoxItem>
+
+                        </ListBox>
+
+                        <materialDesign:ColorZone Grid.Row="1"
+                                                  Mode="PrimaryDark">
+                            
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Bottom">
+                                <Button Content="Refund"
+                                        materialDesign:ButtonAssist.CornerRadius="15"
+                                        Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                        Width="100"
+                                        Margin="5" />
+                                <Button Content="Exchange"
+                                        materialDesign:ButtonAssist.CornerRadius="15"
+                                        Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                        Width="100"
+                                        Margin="5" />
+                                <Button Content="Update"
+                                        materialDesign:ButtonAssist.CornerRadius="15"
+                                        Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                        Width="100"
+                                        Margin="5" />
+                            </StackPanel>
+                        </materialDesign:ColorZone>
+                        
+                    </Grid>
+                    
+                </materialDesign:Card>
+                
+
+                <Grid Grid.Row="1">
+                    <StackPanel Orientation="Vertical">
+                        
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5 0 0"
+                                    HorizontalAlignment="Right">
+                            <Button Content="Void"
+                                    materialDesign:ButtonAssist.CornerRadius="15"
+                                    Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                                    Width="80"
+                                    Margin="5 0" />
+                            <Button Content="Undo"
+                                    materialDesign:ButtonAssist.CornerRadius="15"
+                                    Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                                    Width="80"
+                                    Margin="5 0" />
+                            <Button Content="Save"
+                                    materialDesign:ButtonAssist.CornerRadius="15"
+                                    Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                                    Width="80"
+                                    Margin="5 0" />
+                            <Button Content="Close"
+                                    materialDesign:ButtonAssist.CornerRadius="15"
+                                    Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                                    Width="80"
+                                    Margin="5 0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+    
+</Window>
