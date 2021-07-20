@@ -11,16 +11,18 @@
              TextElement.FontSize="14"
              FontFamily="{materialDesign:MaterialDesignFont}"
              xmlns:local="clr-namespace:DesktopUI.Views"
+             xmlns:components="clr-namespace:DesktopUI.Components" 
+             d:DataContext="{d:DesignInstance Type=viewModel:BankingViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1600" >
 
     <!-- Custom Styles -->
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type viewModel:BankingViewModel}">
+        <!--<DataTemplate DataType="{x:Type viewModel:BankingViewModel}">
             <local:BankingView/>
-        </DataTemplate>
+        </DataTemplate>-->
 
-        <viewModel:BankingViewModel x:Key="BankingVM" />
+        <!--<viewModel:BankingViewModel x:Key="BankingVM" />-->
 
         <Style TargetType="Label" x:Key="HeadingSmall" 
                BasedOn="{StaticResource MaterialDesignLabel}">
@@ -43,11 +45,11 @@
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
 
-        
-            
-    </UserControl.Resources>
 
-    <Grid Margin="10" DataContext="{StaticResource BankingVM}">
+
+    </UserControl.Resources>
+    <Grid Grid.Column="1" Margin="10" >
+        <!--DataContext="{StaticResource BankingVM}"-->
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
@@ -59,7 +61,7 @@
                              materialDesign:ShadowAssist.ShadowDepth="Depth1">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="250" />
+                    <ColumnDefinition Width="350" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="250" />
                 </Grid.ColumnDefinitions>
@@ -82,7 +84,13 @@
                             Content="{materialDesign:PackIcon Kind=ChevronRightCircleOutline, Size=20}"
                             Height="25" Width="25"
                             Margin="10 0 0 0" />
+
+                    <Button Margin="10 0" 
+                            Content="Sale" 
+                            Command="{Binding NavigateManualSaleCommand}"/>
+
                 </StackPanel>
+
 
                 <Viewbox Grid.Column="1">
                     <Label 
@@ -106,7 +114,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="260" />
             </Grid.ColumnDefinitions>
-            
+
             <!--#region Sales List -->
             <materialDesign:Card Grid.Column="0"
                                  Margin="5 0 5 0"
@@ -285,7 +293,8 @@
                                     Width="80"
                                     materialDesign:ButtonAssist.CornerRadius="15"
                                     Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-                                    Command="{Binding EditSale}"/>
+                                    Command="{Binding EditSale}"
+                                    CommandParameter="{Binding SelectedSale}"/>
 
                             <Button Margin="10 2"
                                     Content="Refund"
@@ -460,7 +469,7 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="50" />
                         </Grid.RowDefinitions>
-                        
+
                         <Label Grid.Row="0"
                                HorizontalAlignment="Center"
                                Content="Expenses"/>
@@ -551,7 +560,7 @@
 
             </Grid>
             <!--#endregion-->
-            
+
             <!--#region Totals -->
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
@@ -910,7 +919,7 @@
                     <StackPanel Orientation="Vertical" Margin="10">
                         <TextBlock HorizontalAlignment="Center"
                                    Text="Create Expense" />
-                        
+
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -965,18 +974,16 @@
                                     Command="{Binding AddExpense}"/>
                             <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center">
-                                
+
                             </StackPanel>
 
                         </Grid>
                     </StackPanel>
-                    
+
                 </materialDesign:ColorZone>
                 <!--#endregion-->
             </Grid>
             <!--#endregion-->
         </Grid>
-
-
     </Grid>
 </UserControl>

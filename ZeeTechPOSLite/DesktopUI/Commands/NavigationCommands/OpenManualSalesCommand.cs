@@ -24,7 +24,7 @@ namespace DesktopUI.Commands.NavigationCommands
 
         public void Execute(object parameter)
         {
-            MainVM.OpenManualSalesPage();
+            //MainVM.OpenManualSalesPage();
         }
 
 

@@ -22,7 +22,6 @@ namespace DesktopUI.Views
         public BankingView()
         {
             InitializeComponent();
-            this.DataContext = new BankingViewModel();
         }
     }
 }

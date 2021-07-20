@@ -1,5 +1,4 @@
-﻿using DesktopUI.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -9,16 +8,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DesktopUI.Views
+namespace DesktopUI.Components
 {
     /// <summary>
-    /// Interaction logic for EditSaleView.xaml
+    /// Interaction logic for Layout.xaml
     /// </summary>
-    public partial class EditSaleView : UserControl
+    public partial class Layout : UserControl
     {
-        public EditSaleView()
+        public Layout()
         {
             InitializeComponent();
         }

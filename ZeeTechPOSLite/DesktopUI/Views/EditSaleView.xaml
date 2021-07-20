@@ -1,4 +1,4 @@
-﻿<Window x:Class="DesktopUI.Views.EditSaleView"
+﻿<UserControl x:Class="DesktopUI.Views.EditSaleView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,11 +10,12 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
-        xmlns:local="clr-namespace:DesktopUI.Views"
+        xmlns:local="clr-namespace:DesktopUI.Views" 
+        d:DataContext="{d:DesignInstance Type=viewModel:EditSaleViewModel}"
         mc:Ignorable="d"
-        Title="EditSaleView" Height="430" Width="730" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Height="600" Width="1100">
     
-    <Window.Resources>
+    <UserControl.Resources>
         <!-- Default Lable style -->
         <Style TargetType="Label"
                BasedOn="{StaticResource MaterialDesignLabel}">
@@ -47,7 +48,7 @@
 
         <Style TargetType="Label" x:Key="HeadingSmall" 
                BasedOn="{StaticResource MaterialDesignLabel}">
-            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="Foreground" Value="White" />
             <Setter Property="FontSize" Value="10" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -65,7 +66,7 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
-    </Window.Resources>
+    </UserControl.Resources>
     
     <!-- Main Grid -->
     <Grid>
@@ -84,8 +85,8 @@
         <!-- Body Grid -->
         <Grid Grid.Row="1" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="350" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <!-- Sale Info Grid -->
@@ -101,39 +102,49 @@
                                  Margin="0 0 5 5"
                                  HorizontalAlignment="Stretch"
                                  UniformCornerRadius="15">
-                    <StackPanel Orientation="Horizontal">
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
                         <!-- Invoice no. -->
-                        <StackPanel Orientation="Vertical"
-                                Margin="10">
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Vertical"
+                                    Margin="10">
                             <Label Content="Invoice no:" 
                                Margin="-3 0 0 -7"/>
-                            <TextBlock Text="12461" />
+                            <TextBlock Text="{Binding InvoiceNo}" />
                         </StackPanel>
 
                         <!-- Date -->
-                        <StackPanel Orientation="Vertical"
-                                Margin="10">
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Vertical"
+                                    Margin="10">
                             <Label Content="Date:" 
                                Margin="-3 0 0 -7"/>
-                            <TextBlock Text="12461" />
+                            <TextBlock Text="{Binding InvoiceDate}" />
                         </StackPanel>
 
                         <!-- Time -->
-                        <StackPanel Orientation="Vertical"
-                                Margin="10">
+                        <StackPanel Grid.Column="2"
+                                    Orientation="Vertical"
+                                    Margin="10">
                             <Label Content="Time:" 
                                Margin="-3 0 0 -7"/>
-                            <TextBlock Text="12461" />
+                            <TextBlock Text="{Binding InvoiceTime}" />
                         </StackPanel>
 
                         <!-- Customer -->
-                        <StackPanel Orientation="Vertical"
-                                Margin="10">
+                        <StackPanel Grid.Column="3"
+                                    Orientation="Vertical"
+                                    Margin="10">
                             <Label Content="Customer:" 
                                Margin="-3 0 0 -7"/>
                             <TextBlock Text="James" />
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
 
                 </materialDesign:Card>
 
@@ -142,48 +153,56 @@
                                  Margin="0 5 5 5"
                                  HorizontalAlignment="Stretch"
                                  UniformCornerRadius="15">
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center">
-                        <!-- Invoice no. -->
-                        <StackPanel Orientation="Vertical"
-                                Margin="10">
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <!-- Total Cost -->
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Vertical"
+                                    Margin="10">
                             <Label Content="Total Cost:" 
                                Margin="-3 0 0 -7"/>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="£" />
-                                <TextBlock Text="1000.00" />
+                                <TextBlock Text="{Binding TotalCost}" />
                             </StackPanel>
                         </StackPanel>
 
-                        <!-- Date -->
-                        <StackPanel Orientation="Vertical"
-                                Margin="10">
+                        <!-- Total Profit -->
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Vertical"
+                                    Margin="10">
                             <Label Content="Total Profit:" 
                                Margin="-3 0 0 -7"/>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="£" />
-                                <TextBlock Text="1000.00" />
+                                <TextBlock Text="{Binding TotalProfit}" />
                             </StackPanel>
                         </StackPanel>
 
-                        <!-- Time -->
-                        <StackPanel Orientation="Vertical"
-                                Margin="10">
+                        <!-- Total -->
+                        <StackPanel Grid.Column="2"
+                                    Orientation="Vertical"
+                                    Margin="10">
                             <Label Content="Total:" 
                                Margin="-3 0 0 -7"/>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="£" />
-                                <TextBlock Text="1000.00" />
+                                <TextBlock Text="{Binding SaleTotal}" />
                             </StackPanel>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </materialDesign:Card>
-
+                
+                <!-- Payment Method -->
                 <materialDesign:Card Grid.Row="2"
                                      Margin="0 5 5 0"
                                      UniformCornerRadius="15">
 
-                    <Grid>
+                    <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -195,38 +214,41 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0"
+                        <!-- Lable -->
+                        <TextBlock Grid.Row="0"
                                        Grid.ColumnSpan="3"
                                        HorizontalAlignment="Center"
-                                       Text="Payment type"
+                                       Text="Payment Method"
                                        FontSize="16"/>
 
-                        
+
                         <TextBox Grid.Column="0" Grid.Row="1" 
-                                 materialDesign:HintAssist.Hint="Cost"
+                                 FontSize="18"
+                                 materialDesign:HintAssist.Hint="card"
                                  Style="{StaticResource floatingHintBox}"
-                                 Text="1000.00"
+                                 materialDesign:TextFieldAssist.PrefixText="£"
+                                 Text="{Binding Card, Mode=TwoWay}"
                                  VerticalAlignment="Center" 
                                  HorizontalAlignment="Center"/>
 
                         <TextBox Grid.Column="1" Grid.Row="1"
-                                 materialDesign:HintAssist.Hint="Cost"
+                                 FontSize="18"
+                                 materialDesign:HintAssist.Hint="Cash"
                                  Style="{StaticResource floatingHintBox}"
-                                 Text="1000.00"
+                                 materialDesign:TextFieldAssist.PrefixText="£"
+                                 Text="{Binding Cash, Mode=TwoWay}"
                                  VerticalAlignment="Center" 
                                  HorizontalAlignment="Center"/>
 
                         <TextBox Grid.Column="2" Grid.Row="1"
-                                 materialDesign:HintAssist.Hint="Cost"
+                                 FontSize="18"
+                                 materialDesign:HintAssist.Hint="Credit"
                                  Style="{StaticResource floatingHintBox}"
-                                 Text="1000.00"
+                                 materialDesign:TextFieldAssist.PrefixText="£"
+                                 Text="{Binding Credit, Mode=TwoWay}"
                                  VerticalAlignment="Center" 
                                  HorizontalAlignment="Center"/>
-
-
-
                     </Grid>
-
                 </materialDesign:Card>
             </Grid>
 
@@ -241,7 +263,7 @@
                                       UniformCornerRadius="15">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="270" />
+                            <RowDefinition Height="466" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <ListBox Grid.Row="0" HorizontalContentAlignment="Stretch"
@@ -274,8 +296,9 @@
                                                      VerticalAlignment="Center" />
 
                                             <!-- Department -->
-                                            <ComboBox Grid.Column="1" materialDesign:HintAssist.Hint="Department"
-                                                      />
+                                            <ComboBox Grid.Column="1" 
+                                                      materialDesign:HintAssist.Hint="Department"
+                                                      Margin="10 12 0 0"/>
                                         </Grid>
 
                                         <!-- Description -->
@@ -393,6 +416,7 @@
                             <Button Content="Close"
                                     materialDesign:ButtonAssist.CornerRadius="15"
                                     Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                                    Command="{Binding CloseCommand}"
                                     Width="80"
                                     Margin="5 0" />
                         </StackPanel>
@@ -402,4 +426,4 @@
         </Grid>
     </Grid>
     
-</Window>
+</UserControl>

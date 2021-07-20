@@ -1,9 +1,12 @@
 
-﻿using DesktopUI.Models;
+using DesktopUI.Components;
+using DesktopUI.Models;
+using DesktopUI.Services;
+using DesktopUI.Stores;
 using DesktopUI.ViewModels;
 using DesktopUI.Views;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -19,61 +22,119 @@ namespace DesktopUI
     /// </summary>
     public partial class App : Application
     {
-        private readonly IHost _host;
+        private readonly IServiceProvider _serviceProvider;
 
         // Constructor
         public App()
         {
+            IServiceCollection services = new ServiceCollection();
+
+            services.AddSingleton<NavigationStore>();
+            services.AddSingleton<SaleStore>();
+            services.AddSingleton<ModalNavigationStore>();
+
+            services.AddSingleton<MainViewModel>();
+
+            services.AddSingleton<INavigationService>(s => CreateManualSaleNavigationService(_serviceProvider));
+
+            // register ViewModels
+            services.AddTransient<ManualSaleViewModel>(s => new ManualSaleViewModel(CreateBankingNavigationService(s)));
+            services.AddTransient<BankingViewModel>(s => new BankingViewModel(CreateEditSaleNavigationService(s),
+                s.GetRequiredService<SaleStore>()));
+
+
+            services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(CreateCloseModalNavigationService(s),
+                s.GetRequiredService<SaleStore>()));
+
+            services.AddSingleton<MainView>(s => new MainView()
+            {
+                DataContext = s.GetRequiredService<MainViewModel>()
+            });
+
+            _serviceProvider = services.BuildServiceProvider();
+
             CultureInfo ci = CultureInfo.CreateSpecificCulture(CultureInfo.CurrentCulture.Name);
             ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
             Thread.CurrentThread.CurrentCulture = ci;
-
-
-            _host = Host.CreateDefaultBuilder()
-                .ConfigureServices((context, services) =>
-                {
-                    ConfigureServices(services);
-                })
-                .Build();
         }
 
-        private void ConfigureServices(IServiceCollection services)
+        // Startup Ovverride
+        protected override void OnStartup(StartupEventArgs e)
         {
-            services.AddSingleton<MainView>();
-            services.AddSingleton<EditSaleView>();
-        }
-
-        protected override async void OnStartup(StartupEventArgs e)
-        {
-            await _host.StartAsync();
+            INavigationService initialNavigationService = _serviceProvider.GetRequiredService<INavigationService>();
+            initialNavigationService.Navigate();
 
             // Launch Main Window at the start of the app
-            var mainView = _host.Services.GetRequiredService<MainView>();
-            mainView.Show();
+            MainWindow = _serviceProvider.GetRequiredService<MainView>();
+            MainWindow.Show();
 
-            // Select all the text in a TextBox when it receives focus.
-            EventManager.RegisterClassHandler(typeof(TextBox), TextBox.PreviewMouseLeftButtonDownEvent,
-                new MouseButtonEventHandler(SelectivelyIgnoreMouseButton));
-            EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotKeyboardFocusEvent,
-                new RoutedEventHandler(SelectAllText));
-            EventManager.RegisterClassHandler(typeof(TextBox), TextBox.MouseDoubleClickEvent,
-                new RoutedEventHandler(SelectAllText));
+            SelectAllTextInTextBox();
 
-            // Select the item in a ListBox when clicked on any controles within that item.
-            EventManager.RegisterClassHandler(typeof(ListBoxItem), ListBoxItem.PreviewGotKeyboardFocusEvent,
-                new RoutedEventHandler((x, _) => (x as ListBoxItem).IsSelected = true));
+            SelectItemInListBox();
 
             base.OnStartup(e);
         }
 
-        protected override async void OnExit(ExitEventArgs e)
+        // Navigation Bar View Model
+        private NavigationBarViewModel CreateNavigationBarViewModel(IServiceProvider serviceProvider)
         {
-            using (_host)
-            {
-                await _host.StopAsync();
-            }
+            return new NavigationBarViewModel(
+                CreateManualSaleNavigationService(serviceProvider),
+                CreateBankingNavigationService(serviceProvider));
+        }
 
-            base.OnExit(e);
+        // Manual Sale Navigation Service
+        private INavigationService CreateManualSaleNavigationService(IServiceProvider serviceProvider)
+        {
+            return new LayoutNavigationService<ManualSaleViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                () => CreateNavigationBarViewModel(serviceProvider),
+                () => serviceProvider.GetRequiredService<ManualSaleViewModel>());
+        }
+
+        // Banking Navigation Service
+        private INavigationService CreateBankingNavigationService(IServiceProvider serviceProvider)
+        {
+            return new LayoutNavigationService<BankingViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                () => CreateNavigationBarViewModel(serviceProvider),
+                () => new BankingViewModel(CreateEditSaleNavigationService(serviceProvider),
+                serviceProvider.GetRequiredService<SaleStore>()));
+        }
+
+        // Edit Sale Navigation Service
+        private INavigationService CreateEditSaleNavigationService(IServiceProvider serviceProvider)
+        {
+            return new ModalNavigationService<EditSaleViewModel>(
+                serviceProvider.GetRequiredService<ModalNavigationStore>(),
+                () => new EditSaleViewModel(CreateCloseModalNavigationService(serviceProvider),
+                serviceProvider.GetRequiredService<SaleStore>()));
+        }
+
+        // Close Modal Navigation Service
+        private INavigationService CreateCloseModalNavigationService(IServiceProvider serviceProvider)
+        {
+            ModalNavigationStore modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
+
+            return new CloseModalNavigationService(modalNavigationStore);
+        }
+
+        // Select the item in a ListBox when clicked on any controles within that item.
+        private static void SelectItemInListBox()
+        {
+            EventManager.RegisterClassHandler(typeof(ListBoxItem), ListBoxItem.PreviewGotKeyboardFocusEvent,
+                            new RoutedEventHandler((x, _) => (x as ListBoxItem).IsSelected = true));
+        }
+
+        // Select all the text in a TextBox when it receives focus.
+        private void SelectAllTextInTextBox()
+        {
+            EventManager.RegisterClassHandler(typeof(TextBox), TextBox.PreviewMouseLeftButtonDownEvent,
+                            new MouseButtonEventHandler(SelectivelyIgnoreMouseButton));
+            EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotKeyboardFocusEvent,
+                new RoutedEventHandler(SelectAllText));
+            EventManager.RegisterClassHandler(typeof(TextBox), TextBox.MouseDoubleClickEvent,
+                new RoutedEventHandler(SelectAllText));
         }
 
         void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)

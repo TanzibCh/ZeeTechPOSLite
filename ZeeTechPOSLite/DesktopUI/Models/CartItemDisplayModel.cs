@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DesktopUI.Models
 {
-    public class CartItemDisplayModel : ICartItemDisplayModel
+    public class CartItemDisplayModel
     {
         public ProductModel Product { get; set; }
         public int Quantity { get; set; }

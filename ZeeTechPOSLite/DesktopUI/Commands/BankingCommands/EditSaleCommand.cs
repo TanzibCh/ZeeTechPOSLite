@@ -5,31 +5,39 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using DesktopUI.Models;
+using DesktopUI.Services;
+using DesktopUI.Stores;
 
 namespace DesktopUI.Commands.BankingCommands
 {
-    public class EditSaleCommand : ICommand
+    public class EditSaleCommand : CommandBase
     {
-        public BankingViewModel BankingVM { get; set; }
+        private readonly SaleStore _saleStore;
+        private readonly BankingViewModel _bankingViewModel;
+        private readonly INavigationService _navigationService;
 
-        public EditSaleCommand(BankingViewModel bankingVM)
+        public EditSaleCommand(INavigationService navigationService, SaleStore saleStore,
+            BankingViewModel bankingViewModel)
         {
-            BankingVM = bankingVM;
+            _navigationService = navigationService;
+            _saleStore = saleStore;
+            _bankingViewModel = bankingViewModel;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
+        public override void Execute(object parameter)
         {
-            return true;
-        }
+            if (_bankingViewModel.SelectedSale == null)
+            {
+                MessageBox.Show("Select a Sale to edit first.");
+            }
+            else
+            {
+                var selectedSale = _bankingViewModel.SelectedSale;
+                _saleStore.SelectedSale = selectedSale;
 
-        public void Execute(object parameter)
-        {
-            SaleDisplayModel sale = BankingVM.SelectedSale;
-            EditSaleViewModel editSaleVM = new EditSaleViewModel(sale.Id);
-
-            Window win = new Window
+                _navigationService.Navigate();
+            }
+            
         }
     }
 }

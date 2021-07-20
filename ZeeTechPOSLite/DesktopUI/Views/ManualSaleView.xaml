@@ -10,16 +10,17 @@
              TextElement.FontWeight="Medium"
              TextElement.FontSize="14"
              FontFamily="{materialDesign:MaterialDesignFont}"
-             xmlns:local="clr-namespace:DesktopUI.Views"
+             xmlns:local="clr-namespace:DesktopUI.Views" 
+             xmlns:components="clr-namespace:DesktopUI.Components"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1700" >
 
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type viewModel:ManualSaleViewModel}">
+        <!--<DataTemplate DataType="{x:Type viewModel:ManualSaleViewModel}">
             <local:ManualSaleView/>
-        </DataTemplate>
+        </DataTemplate>-->
 
-        <viewModel:ManualSaleViewModel x:Key="SaleVM" />
+        <!--<viewModel:ManualSaleViewModel x:Key="SaleVM" />-->
 
         <Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
             <Setter Property="FontSize" Value="25" />
@@ -34,7 +35,8 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="10" DataContext="{StaticResource SaleVM}">
+    <Grid Margin="10">
+        <!--DataContext="{StaticResource SaleVM}"-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -45,9 +47,15 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <TextBlock Text="New Sale"
-                   FontSize="40"/>
-        
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="New Sale"
+                       FontSize="40"/>
+
+            <Button Margin="10 0" 
+                    Content="Sale"
+                    Command="{Binding NavigateBankingCommand}"/>
+        </StackPanel>
+
         <!--#region Product Entry-->
         <Grid Grid.Column="0" Grid.Row="2">
             <Grid.RowDefinitions>
@@ -347,7 +355,7 @@
                                     <!-- Edit Button -->
                                     <Button Grid.Column="5" Grid.Row="0"
                                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                            Command="{Binding EditCartItem, Source={StaticResource SaleVM}}"
+                                            Command="{Binding EditCartItem}"
                                             Width="50">
                                         <StackPanel>
                                             <materialDesign:PackIcon Kind="BoxEditOutline"
@@ -355,11 +363,11 @@
                                                                      Width="20"/>
                                         </StackPanel>
                                     </Button>
-                                    
+
                                     <!-- Remove Button -->
                                     <Button Grid.Column="5" Grid.Row="1"
                                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                            Command="{Binding RemoveFromCart, Source={StaticResource SaleVM}}"
+                                            Command="{Binding RemoveFromCart}"
                                             Width="50"
                                             Content="X"/>
 

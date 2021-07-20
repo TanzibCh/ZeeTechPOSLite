@@ -21,9 +21,7 @@ namespace DesktopUI.Views
     {
         public ManualSaleView()
         {
-
             InitializeComponent();
-            this.DataContext = new ManualSaleViewModel();
         }
     }
 }

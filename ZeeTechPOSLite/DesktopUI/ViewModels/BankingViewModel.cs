@@ -1,9 +1,12 @@
 ﻿using DataAccessLibrary.DataAccess.ExpenseQueries;
 using DataAccessLibrary.DataAccess.SalesQueries;
 using DataAccessLibrary.Models;
+using DesktopUI.Commands;
 using DesktopUI.Commands.BankingCommands;
 using DesktopUI.Helpers;
 using DesktopUI.Models;
+using DesktopUI.Services;
+using DesktopUI.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,10 +14,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 
 namespace DesktopUI.ViewModels
 {
-    public class BankingViewModel : INotifyPropertyChanged
+    public class BankingViewModel : ViewModelBase
     {
         #region private Properties
 
@@ -27,6 +31,7 @@ namespace DesktopUI.ViewModels
 
         private int _selectedExpenseId;
         private CurrencyHelper _currencyHelper = new CurrencyHelper();
+        private readonly NavigationStore _navigationStore;
 
         #endregion
 
@@ -458,18 +463,19 @@ namespace DesktopUI.ViewModels
 
         #region Commands Properties
 
+        public ICommand NavigateManualSaleCommand { get; }
         public AddExpenseCommand AddExpense { get; set; }
         public EditExpenseCommand EditExpense { get; set; }
         public RemoveExpenseCommand RemoveExpense { get; set; }
         public ClearExpenseCommand ClearExpense { get; set; }
-        public EditSaleCommand EditSale { get; set; }
+        public ICommand EditSale { get; }
 
         #endregion
 
         // Default Constructor
         #region Constructor
 
-        public BankingViewModel()
+        public BankingViewModel(INavigationService editSaleNavigationService, SaleStore saleStore)
         {
             SelectedDate = DateTime.UtcNow.Date;
             ExpenseLable = "New Expense";
@@ -483,10 +489,10 @@ namespace DesktopUI.ViewModels
 
             // Commands
             AddExpense = new AddExpenseCommand(this);
-            EditExpense = new EditExpenseCommand(this);
+            //EditExpense = new EditExpenseCommand(this);
             RemoveExpense = new RemoveExpenseCommand(this);
             ClearExpense = new ClearExpenseCommand(this);
-            EditSale = new EditSaleCommand(this);
+            EditSale = new EditSaleCommand(editSaleNavigationService, saleStore, this);
 
             // Populate Sale and Expenses ListBoxes
             LoadSales();
@@ -627,7 +633,7 @@ namespace DesktopUI.ViewModels
         {
             _selectedExpenseId = SelectedExpense.Id;
 
-            // Setup fileds for edit
+            // Setup fields for edit
             ExpenseLable = "Edit Expense";
             ExpenseButtonContent = "Update";
             CardExpense = _currencyHelper.RemoveCurrencyFromString(SelectedExpense.Card);
@@ -668,20 +674,6 @@ namespace DesktopUI.ViewModels
         public void NextDay()
         {
 
-        }
-
-        #endregion
-
-        #region INotifyPropertyChanged implimentation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         #endregion

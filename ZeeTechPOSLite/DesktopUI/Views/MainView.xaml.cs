@@ -21,7 +21,6 @@ namespace DesktopUI.Views
         public MainView()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
         }
     }
 }

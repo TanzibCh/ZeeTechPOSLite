@@ -1,4 +1,5 @@
 ﻿using DesktopUI.Commands.NavigationCommands;
+using DesktopUI.Stores;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,66 +7,31 @@ using System.Text;
 
 namespace DesktopUI.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : ViewModelBase
     {
-        #region Private Properties
+        private readonly NavigationStore _navigationStore;
+        private readonly ModalNavigationStore _modalNavigationStrore;
+        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+        public ViewModelBase CurrentModalViewModel => _modalNavigationStrore.CurrentViewModel;
+        public bool IsModalOpen => _modalNavigationStrore.IsOpen;
 
-        private object _selectedViewModel;
-        #endregion
-
-        #region Construtors
-        public MainViewModel()
+        public MainViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStrore = null)
         {
-            SelectedViewModel = new ManualSaleViewModel();
-
-            OpenManualSales = new OpenManualSalesCommand(this);
-
-            OpenBanking = new OpenBankingCommand(this);
-        }
-        #endregion
-
-        #region Public Properties
-        public object SelectedViewModel
-        {
-            get { return _selectedViewModel; }
-            set
-            {
-                _selectedViewModel = value;
-                OnPropertyChanged(nameof(SelectedViewModel));
-            }
+            _navigationStore = navigationStore;
+            _modalNavigationStrore = modalNavigationStrore;
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+            _modalNavigationStrore.CurrentViewModelChanged += OnCurrentModalViewModelChanged;
         }
 
-        public OpenManualSalesCommand OpenManualSales { get; set; }
-
-        public OpenBankingCommand OpenBanking { get; set; }
-
-        #endregion
-
-        #region Methods
-        public void OpenManualSalesPage()
+        private void OnCurrentModalViewModelChanged()
         {
-            SelectedViewModel = new ManualSaleViewModel();
+            OnPropertyChanged(nameof(CurrentModalViewModel));
+            OnPropertyChanged(nameof(IsModalOpen));
         }
 
-        public void OpenBankingPage()
+        private void OnCurrentViewModelChanged()
         {
-            SelectedViewModel = new BankingViewModel();
+            OnPropertyChanged(nameof(CurrentViewModel));
         }
-
-        #endregion
-
-        #region INotifyPropertyChanged implimentation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
     }
 }

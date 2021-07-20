@@ -10,127 +10,36 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         xmlns:viewModel="clr-namespace:DesktopUI.ViewModels"
-        xmlns:local="clr-namespace:DesktopUI.Views"
+        xmlns:local="clr-namespace:DesktopUI.Views" 
+        xmlns:components="clr-namespace:DesktopUI.Components"
+        xmlns:custom="clr-namespace:ModalControl;assembly=ModalControl"
+        d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
         mc:Ignorable="d"
         Title="MainView" Height="1000" Width="1700" MinHeight="800" MinWidth="1400" WindowStartupLocation="CenterScreen">
 
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type viewModel:ManualSaleViewModel}">
-            <local:ManualSaleView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:BankingViewModel}" >
-            <local:BankingView />
-        </DataTemplate>
-
-        <viewModel:MainViewModel x:Key="mainVM" />
-    </Window.Resources>
-    
-    <Grid DataContext="{StaticResource mainVM}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
+    <Grid>
         <Grid.Resources>
-            <Style TargetType="materialDesign:PackIcon">
-                <Setter Property="Width" Value="30" />
-                <Setter Property="Height" Value="30" />
-                <Setter Property="HorizontalAlignment" Value="Center" />
-            </Style>
+            <DataTemplate DataType="{x:Type viewModel:BankingViewModel}">
+                <local:BankingView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:ManualSaleViewModel}">
+                <local:ManualSaleView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:EditSaleViewModel}">
+                <local:EditSaleView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:LayoutViewModel}">
+                <components:Layout />
+            </DataTemplate>
         </Grid.Resources>
-
-        <materialDesign:ColorZone Grid.Column="0"
-                                  VerticalAlignment="Stretch"
-                                  Mode="PrimaryDark">
-            <!-- Sale -->
-            <StackPanel >
-                <StackPanel Margin="0 80 0 10">
-                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
-                            Height="60"
-                        
-                        ToolTip="New Sale"
-                        Command="{Binding OpenManualSales}">
-
-                        <materialDesign:PackIcon Kind="Cart" 
-                                             Width="30"
-                                             Height="30"/>
-                    </Button>
-                </StackPanel>
-
-                <!-- Search -->
-                <StackPanel Margin="0 10">
-                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
-                            Height="60"
-                        ToolTip="Sale Search">
-                        <materialDesign:PackIcon Kind="TextBoxSearchOutline" 
-                                             Width="30"
-                                             Height="30"/>
-                    </Button>
-                </StackPanel>
-
-                <!-- Products -->
-                <StackPanel Margin="0 10">
-                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
-                            Height="60"
-                        ToolTip="Products">
-                        <materialDesign:PackIcon Kind="ArchiveStarOutline" 
-                                             Width="30"
-                                             Height="30"/>
-                    </Button>
-                </StackPanel>
-
-                <!-- Products Search -->
-                <StackPanel Margin="0 10">
-                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
-                            Height="60"
-                        ToolTip="Product search">
-                        <materialDesign:PackIcon Kind="ArchiveSearchOutline" 
-                                             Width="30"
-                                             Height="30"/>
-                    </Button>
-                </StackPanel>
-
-                <!-- Banking -->
-                <StackPanel Margin="0 10">
-                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
-                            Height="60"
-                        ToolTip="Banking"
-                        Command="{Binding OpenBanking}">
-                        <materialDesign:PackIcon Kind="Bank" 
-                                             Width="30"
-                                             Height="30"/>
-                    </Button>
-                </StackPanel>
-
-                <StackPanel Margin="0 10">
-                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
-                            Height="60"
-                        ToolTip="Settings">
-                        <materialDesign:PackIcon Kind="Cog" 
-                                             Width="30"
-                                             Height="30"/>
-                    </Button>
-                </StackPanel>
-
-            </StackPanel>
-        </materialDesign:ColorZone>
-
-
         
+        <custom:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
+            <ContentControl Content="{Binding CurrentModalViewModel}" />
+        </custom:Modal>
 
-        <Grid Grid.Column="1">
-
-            <Grid.Resources>
-                <Style TargetType="materialDesign:PackIcon">
-                    <Setter Property="Width" Value="20" />
-                    <Setter Property="Height" Value="20" />
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                </Style>
-            </Grid.Resources>
-
-            <ContentControl Content="{Binding SelectedViewModel}"/>
-        </Grid>
+        <ContentControl Content="{Binding CurrentViewModel}"/>
     </Grid>
-        
-        
 </Window>

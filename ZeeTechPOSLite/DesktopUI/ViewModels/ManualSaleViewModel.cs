@@ -8,10 +8,14 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using DataAccessLibrary.DataAccess.SalesQueries;
+using System.Windows.Input;
+using DesktopUI.Commands;
+using DesktopUI.Stores;
+using DesktopUI.Services;
 
 namespace DesktopUI.ViewModels
 {
-    public class ManualSaleViewModel : INotifyPropertyChanged, IManualSaleViewModel
+    public class ManualSaleViewModel : ViewModelBase
     {
         #region Private properties
 
@@ -167,6 +171,9 @@ namespace DesktopUI.ViewModels
         #region Command Properties
 
         // Command Properties
+
+        public ICommand NavigateBankingCommand { get; }
+
         public AddManualProductCommand AddManualProduct { get; set; }
         public PayCommand Pay { get; set; }
 
@@ -364,8 +371,10 @@ namespace DesktopUI.ViewModels
 
         #region Constructor
 
-        public ManualSaleViewModel()
+        public ManualSaleViewModel(INavigationService bankingNavigateService)
         {
+            NavigateBankingCommand = new NavigateCommand(bankingNavigateService);
+
             SaleDate = DateTime.Now.ToString("dd,MM,yyyy");
             CurrentTime = DateTime.UtcNow.ToString("hh:mm:ss");
 
