@@ -36,10 +36,10 @@ namespace DesktopUI.Helpers
         public decimal ConvertCurrencyStringToDecimal(string stringValue)
         {
             // TODO - Refactor to remove the use of the if statement
-            if (stringValue.StartsWith("£"))
-            {
-                stringValue = stringValue.Remove(0, 1);
-            }
+            //if (stringValue.StartsWith("£"))
+            //{
+            //    stringValue = stringValue.Remove(0, 1);
+            //}
 
             decimal decimalValue = Convert.ToDecimal(stringValue);
 

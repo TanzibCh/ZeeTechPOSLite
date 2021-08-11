@@ -29,10 +29,13 @@ namespace DesktopUI
         {
             IServiceCollection services = new ServiceCollection();
 
+            // Stores
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<SaleStore>();
+            services.AddSingleton<ProductStore>();
             services.AddSingleton<ModalNavigationStore>();
 
+            // Main window
             services.AddSingleton<MainViewModel>();
 
             services.AddSingleton<INavigationService>(s => CreateManualSaleNavigationService(_serviceProvider));
@@ -43,7 +46,8 @@ namespace DesktopUI
                 s.GetRequiredService<SaleStore>()));
 
 
-            services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(CreateCloseModalNavigationService(s),
+            services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(
+                CreateCloseModalNavigationService(s),
                 s.GetRequiredService<SaleStore>()));
 
             services.AddSingleton<MainView>(s => new MainView()
@@ -111,6 +115,13 @@ namespace DesktopUI
                 serviceProvider.GetRequiredService<SaleStore>()));
         }
 
+        // Edit SAle Product Navigation Service
+        private INavigationService CreateEditProductNavigationService(IServiceProvider serviceProvider)
+        {
+            return new ModalNavigationService<EditSaleProductViewModel>(
+                serviceProvider.GetRequiredService<ModalNavigationStore>(),
+                () => new EditSaleProductViewModel(CreateCloseModalNavigationService(serviceProvider)));
+        }
         // Close Modal Navigation Service
         private INavigationService CreateCloseModalNavigationService(IServiceProvider serviceProvider)
         {

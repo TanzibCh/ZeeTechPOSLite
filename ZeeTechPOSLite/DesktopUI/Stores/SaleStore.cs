@@ -7,13 +7,6 @@ namespace DesktopUI.Stores
 {
     public class SaleStore
     {
-        //public event Action<int> SaleSelected;
-
-        //public void SelectedSaleId(int id)
-        //{
-        //    SaleSelected?.Invoke(id);
-        //}
-
         private SaleDisplayModel _selectedSale;
 
         public SaleDisplayModel SelectedSale
@@ -27,6 +20,5 @@ namespace DesktopUI.Stores
         }
 
         public event Action SelectedSaleChanged;
-
     }
 }

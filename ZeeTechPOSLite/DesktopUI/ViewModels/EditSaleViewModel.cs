@@ -1,12 +1,15 @@
 ﻿using DataAccessLibrary.DataAccess.SalesQueries;
 using DataAccessLibrary.Models;
 using DesktopUI.Commands;
+using DesktopUI.Commands.BankingCommands;
+using DesktopUI.Commands.EditSaleCommands;
 using DesktopUI.Helpers;
 using DesktopUI.Models;
 using DesktopUI.Services;
 using DesktopUI.Stores;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
@@ -19,10 +22,7 @@ namespace DesktopUI.ViewModels
 
         private SalesData _salesData = new SalesData();
         private SaleProductData _saleProductData = new SaleProductData();
-
         private CurrencyHelper _currencyHelper = new CurrencyHelper();
-
-        private int _saleId;
         private readonly SaleStore _saleStore;
 
         #endregion
@@ -41,7 +41,7 @@ namespace DesktopUI.ViewModels
 
         public string TotalCost
         {
-            get { return _saleStore.SelectedSale.TotalCost; }
+            get { return _totalCost; }
             set
             {
                 _totalCost = value;
@@ -49,17 +49,11 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private string _totalProfit;
 
         public string TotalProfit
         {
-            get
-            {
-                decimal total = _currencyHelper.ConvertCurrencyStringToDecimal(_saleStore.SelectedSale.SaleTotal);
-                decimal totalCost = _currencyHelper.ConvertCurrencyStringToDecimal(_saleStore.SelectedSale.TotalCost);
-                return _currencyHelper.ConvertDecimalToCurrencyString(total - totalCost);
-            }
+            get { return _totalProfit; }
             set
             {
                 _totalProfit = value;
@@ -67,19 +61,17 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
         private string _saleTotal;
 
         public string SaleTotal
         {
-            get { return _saleStore.SelectedSale.SaleTotal; }
+            get { return _saleTotal; }
             set 
             { 
                 _saleTotal = value;
                 OnPropertyChanged(nameof(SaleTotal));
             }
         }
-
 
         private string _card;
 
@@ -119,8 +111,7 @@ namespace DesktopUI.ViewModels
 
         #endregion
 
-        #region Sales Products Display properties
-
+        #region Sale Products Display properties
 
         private BindingList<SaleProductDisplayModel> _saleProducts;
 
@@ -131,55 +122,56 @@ namespace DesktopUI.ViewModels
             {
                 _saleProducts = value;
                 OnPropertyChanged(nameof(SaleProducts));
+
             }
         }
 
-        private string _name;
+        private string _productName;
 
-        public string Name
+        public string ProductName
         {
-            get { return _name; }
-            set 
-            { 
-                _name = value;
-                OnPropertyChanged(nameof(Name));
+            get { return _productName; }
+            set
+            {
+                _productName = value;
+                OnPropertyChanged(nameof(ProductName));
             }
         }
 
-        private string _description;
+        private string _productDescription;
 
-        public string Description
+        public string ProductDescription
         {
-            get { return _description; }
-            set 
-            { 
-                _description = value;
-                OnPropertyChanged(nameof(Description));
+            get { return _productDescription; }
+            set
+            {
+                _productDescription = value;
+                OnPropertyChanged(nameof(ProductDescription));
             }
         }
 
-        private string _quantity;
+        private int _quantitySold;
 
-        public string Quantity
+        public int QuantitySold
         {
-            get { return _quantity; }
+            get { return _quantitySold; }
             set 
-            { 
-                _quantity = value;
-                OnPropertyChanged(nameof(Quantity));
+            {
+                _quantitySold = value;
+                OnPropertyChanged(nameof(QuantitySold));
                 CalculateProductTotal();
             }
         }
 
-        private string _Cost;
+        private string _productCost;
 
-        public string Cost
+        public string ProductCost
         {
-            get { return _Cost; }
+            get { return _productCost; }
             set
             {
-                _Cost = value;
-                OnPropertyChanged(nameof(Cost));
+                _productCost = value;
+                OnPropertyChanged(nameof(ProductCost));
             }
         }
 
@@ -212,9 +204,90 @@ namespace DesktopUI.ViewModels
 
         #endregion
 
-        #region
+        #region Edit Product Properties
+
+        private ObservableCollection<DepartmantModel> _departments;
+
+        public ObservableCollection<DepartmantModel> Departments
+        {
+            get { return _departments; }
+            set 
+            {
+                _departments = value;
+                OnPropertyChanged(nameof(Departments));
+            }
+        }
+
+        private string _editName;
+
+        public string EditName
+        {
+            get { return _editName; }
+            set
+            {
+                _editName = value;
+                OnPropertyChanged(nameof(EditName));
+            }
+        }
+
+        private string _editDescription;
+
+        public string EditDescription
+        {
+            get { return _editDescription; }
+            set
+            {
+                _editDescription = value;
+                OnPropertyChanged(nameof(EditDescription));
+            }
+        }
+
+        private string _editCost;
+
+        public string EditCost
+        {
+            get { return _editCost; }
+            set
+            {
+                _editCost = value;
+                OnPropertyChanged(nameof(EditCost));
+            }
+        }
+
+        private string _editPrice;
+
+        public string EditPrice
+        {
+            get { return _editPrice; }
+            set
+            {
+                _editPrice = value;
+                OnPropertyChanged(nameof(EditPrice));
+            }
+        }
+
+        private int _editQuantity;
+
+        public int EditQuantity
+        {
+            get { return _editQuantity; }
+            set
+            {
+                _editQuantity = value;
+                OnPropertyChanged(nameof(EditQuantity));
+            }
+        }
+
+        public int SelectedProductIndex { get; }
+
+        #endregion
+
+        #region Command Properties
 
         public ICommand CloseCommand { get; }
+        public ICommand EditProductCommand { get; }
+        public ICommand CancelEditProductCoomand { get; }
+        public ICommand UpdateEditProductCommand { get; }
 
         #endregion
 
@@ -225,70 +298,116 @@ namespace DesktopUI.ViewModels
         {
             _saleStore = saleStore;
 
+            Departments = new ObservableCollection<DepartmantModel>()
+            {
+                new DepartmantModel(){ DepartmentName = "Mobile"},
+                new DepartmantModel(){ DepartmentName = "Computer"},
+                new DepartmantModel(){ DepartmentName = "Camera"},
+                new DepartmantModel(){ DepartmentName = "Home"},
+                new DepartmantModel(){ DepartmentName = "AV"},
+                new DepartmantModel(){ DepartmentName = "Repair"}
+            };
+            
+            // Commands
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
+            EditProductCommand = new EditProductCommand(this);
+            CancelEditProductCoomand = new CancelEditProductCommand(this);
 
-            _saleStore.SelectedSaleChanged += OnSelectedSaleChanged;
-
-            _card = _saleStore.SelectedSale.Card;
-            _cash = _saleStore.SelectedSale.Cash;
-            _credit = _saleStore.SelectedSale.Credit;
-
-            //LoadSale(_id);
-        }
-
-        private void OnSelectedSaleChanged()
-        {
-            OnPropertyChanged(nameof(Id));
-            OnPropertyChanged(nameof(InvoiceNo));
-            OnPropertyChanged(nameof(InvoiceDate));
-            OnPropertyChanged(nameof(InvoiceTime));
-            OnPropertyChanged(nameof(TotalCost));
-            OnPropertyChanged(nameof(SaleTotal));
-
-            OnPropertyChanged(nameof(Card));
+            LoadSale();
+            LoadSoldProducts();
         }
 
         #endregion
 
         #region Methods 
 
+        public void SetupProductToEdit()
+        {
+            int index = SaleProducts.IndexOf(SelectedProduct);
+
+            EditName = SelectedProduct.ProductName;
+            EditDescription = SelectedProduct.ProductDescription;
+            EditCost = SelectedProduct.ProductCost;
+            EditPrice = SelectedProduct.SalePrice;
+            EditQuantity = SelectedProduct.QuantitySold;
+        }
+
+        public void CancelEditProduct()
+        {
+            EditName = null;
+            EditDescription = null;
+            EditCost = null;
+            EditPrice = null;
+            EditQuantity = 0;
+        }
+
+        public void UpdateSoldProduct()
+        {
+            int index = SaleProducts.IndexOf(SelectedProduct);
+
+            SaleProducts[index].ProductName = ProductName;
+            SaleProducts[index].ProductDescription = ProductDescription;
+            SaleProducts[index].SalePrice = SalePrice;
+            SaleProducts[index].ProductCost = ProductCost;
+            SaleProducts[index].QuantitySold = QuantitySold;
+            SaleProducts[index].Total = _currencyHelper.ConvertDecimalToCurrencyString(
+                QuantitySold * _currencyHelper.ConvertCurrencyStringToDecimal(SalePrice));
+        }
+
         private void CalculateProductTotal()
         {
             decimal quantity = Convert.ToDecimal(SelectedProduct.QuantitySold);
             decimal salePrice = _currencyHelper.ConvertCurrencyStringToDecimal(SelectedProduct.SalePrice);
 
-           Total = _currencyHelper.ConvertDecimalToCurrencyString(quantity * salePrice);
+            SelectedProduct.Total = _currencyHelper.ConvertDecimalToCurrencyString(quantity * salePrice);
+
+            var test = SaleProducts.IndexOf(SelectedProduct);
         }
 
-        private void LoadSale(int saleId)
+        private void LoadSale()
         {
-            SaleModel sale = _salesData.GetSaleById(saleId);
-
             // insert data to all the fields
-            //InvoiceNo = sale.InvoiceNo;
-            //InvoiceDate = sale.SaleDate;
-            //InvoiceTime = sale.SaleTime;
-            //TotalCost = _currencyHelper.ConvertIntToCurrencyString(sale.TotalCost);
-            //TotalProfit = _currencyHelper.ConvertIntToCurrencyString(sale.SaleTotal - sale.TotalCost);
-            //SaleTotal = _currencyHelper.ConvertIntToCurrencyString(sale.SaleTotal);
-            //Card = _currencyHelper.ConvertIntToCurrencyString(sale.Card);
-            //Cash = _currencyHelper.ConvertIntToCurrencyString(sale.Cash);
-            //Credit = _currencyHelper.ConvertIntToCurrencyString(sale.Credit);
+            _totalCost = _saleStore.SelectedSale.TotalCost;
+            _totalProfit = CalculateProfit();
+            _saleTotal = _saleStore.SelectedSale.SaleTotal;
+            _card = _saleStore.SelectedSale.Card;
+            _cash = _saleStore.SelectedSale.Cash;
+            _credit = _saleStore.SelectedSale.Credit;
         }
-        #endregion
 
-        #region INotifyPropertyChanged implimentation
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
+        private string CalculateProfit()
         {
-            if (PropertyChanged != null)
+            decimal total = _currencyHelper.ConvertCurrencyStringToDecimal(_saleStore.SelectedSale.SaleTotal);
+            decimal totalCost = _currencyHelper.ConvertCurrencyStringToDecimal(_saleStore.SelectedSale.TotalCost);
+            return _currencyHelper.ConvertDecimalToCurrencyString(total - totalCost);
+        }
+
+        private void LoadSoldProducts()
+        {
+            List<SaleProductModel> products = _saleProductData.GetSaleProductBySaleId(Id);
+
+            List<SaleProductDisplayModel> displayProducts = new List<SaleProductDisplayModel>();
+
+            foreach (var item in products)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                displayProducts.Add(new SaleProductDisplayModel
+                {
+                    Id = item.Id,
+                    SaleId = item.SaleId,
+                    ProductId = item.ProductId,
+                    ProductName = item.ProductName,
+                    ProductDescription = item.ProductDescription,
+                    ProductCost = _currencyHelper.ConvertIntToCurrencyString(item.ProductCost),
+                    SalePrice = _currencyHelper.ConvertIntToCurrencyString(item.SalePrice),
+                    QuantitySold = item.QuantitySold,
+                    Total = _currencyHelper.ConvertIntToCurrencyString(item.Total),
+                    Department = item.Department
+                });
+
+                SaleProducts = new BindingList<SaleProductDisplayModel>(displayProducts);
             }
         }
-
         #endregion
     }
 }
