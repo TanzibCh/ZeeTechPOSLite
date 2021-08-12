@@ -12,6 +12,68 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
         SQLiteDataAccess _db = new SQLiteDataAccess();
         private const string _connectionStringName = "SQLiteDB";
 
+        public void UpdateSale(SaleModel sale, List<SaleProductModel> saleProducts)
+        {
+            UpdateSaleDetails(sale);
+
+            UpdateSaleProducts(saleProducts, sale.Id);
+        }
+
+        private void UpdateSaleDetails(SaleModel sale)
+        {
+            string sql = @"UPDATE Sale
+                           SET Card = @card,
+                               Cash = @cash,
+                               Credit = @credit,
+                               SaleTotal = @saleTotal,
+                               Tax = @tax,
+                               TotalCost = @totalCost,
+                               Profit = @profit
+                           WHERE Id = @id";
+
+            _db.SaveData(sql, new 
+            {
+                card = sale.Card,
+                cash = sale.Cash,
+                credit = sale.Credit,
+                saleTotal = sale.SaleTotal,
+                tax = sale.Tax,
+                totalCost = sale.TotalCost,
+                profit = sale.Profit,
+                id = sale.Id
+            }, _connectionStringName);
+        }
+
+        private void UpdateSaleProducts(List<SaleProductModel> saleProducts, int saleId)
+        {
+            string sql = @"UPDATE SaleProduct
+                           SET ProductName = @productName,
+                               ProductDescription = @productDescription,
+                               Department = @department,
+                               SalePrice = @salePrice,
+                               ProductCost = @productCost,
+                               QuantitySold = @quantitySold,
+                               total = @total
+                           WHERE Id = @id;";
+
+
+
+            foreach (SaleProductModel product in saleProducts)
+            {
+                _db.SaveData(sql, new
+                {
+                    id = product.Id,
+                    productName = product.ProductName,
+                    productDescription = product.ProductDescription,
+                    department = product.Department,
+                    salePrice = product.SalePrice,
+                    productCost = product.ProductCost,
+                    quantitySold = product.QuantitySold,
+                    total = product.Total
+                }, _connectionStringName);
+            }
+        }
+
         public List<SaleModel> GetCashOnlySalesByDate(string selectedDate)
         {
             string sql = @"SELECT Id, InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly
@@ -24,7 +86,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             return sales;
         }
 
-        public List<SaleProductDBModel> GetSalesByDepartmentAndDate(string selectedDate, string departmentName)
+        public List<SaleProductModel> GetSalesByDepartmentAndDate(string selectedDate, string departmentName)
         {
             string sql = @"SELECT sp.SaleId, s.InvoiceNo, s.SaleDate, sp.ProductId, sp.ProductName,
                            sp.ProductDescription, sp.SalePrice, sp.ProductCost, sp.QuantitySold, sp.Department
@@ -33,7 +95,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                            WHERE s.SaleDate = @selectedDate
                            AND sp.Department = @departmentName;";
 
-            List<SaleProductDBModel> sales = _db.LoadData<SaleProductDBModel, dynamic>(sql, new { selectedDate, departmentName }, _connectionStringName);
+            List<SaleProductModel> sales = _db.LoadData<SaleProductModel, dynamic>(sql, new { selectedDate, departmentName }, _connectionStringName);
 
             return sales;
         }
@@ -58,7 +120,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             // Save the sale with the new Invoice Number
             SaveSaleDetails(saleInfo);
 
-            // Get the latest created Saleid
+            // Get the latest Saleid
             int saleId = GetLatestSaleId();
 
             // save the list of Sale Products with the newly created SaleId

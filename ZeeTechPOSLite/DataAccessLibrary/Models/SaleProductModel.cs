@@ -11,11 +11,11 @@ namespace DataAccessLibrary.Models
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
-        public int ProductCost { get; set; }
+        public string Department { get; set; }
         public int SalePrice { get; set; }
+        public int ProductCost { get; set; }
         public int QuantitySold { get; set; }
         public int Total { get; set; }
-        public string Department { get; set; }
-
+        public int IsActive { get; set; }
     }
 }

@@ -149,7 +149,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Mobile");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Mobile");
                 return sales.Sum(x => x.QuantitySold);
             }
         }
@@ -157,10 +157,10 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Mobile");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Mobile");
 
                 decimal total = 0.00m;
-                foreach (SaleProductDBModel item in sales)
+                foreach (SaleProductModel item in sales)
                 {
                     decimal Saleprice = Convert.ToDecimal(item.SalePrice);
                     decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
@@ -175,7 +175,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Computer");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Computer");
                 return sales.Sum(x => x.QuantitySold);
             }
         }
@@ -183,10 +183,10 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Computer");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Computer");
 
                 decimal total = 0.00m;
-                foreach (SaleProductDBModel item in sales)
+                foreach (SaleProductModel item in sales)
                 {
                     decimal Saleprice = Convert.ToDecimal(item.SalePrice);
                     decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
@@ -202,7 +202,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Camera");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Camera");
                 return sales.Sum(x => x.QuantitySold);
             }
         }
@@ -210,10 +210,10 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Camera");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Camera");
 
                 decimal total = 0.00m;
-                foreach (SaleProductDBModel item in sales)
+                foreach (SaleProductModel item in sales)
                 {
                     decimal Saleprice = Convert.ToDecimal(item.SalePrice);
                     decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
@@ -228,7 +228,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Home");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Home");
                 return sales.Sum(x => x.QuantitySold);
             }
         }
@@ -236,10 +236,10 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Home");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Home");
 
                 decimal total = 0.00m;
-                foreach (SaleProductDBModel item in sales)
+                foreach (SaleProductModel item in sales)
                 {
                     decimal Saleprice = Convert.ToDecimal(item.SalePrice);
                     decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
@@ -254,7 +254,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Repair");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Repair");
                 return sales.Sum(x => x.QuantitySold);
             }
         }
@@ -262,10 +262,10 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Repair");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Repair");
 
                 decimal total = 0.00m;
-                foreach (SaleProductDBModel item in sales)
+                foreach (SaleProductModel item in sales)
                 {
                     decimal Saleprice = Convert.ToDecimal(item.SalePrice);
                     decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
@@ -280,7 +280,7 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "AV");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "AV");
                 return sales.Sum(x => x.QuantitySold);
             }
         }
@@ -288,10 +288,10 @@ namespace DesktopUI.ViewModels
         {
             get
             {
-                List<SaleProductDBModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "AV");
+                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "AV");
 
                 decimal total = 0.00m;
-                foreach (SaleProductDBModel item in sales)
+                foreach (SaleProductModel item in sales)
                 {
                     decimal Saleprice = Convert.ToDecimal(item.SalePrice);
                     decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);

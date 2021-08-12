@@ -59,5 +59,17 @@ namespace DesktopUI.Helpers
 
             return intValue;
         }
+
+        public int ConvertDecimalToInt(decimal decimalValue)
+        {
+            int intValue = Convert.ToInt32(Math.Truncate(decimalValue * 100m));
+
+            return intValue;
+        }
+
+        public decimal CalculateTax(decimal decimalValue)
+        {
+            return decimalValue - (decimalValue / 1.2m);
+        }
     }
 }

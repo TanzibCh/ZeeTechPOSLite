@@ -594,7 +594,8 @@
                         Margin="5 0" />
                 <Button Content="Save"
                         Width="80"
-                        Margin="5 0" />
+                        Margin="5 0"
+                        Command="{Binding SaveChangesCommand}"/>
                 <Button Content="Close"
                         Style="{StaticResource AccentButton}"
                         Command="{Binding CloseCommand}"

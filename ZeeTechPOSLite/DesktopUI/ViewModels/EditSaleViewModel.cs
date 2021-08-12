@@ -128,8 +128,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        public string Total { get; set; }
-
         private SaleProductDisplayModel _selectedProduct;
 
         public SaleProductDisplayModel SelectedProduct
@@ -250,6 +248,7 @@ namespace DesktopUI.ViewModels
         public ICommand EditProductCommand { get; }
         public ICommand CancelEditProductCoomand { get; }
         public ICommand UpdateEditProductCommand { get; }
+        public ICommand SaveChangesCommand { get; }
 
         #endregion
 
@@ -275,6 +274,7 @@ namespace DesktopUI.ViewModels
             EditProductCommand = new EditProductCommand(this);
             CancelEditProductCoomand = new CancelEditProductCommand(this);
             UpdateEditProductCommand = new UpdateEditProductCommand(this);
+            SaveChangesCommand = new SaveChangesCommand(this);
 
             LoadSale();
             LoadSoldProducts();
@@ -283,6 +283,50 @@ namespace DesktopUI.ViewModels
         #endregion
 
         #region Methods
+
+        public void SaveChanges()
+        {
+            _salesData.UpdateSale(CreateSaleForUpdate(), CreateProductListForUpdate());
+        }
+
+        private List<SaleProductModel> CreateProductListForUpdate()
+        {
+            List<SaleProductModel> saleProducts = new List<SaleProductModel>();
+
+            foreach (SaleProductDisplayModel product in SaleProducts)
+            {
+                saleProducts.Add(new SaleProductModel
+                {
+                    Id = product.Id,
+                    ProductName = product.ProductName,
+                    ProductDescription = product.ProductDescription,
+                    Department = product.Department,
+                    SalePrice = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(product.SalePrice)),
+                    ProductCost = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(product.ProductCost)),
+                    Total = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(product.Total)),
+                    QuantitySold = product.QuantitySold
+                });
+            }
+
+            return saleProducts;
+        }
+
+        private SaleModel CreateSaleForUpdate()
+        {
+            SaleModel sale = new SaleModel
+            {
+                Id = Id,
+                Card = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(Card)),
+                Cash = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(Cash)),
+                Credit = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(Credit)),
+                SaleTotal = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(SaleTotal)),
+                Tax = _currencyHelper.ConvertDecimalToInt(_currencyHelper.CalculateTax(_currencyHelper.ConvertCurrencyStringToDecimal(SaleTotal))),
+                TotalCost = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(TotalCost)),
+                Profit = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(TotalProfit))
+            };
+
+            return sale;
+        }
 
         private DepartmantModel FindDepartment(string name)
         {
@@ -311,7 +355,7 @@ namespace DesktopUI.ViewModels
 
         public void UpdateSoldProduct()
         {
-            SaleProducts.Remove(SelectedProduct);
+            
 
             SaleProducts.Add(new SaleProductDisplayModel
             {
@@ -327,6 +371,8 @@ namespace DesktopUI.ViewModels
                 Total = _currencyHelper.ConvertDecimalToCurrencyString(
                 EditQuantity * _currencyHelper.ConvertCurrencyStringToDecimal(EditPrice))
             });
+
+            SaleProducts.Remove(SelectedProduct);
         }
 
         private void LoadSale()
