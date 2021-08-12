@@ -1,6 +1,4 @@
-﻿using DesktopUI.Services;
-using DesktopUI.Stores;
-using DesktopUI.ViewModels;
+﻿using DesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;

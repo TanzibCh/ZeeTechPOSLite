@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
@@ -36,6 +37,7 @@ namespace DesktopUI.ViewModels
         public string InvoiceDate => _saleStore.SelectedSale.SaleDate;
 
         public string InvoiceTime => _saleStore.SelectedSale.SaleTime;
+
 
         private string _totalCost;
 
@@ -113,9 +115,9 @@ namespace DesktopUI.ViewModels
 
         #region Sale Products Display properties
 
-        private BindingList<SaleProductDisplayModel> _saleProducts;
+        private ObservableCollection<SaleProductDisplayModel> _saleProducts;
 
-        public BindingList<SaleProductDisplayModel> SaleProducts
+        public ObservableCollection<SaleProductDisplayModel> SaleProducts
         {
             get { return _saleProducts; }
             set
@@ -123,68 +125,6 @@ namespace DesktopUI.ViewModels
                 _saleProducts = value;
                 OnPropertyChanged(nameof(SaleProducts));
 
-            }
-        }
-
-        private string _productName;
-
-        public string ProductName
-        {
-            get { return _productName; }
-            set
-            {
-                _productName = value;
-                OnPropertyChanged(nameof(ProductName));
-            }
-        }
-
-        private string _productDescription;
-
-        public string ProductDescription
-        {
-            get { return _productDescription; }
-            set
-            {
-                _productDescription = value;
-                OnPropertyChanged(nameof(ProductDescription));
-            }
-        }
-
-        private int _quantitySold;
-
-        public int QuantitySold
-        {
-            get { return _quantitySold; }
-            set 
-            {
-                _quantitySold = value;
-                OnPropertyChanged(nameof(QuantitySold));
-                CalculateProductTotal();
-            }
-        }
-
-        private string _productCost;
-
-        public string ProductCost
-        {
-            get { return _productCost; }
-            set
-            {
-                _productCost = value;
-                OnPropertyChanged(nameof(ProductCost));
-            }
-        }
-
-        private string _salePrice;
-
-        public string SalePrice
-        {
-            get { return _salePrice; }
-            set 
-            { 
-                _salePrice = value;
-                OnPropertyChanged(nameof(SalePrice));
-                CalculateProductTotal();
             }
         }
 
@@ -211,10 +151,22 @@ namespace DesktopUI.ViewModels
         public ObservableCollection<DepartmantModel> Departments
         {
             get { return _departments; }
-            set 
+            set
             {
                 _departments = value;
                 OnPropertyChanged(nameof(Departments));
+            }
+        }
+
+        private DepartmantModel _selectedDepartment;
+
+        public DepartmantModel SelectedDepartment
+        {
+            get { return _selectedDepartment; }
+            set
+            {
+                _selectedDepartment = value;
+                OnPropertyChanged(nameof(SelectedDepartment));
             }
         }
 
@@ -278,7 +230,17 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        public int SelectedProductIndex { get; }
+        private int _editDepartment;
+
+        public int EditDepartment
+        {
+            get { return _editDepartment; }
+            set
+            {
+                _editDepartment = value;
+                OnPropertyChanged(nameof(EditDepartment));
+            }
+        }
 
         #endregion
 
@@ -312,6 +274,7 @@ namespace DesktopUI.ViewModels
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
             EditProductCommand = new EditProductCommand(this);
             CancelEditProductCoomand = new CancelEditProductCommand(this);
+            UpdateEditProductCommand = new UpdateEditProductCommand(this);
 
             LoadSale();
             LoadSoldProducts();
@@ -319,67 +282,100 @@ namespace DesktopUI.ViewModels
 
         #endregion
 
-        #region Methods 
+        #region Methods
+
+        private DepartmantModel FindDepartment(string name)
+        {
+            return Departments.Where(x => x.DepartmentName == name).FirstOrDefault();
+        }
 
         public void SetupProductToEdit()
         {
-            int index = SaleProducts.IndexOf(SelectedProduct);
-
             EditName = SelectedProduct.ProductName;
             EditDescription = SelectedProduct.ProductDescription;
             EditCost = SelectedProduct.ProductCost;
             EditPrice = SelectedProduct.SalePrice;
             EditQuantity = SelectedProduct.QuantitySold;
+            SelectedDepartment = FindDepartment(SelectedProduct.Department);
         }
 
-        public void CancelEditProduct()
+        public void ClearEditProduct()
         {
             EditName = null;
             EditDescription = null;
             EditCost = null;
             EditPrice = null;
             EditQuantity = 0;
+            SelectedDepartment = null;
         }
 
         public void UpdateSoldProduct()
         {
-            int index = SaleProducts.IndexOf(SelectedProduct);
+            SaleProducts.Remove(SelectedProduct);
 
-            SaleProducts[index].ProductName = ProductName;
-            SaleProducts[index].ProductDescription = ProductDescription;
-            SaleProducts[index].SalePrice = SalePrice;
-            SaleProducts[index].ProductCost = ProductCost;
-            SaleProducts[index].QuantitySold = QuantitySold;
-            SaleProducts[index].Total = _currencyHelper.ConvertDecimalToCurrencyString(
-                QuantitySold * _currencyHelper.ConvertCurrencyStringToDecimal(SalePrice));
-        }
-
-        private void CalculateProductTotal()
-        {
-            decimal quantity = Convert.ToDecimal(SelectedProduct.QuantitySold);
-            decimal salePrice = _currencyHelper.ConvertCurrencyStringToDecimal(SelectedProduct.SalePrice);
-
-            SelectedProduct.Total = _currencyHelper.ConvertDecimalToCurrencyString(quantity * salePrice);
-
-            var test = SaleProducts.IndexOf(SelectedProduct);
+            SaleProducts.Add(new SaleProductDisplayModel
+            {
+                Id = SelectedProduct.Id,
+                ProductId = SelectedProduct.ProductId,
+                SaleId = SelectedProduct.SaleId,
+                ProductName = EditName,
+                ProductDescription = EditDescription,
+                Department = SelectedDepartment.DepartmentName,
+                SalePrice = EditPrice,
+                ProductCost = EditCost,
+                QuantitySold = EditQuantity,
+                Total = _currencyHelper.ConvertDecimalToCurrencyString(
+                EditQuantity * _currencyHelper.ConvertCurrencyStringToDecimal(EditPrice))
+            });
         }
 
         private void LoadSale()
         {
             // insert data to all the fields
-            _totalCost = _saleStore.SelectedSale.TotalCost;
-            _totalProfit = CalculateProfit();
-            _saleTotal = _saleStore.SelectedSale.SaleTotal;
-            _card = _saleStore.SelectedSale.Card;
-            _cash = _saleStore.SelectedSale.Cash;
-            _credit = _saleStore.SelectedSale.Credit;
+            TotalCost = _saleStore.SelectedSale.TotalCost;
+            SaleTotal = _saleStore.SelectedSale.SaleTotal;
+            Card = _saleStore.SelectedSale.Card;
+            Cash = _saleStore.SelectedSale.Cash;
+            Credit = _saleStore.SelectedSale.Credit;
+            TotalProfit = CalculateProfit();
+
         }
 
+        public void CalculateSaleCurrencies()
+        {
+            TotalCost = _currencyHelper.ConvertDecimalToCurrencyString(CalculateSaleTotalCost());
+            SaleTotal = _currencyHelper.ConvertDecimalToCurrencyString(CalculateSaleTotal());
+            TotalProfit = CalculateProfit();
+        }
+
+        private decimal CalculateSaleTotal()
+        {
+            decimal total = 0;
+
+            foreach (SaleProductDisplayModel product in SaleProducts)
+            {
+                total += _currencyHelper.ConvertCurrencyStringToDecimal(product.Total);
+            }
+
+            return total;
+        }
+
+        private decimal CalculateSaleTotalCost()
+        {
+            decimal total = 0;
+
+            foreach (var product in SaleProducts)
+            {
+                total += _currencyHelper.ConvertCurrencyStringToDecimal(product.ProductCost) * product.QuantitySold;
+            }
+
+            return total;
+        }
 
         private string CalculateProfit()
         {
-            decimal total = _currencyHelper.ConvertCurrencyStringToDecimal(_saleStore.SelectedSale.SaleTotal);
-            decimal totalCost = _currencyHelper.ConvertCurrencyStringToDecimal(_saleStore.SelectedSale.TotalCost);
+            decimal total = _currencyHelper.ConvertCurrencyStringToDecimal(SaleTotal);
+            decimal totalCost = _currencyHelper.ConvertCurrencyStringToDecimal(TotalCost);
             return _currencyHelper.ConvertDecimalToCurrencyString(total - totalCost);
         }
 
@@ -389,7 +385,7 @@ namespace DesktopUI.ViewModels
 
             List<SaleProductDisplayModel> displayProducts = new List<SaleProductDisplayModel>();
 
-            foreach (var item in products)
+            foreach (SaleProductModel item in products)
             {
                 displayProducts.Add(new SaleProductDisplayModel
                 {
@@ -405,7 +401,7 @@ namespace DesktopUI.ViewModels
                     Department = item.Department
                 });
 
-                SaleProducts = new BindingList<SaleProductDisplayModel>(displayProducts);
+                SaleProducts = new ObservableCollection<SaleProductDisplayModel>(displayProducts);
             }
         }
         #endregion

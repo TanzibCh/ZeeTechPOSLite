@@ -8,7 +8,7 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
              TextElement.FontWeight="Medium"
-             TextElement.FontSize="14"
+             TextElement.FontSize="16"
              FontFamily="{materialDesign:MaterialDesignFont}"
              xmlns:local="clr-namespace:DesktopUI.Views"
              xmlns:components="clr-namespace:DesktopUI.Components" 
@@ -27,16 +27,16 @@
         <Style TargetType="Label" x:Key="HeadingSmall" 
                BasedOn="{StaticResource MaterialDesignLabel}">
             <Setter Property="Foreground" Value="Gray" />
-            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontSize" Value="16" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="-5 0 0 -5" />
         </Style>
 
-        <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
+        <Style TargetType="TextBox"  
+               x:Key="ListSmallTextBox"
                BasedOn="{StaticResource MaterialDesignTextBox}">
             <Setter Property="HorizontalContentAlignment" Value="Center"  />
-
         </Style>
 
         <Style TargetType="TextBlock" x:Key="ListBoxTextBlock"
@@ -44,14 +44,12 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
-
-
-
     </UserControl.Resources>
+    
     <Grid Grid.Column="1" Margin="10" >
         <!--DataContext="{StaticResource BankingVM}"-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -67,28 +65,23 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal">
-                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                             Content="{materialDesign:PackIcon Kind=ChevronLeftCircleOutline,Size=20}"
                             Height="25" Width="25"
                             Margin="10 0 0 0">
                     </Button>
 
                     <DatePicker Margin="10 0"
-                                Width="150"
-                                FontSize="20"
+                                Width="100"
+                                FontSize="16"
                                 SelectedDate="{Binding SelectedDate}">
 
                     </DatePicker>
 
-                    <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                             Content="{materialDesign:PackIcon Kind=ChevronRightCircleOutline, Size=20}"
                             Height="25" Width="25"
                             Margin="10 0 0 0" />
-
-                    <Button Margin="10 0" 
-                            Content="Sale" 
-                            Command="{Binding NavigateManualSaleCommand}"/>
-
                 </StackPanel>
 
 
@@ -123,7 +116,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="50" />
+                        <RowDefinition Height="60" />
                     </Grid.RowDefinitions>
                     <ListBox Grid.Row="0"
                              Margin="10"
@@ -282,31 +275,39 @@
                     </ListBox>
 
                     <materialDesign:ColorZone Grid.Row="1"
-                                              Mode="PrimaryDark" CornerRadius="0 0 15 15"
+                                              Mode="Custom" CornerRadius="0 0 15 15"
                                               Height="50"
                                               DockPanel.Dock="Bottom">
-                        <!-- Sales Edit Buttons -->
-                        <StackPanel Orientation="Horizontal"
+
+                        <StackPanel Orientation="Vertical">
+                            <materialDesign:ColorZone Margin="10 0 10 10"
+                                Height="2">
+                            </materialDesign:ColorZone>
+                            
+                            <!-- Sales Edit Buttons -->
+                            <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center">
-                            <Button Margin="10 2"
+                                <Button Margin="10 2"
                                     Content="Edit"
                                     Width="80"
                                     materialDesign:ButtonAssist.CornerRadius="15"
-                                    Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                                    
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}"
                                     Command="{Binding EditSale}"
                                     CommandParameter="{Binding SelectedSale}"/>
 
-                            <Button Margin="10 2"
+                                <Button Margin="10 2"
                                     Content="Refund"
                                     Width="80"
                                     materialDesign:ButtonAssist.CornerRadius="15"
-                                    Style="{StaticResource MaterialDesignFlatDarkBgButton}"/>
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}"/>
 
-                            <Button Margin="10 2"
+                                <Button Margin="10 2"
                                     Content="Void"
                                     Width="80"
                                     materialDesign:ButtonAssist.CornerRadius="15"
-                                    Style="{StaticResource MaterialDesignFlatDarkBgButton}"/>
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}"/>
+                            </StackPanel>
                         </StackPanel>
                     </materialDesign:ColorZone>
                 </Grid>
@@ -532,27 +533,35 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                         <!-- Buttons -->
+
                         <StackPanel Grid.Row="2"
+                                    Orientation="Vertical">
+                            <materialDesign:ColorZone Margin="10 0 10 10"
+                                Height="2">
+                            </materialDesign:ColorZone>
+                            
+                            <StackPanel 
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Center">
-                            <!-- Edit -->
-                            <Button Width="70"
-                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                <!-- Edit -->
+                                <Button Width="70"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}"
                                     Content="{materialDesign:PackIcon Kind=FileDocumentEditOutline}"
                                     materialDesign:ButtonAssist.CornerRadius="15"
                                     Margin="10 0"
                                     Command="{Binding EditExpense}"
                                     CommandParameter="{Binding SelectedExpense}"/>
 
-                            <!-- Delete Expense -->
-                            <Button Width="70"
-                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                <!-- Delete Expense -->
+                                <Button Width="70"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}"
                                     Content="{materialDesign:PackIcon Kind=DeleteCircle}"
                                     materialDesign:ButtonAssist.CornerRadius="15"
                                     
                                     Margin="10 0"
                                     Command="{Binding RemoveExpense}"
                                     CommandParameter="{Binding SelectedExpense}"/>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                 </materialDesign:Card>
@@ -572,7 +581,7 @@
                 <!--#region Totals -->
                 <materialDesign:ColorZone Grid.Row="0" Margin="5 0 0 5"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                          Mode="SecondaryMid"
+                                          Mode="PrimaryLight"
                                           CornerRadius="15">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch"
                                 Margin="10">

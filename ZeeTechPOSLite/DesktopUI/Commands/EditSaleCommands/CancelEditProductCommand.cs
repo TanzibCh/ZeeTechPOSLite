@@ -1,4 +1,5 @@
 ﻿using DesktopUI.ViewModels;
+using System.Windows;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +17,7 @@ namespace DesktopUI.Commands.EditSaleCommands
 
         public override void Execute(object parameter)
         {
-            _editSaleViewModel.CancelEditProduct();
+            _editSaleViewModel.ClearEditProduct();
         }
     }
 }
