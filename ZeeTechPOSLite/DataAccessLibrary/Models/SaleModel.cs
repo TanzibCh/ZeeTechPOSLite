@@ -18,5 +18,6 @@ namespace DataAccessLibrary.Models
         public int TotalCost { get; set; }
         public int Profit { get; set; }
         public int CashOnly { get; set; }
+        public int IsActive { get; set; }
     }
 }

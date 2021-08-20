@@ -18,5 +18,6 @@ namespace DesktopUI.Models
         public string TotalCost { get; set; }
         public string Profit { get; set; }
         public bool CashOnly { get; set; }
+        public bool IsActive { get; set; }
     }
 }

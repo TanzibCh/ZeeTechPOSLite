@@ -12,6 +12,31 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
         SQLiteDataAccess _db = new SQLiteDataAccess();
         private const string _connectionStringName = "SQLiteDB";
 
+        // Change the IsActive status of a sale
+        // If Active change to not active, if not active chage to active
+        public void ChangeSaleActiveStatus(int id, bool activeStatus)
+        {
+            int isActive = 0;
+            if (activeStatus == true)
+            {
+                isActive = 0;
+            }
+            else
+            {
+                isActive = 1;
+            }
+
+            string sql = @"UPDATE Sale
+                           SET IsActive = @isActive
+                           WHERE Id = @id;";
+
+            _db.SaveData(sql, new
+            {
+                Id = id,
+                isActive = isActive
+            }, _connectionStringName);
+        }
+
         public void UpdateSale(SaleModel sale, List<SaleProductModel> saleProducts)
         {
             UpdateSaleDetails(sale);
@@ -29,7 +54,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                                Tax = @tax,
                                TotalCost = @totalCost,
                                Profit = @profit
-                           WHERE Id = @id";
+                           WHERE Id = @id;";
 
             _db.SaveData(sql, new 
             {
@@ -79,7 +104,8 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             string sql = @"SELECT Id, InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly
                           FROM Sale
                           WHERE SaleDate = @selectedDate
-                          AND CashOnly = 1;";
+                          AND CashOnly = 1
+                          AND IsActive = 1;";
 
             List<SaleModel> sales = _db.LoadData<SaleModel, dynamic>(sql, new { selectedDate }, _connectionStringName);
 
@@ -93,7 +119,8 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                            FROM Sale s
                            INNER JOIN SaleProduct sp on sp.SaleId = s.Id
                            WHERE s.SaleDate = @selectedDate
-                           AND sp.Department = @departmentName;";
+                           AND sp.Department = @departmentName
+                           AND s.IsActive = 1;";
 
             List<SaleProductModel> sales = _db.LoadData<SaleProductModel, dynamic>(sql, new { selectedDate, departmentName }, _connectionStringName);
 
@@ -102,9 +129,10 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 
         public List<SaleModel> GetAllSalesByDate(string selectedDate)
         {
-            string sql = @"SELECT Id, InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly
+            string sql = @"SELECT Id, InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly, IsActive
                           FROM Sale
-                          WHERE SaleDate = @selectedDate";
+                          WHERE SaleDate = @selectedDate
+                          AND IsActive = 1;";
 
             List<SaleModel> sales = _db.LoadData<SaleModel, dynamic > (sql, new { selectedDate }, _connectionStringName);
 

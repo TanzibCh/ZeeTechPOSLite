@@ -67,6 +67,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                             Content="{materialDesign:PackIcon Kind=ChevronLeftCircleOutline,Size=20}"
+                            Command="{Binding DateBackCommand}"
                             Height="25" Width="25"
                             Margin="10 0 0 0">
                     </Button>
@@ -80,6 +81,7 @@
 
                     <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                             Content="{materialDesign:PackIcon Kind=ChevronRightCircleOutline, Size=20}"
+                            Command="{Binding DateNextCommand}"
                             Height="25" Width="25"
                             Margin="10 0 0 0" />
                 </StackPanel>
@@ -908,12 +910,12 @@
                         <TextBlock Grid.Column="1" Grid.Row="5"
                                    Margin="10 0"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Text="{Binding AVCount}"
+                                   Text="{Binding AvCount}"
                                    FontSize="16"/>
                         <TextBlock Grid.Column="2" Grid.Row="5"
                                    Margin="10 0"
                                    HorizontalAlignment="Right" VerticalAlignment="Center"
-                                   Text="{Binding AVTotal}"
+                                   Text="{Binding AvTotal}"
                                    FontSize="16"/>
                     </Grid>
                 </materialDesign:Card>

@@ -27,6 +27,12 @@ namespace DesktopUI.Stores
             CurrentViewModel = null;
         }
 
+        public void UpdateClose()
+        {
+
+            CurrentViewModel = null;
+        }
+
         private void OnCurrentViewModelChanged()
         {
             CurrentViewModelChanged?.Invoke();

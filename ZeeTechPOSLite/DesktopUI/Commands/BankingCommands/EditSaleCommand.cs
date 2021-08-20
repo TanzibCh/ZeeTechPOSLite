@@ -32,7 +32,7 @@ namespace DesktopUI.Commands.BankingCommands
             }
             else
             {
-                var selectedSale = _bankingViewModel.SelectedSale;
+                SaleDisplayModel selectedSale = _bankingViewModel.SelectedSale;
                 _saleStore.SelectedSale = selectedSale;
 
                 _navigationService.Navigate();

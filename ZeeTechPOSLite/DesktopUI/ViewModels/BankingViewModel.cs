@@ -145,161 +145,147 @@ namespace DesktopUI.ViewModels
         // Properties for Department overview
         #region Department Properties
 
+        private int _mobileCount;
+
         public int MobileCount
         {
-            get
+            get { return _mobileCount; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Mobile");
-                return sales.Sum(x => x.QuantitySold);
+                _mobileCount = value;
+                OnPropertyChanged(nameof(MobileCount));
             }
         }
+
+        private string _mobileTotal;
+
         public string MobileTotal
         {
-            get
+            get{ return _mobileTotal; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Mobile");
-
-                decimal total = 0.00m;
-                foreach (SaleProductModel item in sales)
-                {
-                    decimal Saleprice = Convert.ToDecimal(item.SalePrice);
-                    decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
-                    total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
-                }
-                string output = string.Format("{0:0.00}", Convert.ToString(total));
-
-                return $"£{output}";
+                _mobileTotal = value;
+                OnPropertyChanged(nameof(MobileTotal));
             }
         }
+
+        private int _computerCount;
+
         public int ComputerCount
         {
-            get
+            get{ return _computerCount; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Computer");
-                return sales.Sum(x => x.QuantitySold);
+                _computerCount = value;
+                OnPropertyChanged(nameof(ComputerCount));
             }
         }
+
+        private string _computerTotal;
+
         public string ComputerTotal
         {
-            get
+            get { return _computerTotal; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Computer");
-
-                decimal total = 0.00m;
-                foreach (SaleProductModel item in sales)
-                {
-                    decimal Saleprice = Convert.ToDecimal(item.SalePrice);
-                    decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
-                    total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
-                }
-                string output = string.Format("{0:0.00}", Convert.ToString(total));
-
-                return $"£{output}";
+                _computerTotal = value;
+                OnPropertyChanged(nameof(ComputerTotal));
             }
         }
+
+        private int _cameraCount;
 
         public int CameraCount
         {
-            get
+            get { return _cameraCount; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Camera");
-                return sales.Sum(x => x.QuantitySold);
+                _cameraCount = value;
+                OnPropertyChanged(nameof(CameraCount));
             }
         }
+
+        private string _cameraTotal;
+
         public string CameraTotal
         {
-            get
+            get { return _cameraTotal; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Camera");
-
-                decimal total = 0.00m;
-                foreach (SaleProductModel item in sales)
-                {
-                    decimal Saleprice = Convert.ToDecimal(item.SalePrice);
-                    decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
-                    total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
-                }
-                string output = string.Format("{0:0.00}", Convert.ToString(total));
-
-                return $"£{output}";
+                _cameraTotal = value;
+                OnPropertyChanged(nameof(CameraTotal));
             }
         }
+
+        private int _homeCount;
+
         public int HomeCount
         {
-            get
+            get { return _homeCount; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Home");
-                return sales.Sum(x => x.QuantitySold);
+                _homeCount = value;
+                OnPropertyChanged(nameof(HomeCount));
             }
         }
-        public string HomeTotal
-        {
-            get
+
+        private string _homeTotal;
+
+        public string HomeTotal 
+        { 
+            get { return _homeTotal; }
+            set 
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Home");
-
-                decimal total = 0.00m;
-                foreach (SaleProductModel item in sales)
-                {
-                    decimal Saleprice = Convert.ToDecimal(item.SalePrice);
-                    decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
-                    total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
-                }
-                string output = string.Format("{0:0.00}", Convert.ToString(total));
-
-                return $"£{output}";
+                _homeTotal = value;
+                OnPropertyChanged(nameof(HomeTotal));
             }
         }
+
+        private int _repairCount;
+
         public int RepairCount
         {
-            get
+            get { return _repairCount; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Repair");
-                return sales.Sum(x => x.QuantitySold);
+                _repairCount = value;
+                OnPropertyChanged(nameof(RepairCount));
             }
         }
+
+        private string _repairTotal;
+
         public string RepairTotal
         {
-            get
+            get { return _repairTotal; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Repair");
-
-                decimal total = 0.00m;
-                foreach (SaleProductModel item in sales)
-                {
-                    decimal Saleprice = Convert.ToDecimal(item.SalePrice);
-                    decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
-                    total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
-                }
-                string output = string.Format("{0:0.00}", Convert.ToString(total));
-
-                return $"£{output}";
+                _repairTotal = value;
+                OnPropertyChanged(nameof(RepairTotal));
             }
         }
-        public int AVCount
+
+        private int _avCount;
+
+        public int AvCount
         {
-            get
+            get { return _avCount; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "AV");
-                return sales.Sum(x => x.QuantitySold);
+                _avCount = value;
+                OnPropertyChanged(nameof(AvCount));
             }
         }
-        public string AVTotal
+
+        private string _avTotal;
+
+        public string AvTotal
         {
-            get
+            get { return _avTotal; }
+            set
             {
-                List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "AV");
-
-                decimal total = 0.00m;
-                foreach (SaleProductModel item in sales)
-                {
-                    decimal Saleprice = Convert.ToDecimal(item.SalePrice);
-                    decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
-                    total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
-                }
-                string output = string.Format("{0:0.00}", Convert.ToString(total));
-
-                return $"£{output}";
+                _avTotal = value;
+                OnPropertyChanged(nameof(AvTotal));
             }
         }
 
@@ -370,8 +356,8 @@ namespace DesktopUI.ViewModels
         public string ExpenseButtonContent
         {
             get { return _expenseButtonContent; }
-            set 
-            { 
+            set
+            {
                 _expenseButtonContent = value;
                 OnPropertyChanged(nameof(ExpenseButtonContent));
             }
@@ -438,7 +424,7 @@ namespace DesktopUI.ViewModels
         public ExpenseDisplayModel SelectedExpense
         {
             get { return _selectedExpense; }
-            set 
+            set
             {
                 _selectedExpense = value;
                 OnPropertyChanged(nameof(SelectedExpense));
@@ -449,7 +435,9 @@ namespace DesktopUI.ViewModels
         #endregion
 
         #region Date and Time properties
+
         private DateTime _selectedDate;
+
         public DateTime SelectedDate
         {
             get { return _selectedDate; }
@@ -457,6 +445,9 @@ namespace DesktopUI.ViewModels
             {
                 _selectedDate = value;
                 OnPropertyChanged(nameof(SelectedDate));
+                LoadSales();
+                LoadExpense();
+                GetDepartmentDetails();
             }
         }
         #endregion
@@ -469,6 +460,8 @@ namespace DesktopUI.ViewModels
         public RemoveExpenseCommand RemoveExpense { get; set; }
         public ClearExpenseCommand ClearExpense { get; set; }
         public ICommand EditSale { get; }
+        public ICommand DateBackCommand { get; }
+        public ICommand DateNextCommand { get; }
 
         #endregion
 
@@ -480,9 +473,6 @@ namespace DesktopUI.ViewModels
             SelectedDate = DateTime.UtcNow.Date;
             ExpenseLable = "New Expense";
             ExpenseButtonContent = "Add";
-            // Expense default value
-            // CardExpense = "0.00";
-            // CashExpense = "0.00";
 
             Sales = new BindingList<SaleDisplayModel>();
             SaleProducts = new BindingList<SaleProductDisplayModel>();
@@ -493,6 +483,8 @@ namespace DesktopUI.ViewModels
             RemoveExpense = new RemoveExpenseCommand(this);
             ClearExpense = new ClearExpenseCommand(this);
             EditSale = new EditSaleCommand(editSaleNavigationService, saleStore, this);
+            DateBackCommand = new DateBackCommand(this);
+            DateNextCommand = new DateNextCommand(this);
 
             // Populate Sale and Expenses ListBoxes
             LoadSales();
@@ -503,31 +495,147 @@ namespace DesktopUI.ViewModels
 
         #region Methods
 
+        // Gets all the Department details
+        private void GetDepartmentDetails()
+        {
+            GetMobileDetails();
+            GetComputerDetails();
+            GetCameraDetails();
+            GetHomeDetails();
+            GetRepairDetails();
+            GetAvDetails();
+        }
+
+        private void GetMobileDetails()
+        {
+            List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Mobile");
+
+            decimal total = 0.00m;
+            foreach (SaleProductModel item in sales)
+            {
+                decimal Saleprice = Convert.ToDecimal(item.SalePrice);
+                decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
+                total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
+            }
+            string output = string.Format("{0:0.00}", Convert.ToString(total));
+
+            MobileTotal = output;
+            MobileCount = sales.Sum(x => x.QuantitySold);
+        }
+
+        private void GetComputerDetails()
+        {
+            List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Computer");
+
+            decimal total = 0.00m;
+            foreach (SaleProductModel item in sales)
+            {
+                decimal Saleprice = Convert.ToDecimal(item.SalePrice);
+                decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
+                total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
+            }
+            string output = string.Format("{0:0.00}", Convert.ToString(total));
+
+            ComputerTotal = output;
+            ComputerCount = sales.Sum(x => x.QuantitySold);
+        }
+
+        private void GetCameraDetails()
+        {
+            List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Camera");
+
+            decimal total = 0.00m;
+            foreach (SaleProductModel item in sales)
+            {
+                decimal Saleprice = Convert.ToDecimal(item.SalePrice);
+                decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
+                total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
+            }
+            string output = string.Format("{0:0.00}", Convert.ToString(total));
+
+            CameraTotal = output;
+            CameraCount = sales.Sum(x => x.QuantitySold);
+        }
+
+        private void GetHomeDetails()
+        {
+            List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Home");
+
+            decimal total = 0.00m;
+            foreach (SaleProductModel item in sales)
+            {
+                decimal Saleprice = Convert.ToDecimal(item.SalePrice);
+                decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
+                total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
+            }
+            string output = string.Format("{0:0.00}", Convert.ToString(total));
+
+            HomeTotal = output;
+            HomeCount = sales.Sum(x => x.QuantitySold);
+        }
+
+        private void GetRepairDetails()
+        {
+            List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "Repair");
+
+            decimal total = 0.00m;
+            foreach (SaleProductModel item in sales)
+            {
+                decimal Saleprice = Convert.ToDecimal(item.SalePrice);
+                decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
+                total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
+            }
+            string output = string.Format("{0:0.00}", Convert.ToString(total));
+
+            RepairTotal = output;
+            RepairCount = sales.Sum(x => x.QuantitySold);
+        }
+
+        private void GetAvDetails()
+        {
+            List<SaleProductModel> sales = _salesData.GetSalesByDepartmentAndDate(SelectedDate.ToString(), "AV");
+
+            decimal total = 0.00m;
+            foreach (SaleProductModel item in sales)
+            {
+                decimal Saleprice = Convert.ToDecimal(item.SalePrice);
+                decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
+                total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
+            }
+            string output = string.Format("{0:0.00}", Convert.ToString(total));
+
+            AvTotal = output;
+            AvCount = sales.Sum(x => x.QuantitySold);
+        }
+
         private void LoadSaleProducts()
         {
-            int saleId = SelectedSale.Id;
-            List<SaleProductModel> saleProducts = _saleProductData.GetSaleProductBySaleId(saleId);
-
-            BindingList<SaleProductDisplayModel> displaySaleProduct = new BindingList<SaleProductDisplayModel>();
-
-            foreach (var item in saleProducts)
+            if (SelectedSale != null)
             {
-                displaySaleProduct.Add(new SaleProductDisplayModel
-                {
-                    Id = item.Id,
-                    SaleId = item.SaleId,
-                    ProductId = item.ProductId,
-                    ProductName = item.ProductName,
-                    ProductDescription = item.ProductDescription,
-                    ProductCost = _currencyHelper.ConvertIntToCurrencyString(item.ProductCost),
-                    SalePrice = _currencyHelper.ConvertIntToCurrencyString(item.SalePrice),
-                    QuantitySold = item.QuantitySold,
-                    Total = _currencyHelper.ConvertIntToCurrencyString(item.Total),
-                    Department = item.Department
-                });
-            }
+                int saleId = SelectedSale.Id;
+                List<SaleProductModel> saleProducts = _saleProductData.GetSaleProductBySaleId(saleId);
 
-            SaleProducts = new BindingList<SaleProductDisplayModel>(displaySaleProduct);
+                BindingList<SaleProductDisplayModel> displaySaleProduct = new BindingList<SaleProductDisplayModel>();
+
+                foreach (var item in saleProducts)
+                {
+                    displaySaleProduct.Add(new SaleProductDisplayModel
+                    {
+                        Id = item.Id,
+                        SaleId = item.SaleId,
+                        ProductId = item.ProductId,
+                        ProductName = item.ProductName,
+                        ProductDescription = item.ProductDescription,
+                        ProductCost = _currencyHelper.ConvertIntToCurrencyString(item.ProductCost),
+                        SalePrice = _currencyHelper.ConvertIntToCurrencyString(item.SalePrice),
+                        QuantitySold = item.QuantitySold,
+                        Total = _currencyHelper.ConvertIntToCurrencyString(item.Total),
+                        Department = item.Department
+                    });
+                }
+
+                SaleProducts = new BindingList<SaleProductDisplayModel>(displaySaleProduct);
+            }
         }
 
         private string ConvertToLocalTime(string timeValue)
@@ -538,9 +646,9 @@ namespace DesktopUI.ViewModels
             return localTime.ToString("hh:mm tt");
         }
 
-        private void LoadSales()
+        public void LoadSales()
         {
-            var saleList = _salesData.GetAllSalesByDate(SelectedDate.ToString());
+            List<SaleModel> saleList = _salesData.GetAllSalesByDate(SelectedDate.ToString());
 
             BindingList<SaleDisplayModel> displaySales = new BindingList<SaleDisplayModel>();
 
@@ -560,7 +668,8 @@ namespace DesktopUI.ViewModels
                     Tax = _currencyHelper.ConvertIntToCurrencyString(item.Tax),
                     TotalCost = _currencyHelper.ConvertIntToCurrencyString(item.TotalCost),
                     Profit = _currencyHelper.ConvertIntToCurrencyString(item.Profit),
-                    CashOnly = Convert.ToBoolean(item.CashOnly)
+                    CashOnly = Convert.ToBoolean(item.CashOnly),
+                    IsActive = Convert.ToBoolean(item.IsActive)
                 });
             }
             Sales = new BindingList<SaleDisplayModel>(displaySales);
@@ -662,16 +771,6 @@ namespace DesktopUI.ViewModels
         }
 
         public void ShowCashOnly()
-        {
-
-        }
-
-        public void PreviousDay()
-        {
-
-        }
-
-        public void NextDay()
         {
 
         }

@@ -25,6 +25,7 @@ namespace DesktopUI.ViewModels
         private SaleProductData _saleProductData = new SaleProductData();
         private CurrencyHelper _currencyHelper = new CurrencyHelper();
         private readonly SaleStore _saleStore;
+        private readonly BankingViewModel _bankingViewModel;
 
         #endregion
 
@@ -249,6 +250,7 @@ namespace DesktopUI.ViewModels
         public ICommand CancelEditProductCoomand { get; }
         public ICommand UpdateEditProductCommand { get; }
         public ICommand SaveChangesCommand { get; }
+        public ICommand VoidSaleCommand { get; }
 
         #endregion
 
@@ -268,13 +270,14 @@ namespace DesktopUI.ViewModels
                 new DepartmantModel(){ DepartmentName = "AV"},
                 new DepartmantModel(){ DepartmentName = "Repair"}
             };
-            
+
             // Commands
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
             EditProductCommand = new EditProductCommand(this);
             CancelEditProductCoomand = new CancelEditProductCommand(this);
             UpdateEditProductCommand = new UpdateEditProductCommand(this);
             SaveChangesCommand = new SaveChangesCommand(this);
+            VoidSaleCommand = new VoidSaleCommand(this);
 
             LoadSale();
             LoadSoldProducts();
@@ -284,11 +287,19 @@ namespace DesktopUI.ViewModels
 
         #region Methods
 
+        // Void selected Sale
+        public void VoidSale()
+        {
+            _salesData.ChangeSaleActiveStatus(Id, _saleStore.SelectedSale.IsActive);
+        }
+
+        // Save canges made to the sale
         public void SaveChanges()
         {
             _salesData.UpdateSale(CreateSaleForUpdate(), CreateProductListForUpdate());
         }
 
+        // Create a new list to products, which will be used to update the database
         private List<SaleProductModel> CreateProductListForUpdate()
         {
             List<SaleProductModel> saleProducts = new List<SaleProductModel>();

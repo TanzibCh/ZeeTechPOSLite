@@ -6,33 +6,26 @@ using System.Windows.Input;
 
 namespace DesktopUI.Commands.BankingCommands
 {
-    public class AddExpenseCommand : ICommand
+    public class AddExpenseCommand : CommandBase
     {
-        public BankingViewModel BankingVM { get; set; }
+        private readonly BankingViewModel _bankingViewModel;
 
-        public AddExpenseCommand(BankingViewModel bankingVM)
+        public AddExpenseCommand(BankingViewModel bankingViewModel)
         {
-            BankingVM = bankingVM;
+            _bankingViewModel = bankingViewModel;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
+        public override void Execute(object parameter)
         {
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            string expenseStatus = BankingVM.ExpenseLable;
+            string expenseStatus = _bankingViewModel.ExpenseLable;
 
             if (expenseStatus == "New Expense")
             {
-                BankingVM.AddNewExpense();
+                _bankingViewModel.AddNewExpense();
             }
             else
             {
-                BankingVM.UpdateExpense();
+                _bankingViewModel.UpdateExpense();
             }
         }
     }

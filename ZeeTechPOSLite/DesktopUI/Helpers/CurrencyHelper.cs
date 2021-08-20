@@ -71,5 +71,11 @@ namespace DesktopUI.Helpers
         {
             return decimalValue - (decimalValue / 1.2m);
         }
+
+        public decimal ConvertIntToDecimalCurrency()
+        {
+            // Add logic
+            return 0m;
+        }
     }
 }
