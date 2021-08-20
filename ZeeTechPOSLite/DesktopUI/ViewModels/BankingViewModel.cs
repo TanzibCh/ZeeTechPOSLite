@@ -38,72 +38,87 @@ namespace DesktopUI.ViewModels
         // Properties for Totals
         #region Totals Properties
 
+        private string _total;
+
         public string Total
         {
-            get
+            get { return _total; }
+            set
             {
-                decimal totalSale = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.SaleTotal));
-                string output = _currencyHelper.ConvertDecimalToCurrencyString(totalSale);
-                return output;
+                _total = value;
+                OnPropertyChanged(nameof(Total));
             }
         }
+
+        private string _totalProfit;
+
         public string TotalProfit
         {
-            get
+            get { return _totalProfit; }
+            set
             {
-                decimal totalProfit = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Profit));
-                string output = _currencyHelper.ConvertDecimalToCurrencyString(totalProfit);
-                return output;
+                _totalProfit = value;
+                OnPropertyChanged(nameof(TotalProfit));
             }
         }
+
+        private string _totalTillCash;
+
         public string TotalTillCash
         {
-            get
+            get { return _totalTillCash; }
+            set
             {
-                List<SaleModel> cashOnlySales = _salesData.GetCashOnlySalesByDate(SelectedDate.ToString());
-                decimal totalCash = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Cash));
-                decimal totalCashOnly = cashOnlySales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(_currencyHelper.ConvertIntToCurrencyString(x.CashOnly)));
-
-                decimal tillCash = totalCash + totalCashOnly;
-                return _currencyHelper.ConvertDecimalToCurrencyString(tillCash);
+                _totalTillCash = value;
+                OnPropertyChanged(nameof(TotalTillCash));
             }
         }
+
+        private string _totalCard;
+
         public string TotalCard
         {
-            get
+            get {return _totalCard; }
+            set
             {
-                decimal totalCard = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Card));
-                string output = _currencyHelper.ConvertDecimalToCurrencyString(totalCard);
-                return output;
+                _totalCard = value;
+                OnPropertyChanged(nameof(TotalCard));
             }
         }
+
+        private string _totalCash;
+
         public string TotalCash
         {
-            get
+            get { return _totalCash; }
+            set
             {
-                decimal totalCash = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Cash));
-                string output = _currencyHelper.ConvertDecimalToCurrencyString(totalCash);
-                return output;
+                _totalCash = value;
+                OnPropertyChanged(nameof(TotalCash));
             }
         }
+
+        private string _totalCashOnly;
+
         public string TotalCashOnly
         {
-            get
+            get { return _totalCashOnly; }
+            set
             {
-                List<SaleModel> sales = _salesData.GetCashOnlySalesByDate(SelectedDate.ToString());
-
-                int total = sales.Sum(x => x.SaleTotal);
-                string output = _currencyHelper.ConvertIntToCurrencyString(total);
-                return output;
+                _totalCashOnly = value;
+                OnPropertyChanged(nameof(TotalCashOnly));
             }
         }
+
+        private string _totalCredit;
+
         public string TotalCredit
         {
-            get
+            get { return _totalCredit; }
+            set
             {
-                decimal totalCredit = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Credit));
-                string output = _currencyHelper.ConvertDecimalToCurrencyString(totalCredit);
-                return output;
+                _totalCredit = value;
+                OnPropertyChanged(nameof(TotalCredit));
             }
         }
         public string TotalRefund
@@ -127,18 +142,7 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
-        //public string TotalExpense { get; set; }
-
-        private string CalculateTotalExpense()
-        {
-            decimal totalCard = Expenses.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Card));
-            decimal totalCash = Expenses.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Cash));
-
-            decimal totalExpense = totalCard + totalCash;
-
-            return _currencyHelper.ConvertDecimalToCurrencyString(totalExpense);
-        }
+      
 
         #endregion
 
@@ -402,7 +406,8 @@ namespace DesktopUI.ViewModels
             {
                 _expenses = value;
                 OnPropertyChanged(nameof(Expenses));
-                TotalExpense = CalculateTotalExpense();
+                GetTotals();
+                //TotalExpense = CalculateTotalExpense();
             }
         }
 
@@ -445,18 +450,33 @@ namespace DesktopUI.ViewModels
             {
                 _selectedDate = value;
                 OnPropertyChanged(nameof(SelectedDate));
+                GetDayOfWeek();
                 LoadSales();
                 LoadExpense();
                 GetDepartmentDetails();
+                GetTotals();
             }
         }
+
+        private string _selectedDay;
+
+        public string SelectedDay
+        {
+            get { return _selectedDay; }
+            set
+            {
+                _selectedDay = value;
+                OnPropertyChanged(nameof(SelectedDay));
+            }
+        }
+
         #endregion
 
         #region Commands Properties
 
         public ICommand NavigateManualSaleCommand { get; }
         public AddExpenseCommand AddExpense { get; set; }
-        public EditExpenseCommand EditExpense { get; set; }
+        public ICommand EditExpense { get; set; }
         public RemoveExpenseCommand RemoveExpense { get; set; }
         public ClearExpenseCommand ClearExpense { get; set; }
         public ICommand EditSale { get; }
@@ -479,7 +499,7 @@ namespace DesktopUI.ViewModels
 
             // Commands
             AddExpense = new AddExpenseCommand(this);
-            //EditExpense = new EditExpenseCommand(this);
+            EditExpense = new EditExpenseCommand(this);
             RemoveExpense = new RemoveExpenseCommand(this);
             ClearExpense = new ClearExpenseCommand(this);
             EditSale = new EditSaleCommand(editSaleNavigationService, saleStore, this);
@@ -489,11 +509,19 @@ namespace DesktopUI.ViewModels
             // Populate Sale and Expenses ListBoxes
             LoadSales();
             LoadExpense();
+            GetTotals();
+            GetDayOfWeek();
         }
 
         #endregion
 
         #region Methods
+
+
+        private void GetDayOfWeek()
+        {
+            SelectedDay = SelectedDate.ToString("dddd");
+        }
 
         // Gets all the Department details
         private void GetDepartmentDetails()
@@ -504,6 +532,40 @@ namespace DesktopUI.ViewModels
             GetHomeDetails();
             GetRepairDetails();
             GetAvDetails();
+        }
+
+        private void GetTotals()
+        {
+            decimal totalCard = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Card));
+            TotalCard = _currencyHelper.ConvertDecimalToCurrencyString(totalCard);
+
+            decimal totalCash = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Cash));
+            TotalCash = _currencyHelper.ConvertDecimalToCurrencyString(totalCash);
+
+            List<SaleModel> sales = _salesData.GetCashOnlySalesByDate(SelectedDate.ToString());
+            int total = sales.Sum(x => x.SaleTotal);
+            TotalCashOnly = _currencyHelper.ConvertIntToCurrencyString(total);
+
+            decimal totalCredit = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Credit));
+            TotalCredit = _currencyHelper.ConvertDecimalToCurrencyString(totalCredit);
+
+            // Total Expense
+            TotalExpense = CalculateTotalExpense();
+
+            // Total
+            decimal totalSale = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.SaleTotal));
+            Total = _currencyHelper.ConvertDecimalToCurrencyString(totalSale);
+
+            // TotalProfit
+            decimal totalProfit = Sales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Profit));
+            TotalProfit = _currencyHelper.ConvertDecimalToCurrencyString(totalProfit);
+
+            // Total Cash in Till
+            List<SaleModel> cashOnlySales = _salesData.GetCashOnlySalesByDate(SelectedDate.ToString());
+            decimal totalCashOnly = cashOnlySales.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(_currencyHelper.ConvertIntToCurrencyString(x.CashOnly)));
+            decimal totalCashExpense = Expenses.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Cash));
+            decimal tillCash = (totalCash + totalCashOnly) - totalCashExpense;
+            TotalTillCash = _currencyHelper.ConvertDecimalToCurrencyString(tillCash);
         }
 
         private void GetMobileDetails()
@@ -517,9 +579,8 @@ namespace DesktopUI.ViewModels
                 decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
                 total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
             }
-            string output = string.Format("{0:0.00}", Convert.ToString(total));
 
-            MobileTotal = output;
+            MobileTotal = string.Format("{0:0.00}", Convert.ToString(total));
             MobileCount = sales.Sum(x => x.QuantitySold);
         }
 
@@ -534,9 +595,8 @@ namespace DesktopUI.ViewModels
                 decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
                 total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
             }
-            string output = string.Format("{0:0.00}", Convert.ToString(total));
 
-            ComputerTotal = output;
+            ComputerTotal = string.Format("{0:0.00}", Convert.ToString(total));
             ComputerCount = sales.Sum(x => x.QuantitySold);
         }
 
@@ -551,9 +611,8 @@ namespace DesktopUI.ViewModels
                 decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
                 total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
             }
-            string output = string.Format("{0:0.00}", Convert.ToString(total));
 
-            CameraTotal = output;
+            CameraTotal = string.Format("{0:0.00}", Convert.ToString(total));
             CameraCount = sales.Sum(x => x.QuantitySold);
         }
 
@@ -568,9 +627,8 @@ namespace DesktopUI.ViewModels
                 decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
                 total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
             }
-            string output = string.Format("{0:0.00}", Convert.ToString(total));
 
-            HomeTotal = output;
+            HomeTotal = string.Format("{0:0.00}", Convert.ToString(total));
             HomeCount = sales.Sum(x => x.QuantitySold);
         }
 
@@ -585,9 +643,8 @@ namespace DesktopUI.ViewModels
                 decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
                 total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
             }
-            string output = string.Format("{0:0.00}", Convert.ToString(total));
 
-            RepairTotal = output;
+            RepairTotal = string.Format("{0:0.00}", Convert.ToString(total));
             RepairCount = sales.Sum(x => x.QuantitySold);
         }
 
@@ -602,9 +659,8 @@ namespace DesktopUI.ViewModels
                 decimal twoDecimalSalePrice = decimal.Divide(Saleprice, 100m);
                 total += Convert.ToDecimal(item.QuantitySold) * twoDecimalSalePrice;
             }
-            string output = string.Format("{0:0.00}", Convert.ToString(total));
 
-            AvTotal = output;
+            AvTotal = string.Format("{0:0.00}", Convert.ToString(total));
             AvCount = sales.Sum(x => x.QuantitySold);
         }
 
@@ -640,8 +696,8 @@ namespace DesktopUI.ViewModels
 
         private string ConvertToLocalTime(string timeValue)
         {
-            var utcTime = Convert.ToDateTime(timeValue);
-            var localTime = utcTime.ToLocalTime();
+            DateTime utcTime = Convert.ToDateTime(timeValue);
+            DateTime localTime = utcTime.ToLocalTime();
 
             return localTime.ToString("hh:mm tt");
         }
@@ -701,7 +757,7 @@ namespace DesktopUI.ViewModels
 
                 ExpenseModel expense = new ExpenseModel
                 {
-                    ExpenseDate = DateTime.UtcNow.Date.ToString(),
+                    ExpenseDate = SelectedDate.ToString(),
                     ExpenseDetails = ExpenseDetails,
                     Card = _currencyHelper.ConvertCurrencyStringToInt(CardExpense),
                     Cash = _currencyHelper.ConvertCurrencyStringToInt(CashExpense),
@@ -712,6 +768,16 @@ namespace DesktopUI.ViewModels
                 ClearExpenseFIelds();
                 LoadExpense();
             }
+        }
+
+        private string CalculateTotalExpense()
+        {
+            decimal totalCard = Expenses.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Card));
+            decimal totalCash = Expenses.Sum(x => _currencyHelper.ConvertCurrencyStringToDecimal(x.Cash));
+
+            decimal totalExpense = totalCard + totalCash;
+
+            return _currencyHelper.ConvertDecimalToCurrencyString(totalExpense);
         }
 
         private void LoadExpense()
@@ -735,7 +801,7 @@ namespace DesktopUI.ViewModels
 
             Expenses = new BindingList<ExpenseDisplayModel>(displayExpenses);
 
-            _totalExpense = CalculateTotalExpense();
+            TotalExpense = CalculateTotalExpense();
         }
 
         public void EditSelectedExpense()

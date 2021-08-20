@@ -11,9 +11,16 @@ namespace DesktopUI.Commands.BankingCommands
 {
     public class EditExpenseCommand : CommandBase
     {
+        private readonly BankingViewModel _bankingViewModel;
+
+        public EditExpenseCommand(BankingViewModel bankingViewModel)
+        {
+            _bankingViewModel = bankingViewModel;
+        }
+
         public override void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            _bankingViewModel.EditSelectedExpense();
         }
     }
 }

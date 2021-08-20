@@ -79,6 +79,12 @@
 
                     </DatePicker>
 
+                    <TextBlock Text="{Binding SelectedDay}"
+                               Margin="10 10 0 0"
+                               Width="90">
+                        
+                    </TextBlock>
+
                     <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                             Content="{materialDesign:PackIcon Kind=ChevronRightCircleOutline, Size=20}"
                             Command="{Binding DateNextCommand}"
@@ -575,16 +581,17 @@
             <!--#region Totals -->
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition MinHeight="450" />
-                    <RowDefinition MinHeight="220" />
-                    <RowDefinition Height="170" />
+                    <RowDefinition MinHeight="400" />
+                    <RowDefinition Height="280" />
+                    <RowDefinition MinHeight="180" MaxHeight="400" />
                 </Grid.RowDefinitions>
 
                 <!--#region Totals -->
                 <materialDesign:ColorZone Grid.Row="0" Margin="5 0 0 5"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                           Mode="PrimaryLight"
-                                          CornerRadius="15">
+                                          CornerRadius="15"
+                                          VerticalAlignment="Stretch">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch"
                                 Margin="10">
 
@@ -595,15 +602,14 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
                             </Grid.RowDefinitions>
 
                             <!-- Total Label-->
                             <TextBlock Grid.Column="0"
                                    Text="Total:"
-                                   FontSize="20"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
 
@@ -611,14 +617,12 @@
                             <TextBlock Grid.Column="1"
                                        Margin="13 0 0 0"
                                        Text="{Binding Total}"
-                                       FontSize="20"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Right"/>
 
                             <!-- Profit Label-->
                             <TextBlock Grid.Column="0" Grid.Row="1"
                                    Text="Profit:"
-                                   FontSize="20"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
 
@@ -626,14 +630,12 @@
                             <TextBlock Grid.Column="1" Grid.Row="1"
                                        Margin="13 0 0 0"
                                        Text="{Binding TotalProfit}"
-                                       FontSize="20"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Right"/>
 
                             <!-- Till Cash Label-->
                             <TextBlock Grid.Column="0" Grid.Row="2"
                                    Text="Till Cash:"
-                                   FontSize="20"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
 
@@ -641,12 +643,14 @@
                             <TextBlock Grid.Column="1" Grid.Row="2"
                                        Margin="13 0 0 0"
                                        Text="{Binding TotalTillCash}"
-                                       FontSize="20"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Right"/>
                         </Grid>
 
-                        <Separator Style="{StaticResource MaterialDesignDarkSeparator}" />
+                        <materialDesign:ColorZone Height="2"
+                                                  Margin="0 20">
+                            
+                        </materialDesign:ColorZone>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -666,7 +670,6 @@
                             <!-- Card Label-->
                             <TextBlock Grid.Column="0" Grid.Row="0"
                                    Text="Card:"
-                                   FontSize="16"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
 
@@ -675,13 +678,11 @@
                                        HorizontalAlignment="Right"
                                        Margin="10 0 0 0"
                                        Text="{Binding TotalCard}"
-                                       FontSize="16"
                                        VerticalAlignment="Center"/>
 
                             <!-- Cash Label-->
                             <TextBlock Grid.Column="0" Grid.Row="1"
                                    Text="Cash:"
-                                   FontSize="16"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
 
@@ -690,13 +691,11 @@
                                        HorizontalAlignment="Right"
                                        Margin="10 0 0 0"
                                        Text="{Binding TotalCash}"
-                                       FontSize="16"
                                        VerticalAlignment="Center"/>
 
                             <!-- CashOnly Label-->
                             <TextBlock Grid.Column="0" Grid.Row="2"
                                    Text="CashOnly:"
-                                   FontSize="16"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
 
@@ -705,13 +704,11 @@
                                        HorizontalAlignment="Right"
                                        Margin="10 0 0 0"
                                        Text="{Binding TotalCashOnly}"
-                                       FontSize="16"
                                        VerticalAlignment="Center"/>
 
                             <!-- Credit Label-->
                             <TextBlock Grid.Column="0" Grid.Row="3"
                                    Text="Credit:"
-                                   FontSize="16"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
 
@@ -720,13 +717,11 @@
                                        HorizontalAlignment="Right"
                                        Margin="10 0 0 0"
                                        Text="{Binding TotalCredit}"
-                                       FontSize="16"
                                        VerticalAlignment="Center"/>
 
                             <!-- Refund Label-->
                             <TextBlock Grid.Column="0" Grid.Row="4"
                                    Text="Refund:"
-                                   FontSize="16"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
 
@@ -735,13 +730,11 @@
                                        HorizontalAlignment="Right"
                                        Margin="10 0 0 0"
                                        Text="£10000.00"
-                                       FontSize="16"
                                        VerticalAlignment="Center"/>
 
                             <!-- Expenses Label-->
                             <TextBlock Grid.Column="0" Grid.Row="5"
                                    Text="Expense:"
-                                   FontSize="16"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
 
@@ -750,7 +743,6 @@
                                        HorizontalAlignment="Right"
                                        Margin="10 0 0 0"
                                        Text="{Binding TotalExpense, Mode=TwoWay}"
-                                       FontSize="16"
                                        VerticalAlignment="Center"/>
                         </Grid>
 
@@ -759,7 +751,7 @@
                 <!--#endregion-->
 
                 <!--#region  Departments -->
-                <materialDesign:Card Grid.Row="1" Margin="5 0 0 5"
+                <materialDesign:Card Grid.Row="1" Margin="5 5 0 5"
                                      UniformCornerRadius="15"
                                      materialDesign:ShadowAssist.ShadowDepth="Depth1">
 
@@ -925,9 +917,11 @@
                 <materialDesign:ColorZone Grid.Row="2" Margin="5 5 0 0"
                                           Mode="PrimaryDark"
                                           CornerRadius="15"
-                                          materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                                          materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                          VerticalAlignment="Stretch">
 
-                    <StackPanel Orientation="Vertical" Margin="10">
+                    <StackPanel Orientation="Vertical" Margin="10"
+                                VerticalAlignment="Center">
                         <TextBlock HorizontalAlignment="Center"
                                    Text="Create Expense" />
 
