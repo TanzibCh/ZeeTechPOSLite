@@ -16,23 +16,71 @@
              d:DesignHeight="1000" d:DesignWidth="1700" >
 
     <UserControl.Resources>
-        <!--<DataTemplate DataType="{x:Type viewModel:ManualSaleViewModel}">
-            <local:ManualSaleView/>
-        </DataTemplate>-->
-
-        <!--<viewModel:ManualSaleViewModel x:Key="SaleVM" />-->
-
-        <Style TargetType="Label" BasedOn="{StaticResource MaterialDesignLabel}">
-            <Setter Property="FontSize" Value="25" />
+        <!-- Default Lable style -->
+        <Style TargetType="Label"
+               BasedOn="{StaticResource MaterialDesignLabel}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
         </Style>
 
-        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-            <Setter Property="FontSize" Value="20" />
+        <!-- Default TextBlock style -->
+        <Style TargetType="TextBlock"
+               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Setter Property="FontSize" Value="20" />
+        <!-- Default TextBox style -->
+        <Style TargetType="TextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="FontSize" Value="18" />
         </Style>
+
+        <!-- Floating Hint TextBox -->
+        <Style TargetType="TextBox" x:Key="floatingHintBox"
+               BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <!-- Small Label -->
+        <Style TargetType="Label" x:Key="HeadingSmall" 
+               BasedOn="{StaticResource MaterialDesignLabel}">
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="-5 0 0 -5" />
+        </Style>
+
+        <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"  />
+
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="ListBoxTextBlock"
+               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+
+        <!-- Default Button -->
+        <Style TargetType="Button"
+               BasedOn="{StaticResource MaterialDesignRaisedLightButton}">
+            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="15"/>
+        </Style>
+
+        <!-- Accent Button -->
+        <Style TargetType="Button" x:Key="AccentButton"
+               BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
+            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="15"/>
+        </Style>
+
+
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -50,27 +98,37 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="New Sale"
                        FontSize="40"/>
-
-            <Button Margin="10 0" 
-                    Content="Sale"
-                    Command="{Binding NavigateBankingCommand}"/>
         </StackPanel>
 
         <!--#region Product Entry-->
         <Grid Grid.Column="0" Grid.Row="2">
             <Grid.RowDefinitions>
+                <RowDefinition Height="200" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!--#region Search entry-->
+            <!-- Customer info -->
             <materialDesign:Card Grid.Row="0"
+                                 Margin="10"
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                 UniformCornerRadius="15" >
+                <StackPanel>
+                    <!-- Lable -->
+                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Content="Cstomer Information" />
+                </StackPanel>
+                
+            </materialDesign:Card>
+
+            <!--#region Search entry-->
+            <materialDesign:Card Grid.Row="1"
                                     Margin="10 10"
-                                    BorderBrush="White"
                                     materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                     UniformCornerRadius="15" >
 
-                <Grid Grid.Column="0" Grid.Row="1" Margin="0 0 10 10">
+                <Grid Grid.Column="0" Grid.Row="1" Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="150" />
@@ -78,20 +136,20 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="60" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="60" />
+                        <RowDefinition Height="70" />
                     </Grid.RowDefinitions>
 
                     <!-- Lable -->
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
                     Content="Search Entry" />
                     <!-- Product search box -->
-                    <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="10"
-                        VerticalContentAlignment="Center"
-                        materialDesign:HintAssist.Hint="Search product by Model/Barcode" />
+                    <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4"
+                             VerticalContentAlignment="Center"
+                             materialDesign:HintAssist.Hint="Search product by Model/Barcode" />
 
                     <!-- Search ListBox -->
                     <ListBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
@@ -115,8 +173,7 @@
                     materialDesign:HintAssist.Hint="Cost" />
 
                     <!-- Add to cart Button -->
-                    <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    Grid.Column="3" Grid.Row="3"
+                    <Button Grid.Column="3" Grid.Row="3"
                             HorizontalAlignment="Right"
                             Width="150"
                             Margin="10"
@@ -128,18 +185,15 @@
 
             <!--#region Manual entry-->
             <materialDesign:Card Grid.Row="2"
-                                    Margin="10 10"
-                                    BorderBrush="White"
+                                    Margin="10"
                                     materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                     UniformCornerRadius="15" >
 
-
-                <Grid Grid.Column="0" Grid.Row="3" Margin="0 0 10 10">
+                <Grid Grid.Column="0" Grid.Row="3" Margin="10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -156,7 +210,8 @@
                            FontSize="25"/>
 
                     <!-- Name/Model -->
-                    <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalContentAlignment="Center"
+                    <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" 
+                             VerticalContentAlignment="Center"
                              Margin="10"
                              Text="{Binding ManualProductName, Mode=TwoWay}"
                              IsEnabled="{Binding EnableManualName}"
@@ -210,8 +265,7 @@
                     </StackPanel>
 
                     <!-- Add to cart button -->
-                    <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                            Grid.Column="3" Grid.Row="4"
+                    <Button Grid.Column="3" Grid.Row="4"
                             HorizontalAlignment="Right"
                             Margin="10"
                             Width="150"
@@ -219,58 +273,11 @@
                             FontSize="20"
                             Command="{Binding AddManualProduct}"/>
 
-                    <Grid Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="80"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-
-                        <RadioButton Grid.Column="0" Grid.Row="0"
-                                     Margin="5" 
-                                     IsChecked="{Binding DepartmentChecked}"
-                                     Command="{Binding SelectMobileDepartment}">
-                            Mobile
-                        </RadioButton>
-
-                        <RadioButton Grid.Column="1" Grid.Row="0"
-                                     Margin="5" 
-                                     IsChecked="{Binding DepartmentChecked}"
-                                     Command="{Binding SelectCameraDepartment}">
-                            Camera
-                        </RadioButton>
-
-                        <RadioButton Grid.Column="0" Grid.Row="1"
-                                     Margin="5" 
-                                     IsChecked="{Binding DepartmentChecked}"
-                                     Command="{Binding SelectComputerDepartment}">
-                            Computer
-                        </RadioButton>
-
-                        <RadioButton Grid.Column="1" Grid.Row="1" Margin="5" 
-                                     IsChecked="{Binding DepartmentChecked}"
-                                     Command="{Binding SelectHomeDepartment}">
-                            Home
-                        </RadioButton>
-
-                        <RadioButton Grid.Column="2" Grid.Row="0"
-                                     Margin="5" 
-                                     IsChecked="{Binding DepartmentChecked}"
-                                     Command="{Binding SelectRepairDepartment}">
-                            Repair
-                        </RadioButton>
-
-                        <RadioButton Grid.Column="2" Grid.Row="1"
-                                     Margin="5" 
-                                     IsChecked="{Binding DepartmentChecked}"
-                                     Command="{Binding SelectRepairDepartment}">
-                            AV
-                        </RadioButton>
-                    </Grid>
+                    <ComboBox Grid.Column="2" Grid.Row="1"
+                              Margin="150 0 10 10"
+                              VerticalAlignment="Bottom">
+                        
+                    </ComboBox>
 
                 </Grid>
             </materialDesign:Card>
@@ -438,7 +445,7 @@
                         </ToggleButton>
 
                         <!-- Pay Button -->
-                        <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        <Button Style="{StaticResource AccentButton}"
                                 Command="{Binding Pay}"
                                 MinHeight="100"
                                 Content="Pay"
