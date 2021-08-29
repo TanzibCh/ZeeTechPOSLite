@@ -12,6 +12,7 @@ using System.Windows.Input;
 using DesktopUI.Commands;
 using DesktopUI.Stores;
 using DesktopUI.Services;
+using DesktopUI.Helpers;
 
 namespace DesktopUI.ViewModels
 {
@@ -19,16 +20,7 @@ namespace DesktopUI.ViewModels
     {
         #region Private properties
 
-        private int _manualCode;
-        private decimal _manualCost;
-        private string _manualProductName;
-        private string _manualProductDescription;
-        private int _manualQuantity;
-        private decimal _manualPrice;
-        private string _department;
-
-        private BindingList<CartItemDisplayModel> _cart;
-
+        private readonly CurrencyHelper _cHelper = new CurrencyHelper();
         private SalesData _salesData = new SalesData();
 
         #endregion
@@ -43,9 +35,32 @@ namespace DesktopUI.ViewModels
 
         #region Manual Entry Properties
 
-        /// <summary>
-        /// All the Manual entry properties for creating New Product
-        /// </summary>
+        private ObservableCollection<DepartmantModel> _departments;
+
+        public ObservableCollection<DepartmantModel> Departments
+        {
+            get { return _departments; }
+            set
+            {
+                _departments = value;
+                OnPropertyChanged(nameof(Departments));
+            }
+        }
+
+        private DepartmantModel _selectedDepartment;
+
+        public DepartmantModel SelectedDepartment
+        {
+            get { return _selectedDepartment; }
+            set
+            {
+                _selectedDepartment = value;
+                OnPropertyChanged(nameof(SelectedDepartment));
+            }
+        }
+
+        private string _manualProductName;
+
         public string ManualProductName
         {
             get { return _manualProductName; }
@@ -55,6 +70,8 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(ManualProductName));
             }
         }
+
+        private string _manualProductDescription;
 
         public string ManualProductDescription
         {
@@ -66,6 +83,8 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        private int _manualQuantity;
+
         public int ManualQuantity
         {
             get { return _manualQuantity; }
@@ -76,7 +95,9 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        public decimal ManualPrice
+        private string _manualPrice;
+
+        public string ManualPrice
         {
             get { return _manualPrice; }
             set
@@ -86,7 +107,10 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        public decimal ManualCost
+
+        private string _manualCost;
+
+        public string ManualCost
         {
             get { return _manualCost; }
             set
@@ -95,6 +119,8 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(ManualCost));
             }
         }
+
+        private int _manualCode;
 
         public int ManualCode
         {
@@ -107,65 +133,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        public string Department
-        {
-            get { return _department; }
-            set
-            {
-                _department = value;
-                OnPropertyChanged(nameof(Department));
-            }
-        }
-
-        private bool _enableManualName;
-
-        public bool EnableManualName
-        {
-            get { return _enableManualName; }
-            set
-            {
-                _enableManualName = value;
-                OnPropertyChanged(nameof(EnableManualName));
-            }
-        }
-
-        private bool _enableManualCost;
-
-        public bool EnableManualCost
-        {
-            get { return _enableManualCost; }
-            set
-            {
-                _enableManualCost = value;
-                OnPropertyChanged(nameof(EnableManualCost));
-            }
-        }
-
-        private string _manualEntryLable;
-
-        public string ManualEntryLable
-        {
-            get { return _manualEntryLable; }
-            set
-            {
-                _manualEntryLable = value;
-                OnPropertyChanged(nameof(ManualEntryLable));
-            }
-        }
-
-        private string _departmentChecked;
-
-        public string DepartmentChecked
-        {
-            get { return _departmentChecked; }
-            set
-            {
-                _departmentChecked = value;
-                OnPropertyChanged(nameof(DepartmentChecked));
-            }
-        }
-
-
         #endregion
 
         #region Command Properties
@@ -174,7 +141,8 @@ namespace DesktopUI.ViewModels
 
         public ICommand NavigateBankingCommand { get; }
 
-        public AddManualProductCommand AddManualProduct { get; set; }
+        //public AddManualProductCommand AddManualProduct { get; set; }
+        public ICommand AddManualProduct { get; }
         public PayCommand Pay { get; set; }
 
         private RemoveFromCartCommand _removeFromCart;
@@ -191,18 +159,12 @@ namespace DesktopUI.ViewModels
 
         public EditCartItemCommand EditCartItem { get; set; }
 
-        // Select Department Command properties
-        public CameraDepartmentCommand SelectCameraDepartment { get; set; }
-        public ComputerDepartmentCommand SelectComputerDepartment { get; set; }
-        public HomeDepartmentCommand SelectHomeDepartment { get; set; }
-        public MobileDepartmentCommand SelectMobileDepartment { get; set; }
-        public RepairDepartmentCommand SelectRepairDepartment { get; set; }
-
         #endregion
 
         #region Cart Properties
-        // Cart Binding List
-        public BindingList<CartItemDisplayModel> Cart
+        private ObservableCollection<CartItemDisplayModel> _cart;
+
+        public ObservableCollection<CartItemDisplayModel> Cart
         {
             get { return _cart; }
             set
@@ -225,62 +187,49 @@ namespace DesktopUI.ViewModels
         }
         #endregion
 
-        #region Payment Properties
+        #region Currency Properties
 
         // Totals Properties
-        private decimal _cartTotal;
+        private string _cartTotal;
 
-        public decimal CartTotal
+        public string CartTotal
         {
-            get
+            get { return _cartTotal; }
+            set
             {
-                decimal cartTotal = 0m;
-
-                if (Cart != null)
-                {
-                    foreach (var item in Cart)
-                    {
-                        cartTotal += item.Total;
-                    }
-                }
-                _cartTotal = cartTotal;
-
-                return Math.Round(_cartTotal, 2);
+                _cartTotal = value;
+                OnPropertyChanged(nameof(CartTotal));
             }
         }
 
-        private decimal _subtotal;
+        private string _subtotal;
 
-        public decimal Subtotal
+        public string Subtotal
         {
-            get
+            get { return _subtotal; }
+            set
             {
-                decimal divideBy = 1.2m;
-
-                _subtotal = _cartTotal / divideBy;
-
-                return Math.Round(_subtotal, 2);
+                _subtotal = value;
+                OnPropertyChanged(nameof(Subtotal));
             }
         }
 
-        private decimal _tax;
+        private string _tax;
 
-        public decimal Tax
+        public string Tax
         {
-            get
+            get { return _tax; }
+            set
             {
-                _tax = _cartTotal - _subtotal;
-
-                return Math.Round(_tax, 2);
+                _tax = value;
+                OnPropertyChanged(nameof(Tax));
             }
         }
 
+        // Payment Type Properties
+        private string _cardPayment;
 
-        // Payment option Properties
-
-        private decimal _cardPayment;
-
-        public decimal CardPayment
+        public string CardPayment
         {
             get { return _cardPayment; }
             set
@@ -291,9 +240,9 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private decimal _cashPayment;
+        private string _cashPayment;
 
-        public decimal CashPayment
+        public string CashPayment
         {
             get { return _cashPayment; }
             set
@@ -304,9 +253,9 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private decimal _creditPayment;
+        private string _creditPayment;
 
-        public decimal CreditPayment
+        public string CreditPayment
         {
             get { return _creditPayment; }
             set
@@ -317,6 +266,7 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        // Payment Option properties
         private bool _cashOnlySale;
 
         public bool CashOnlySale
@@ -355,6 +305,8 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        // Property to check that sum of cart and sum of
+        // payment types entered matches.
         private decimal _sumPayment;
 
         public decimal SumPayment
@@ -373,32 +325,34 @@ namespace DesktopUI.ViewModels
 
         public ManualSaleViewModel(INavigationService bankingNavigateService)
         {
+            Departments = new ObservableCollection<DepartmantModel>()
+            {
+                new DepartmantModel(){ DepartmentName = "Mobile"},
+                new DepartmantModel(){ DepartmentName = "Computer"},
+                new DepartmantModel(){ DepartmentName = "Camera"},
+                new DepartmantModel(){ DepartmentName = "Home"},
+                new DepartmantModel(){ DepartmentName = "AV"},
+                new DepartmantModel(){ DepartmentName = "Repair"}
+            };
+
             NavigateBankingCommand = new NavigateCommand(bankingNavigateService);
 
-            SaleDate = DateTime.Now.ToString("dd,MM,yyyy");
+            SaleDate = DateTime.UtcNow.ToString("dd,MM,yyyy");
             CurrentTime = DateTime.UtcNow.ToString("hh:mm:ss");
 
             CashOnlySale = false;
             SumPayment = 0m;
             ManualQuantity = 1;
-            ManualEntryLable = "Manual Entry";
-            EnableManualName = true;
-            EnableManualCost = true;
+            CardPayment = "0.00";
+            CashPayment = "0.00";
+            CreditPayment = "0.00";
+
 
             AddManualProduct = new AddManualProductCommand(this);
             RemoveFromCart = new RemoveFromCartCommand(this);
             EditCartItem = new EditCartItemCommand(this);
             Pay = new PayCommand(this);
-
-            // Department selection commands
-            SelectCameraDepartment = new CameraDepartmentCommand(this);
-            SelectComputerDepartment = new ComputerDepartmentCommand(this);
-            SelectHomeDepartment = new HomeDepartmentCommand(this);
-            SelectMobileDepartment = new MobileDepartmentCommand(this);
-            SelectRepairDepartment = new RepairDepartmentCommand(this);
-
-            Cart = new BindingList<CartItemDisplayModel>();
-
+            Cart = new ObservableCollection<CartItemDisplayModel>();
         }
 
         #endregion
@@ -410,26 +364,24 @@ namespace DesktopUI.ViewModels
         /// </summary>
         private void ConvertCodeToCost()
         {
-            int devideBy = 6;
-            decimal cost = (decimal)ManualCode / (decimal)devideBy;
+            // TODO : make the devideBy value changable
+            decimal devideBy = 6;
+            decimal cost = (decimal)ManualCode / devideBy;
 
-            ManualCost = Math.Round(cost, 2);
+            ManualCost = _cHelper.ConvertDecimalToString(cost);
         }
 
-        /// <summary>
-        /// Creates a product
-        /// </summary>
-        /// <returns>ProductModel</returns>
-        private ProductModel CreateManualProduct()
+        // Create Manual Product 
+        private SaleProductDisplayModel CreateManualProduct()
         {
-            ProductModel product = new ProductModel
+            SaleProductDisplayModel product = new SaleProductDisplayModel
             {
                 Id = -1,
                 ProductName = ManualProductName,
                 ProductDescription = ManualProductDescription,
-                AverageCost = ManualCost,
-                Price = ManualPrice,
-                Department = Department
+                ProductCost = ManualCost,
+                SalePrice = ManualPrice,
+                Department = SelectedDepartment.DepartmentName
             };
             return product;
         }
@@ -439,153 +391,161 @@ namespace DesktopUI.ViewModels
         /// also adds the quantity entered and calculates the 
         /// total amount for that product
         /// </summary>
-        public void AddCartManualItem()
+        public void AddToCartManualItem()
         {
             if (string.IsNullOrWhiteSpace(ManualProductName))
             {
                 MessageBox.Show("You need to enter Product Name");
             }
-            else if (string.IsNullOrWhiteSpace(Department))
+            else if (SelectedDepartment == null)
             {
                 MessageBox.Show("You need to select a Department");
             }
-            else if (ManualQuantity <= 0)
+            else if (ManualQuantity < 1)
             {
                 MessageBox.Show("You need to enter a Quantity");
             }
             else
             {
-                ProductModel product = CreateManualProduct();
+                SaleProductDisplayModel product = CreateManualProduct();
 
-                decimal total = ManualQuantity * ManualPrice;
+                decimal total = ManualQuantity * _cHelper.ConvertStringToDecimal(ManualPrice);
 
                 CartItemDisplayModel item = new CartItemDisplayModel
                 {
                     Product = product,
                     Quantity = ManualQuantity,
                     Price = ManualPrice,
-                    Total = total
+                    Total = _cHelper.ConvertDecimalToString(total)
                 };
 
                 Cart.Add(item);
-                OnPropertyChanged(nameof(CartTotal));
-                OnPropertyChanged(nameof(Subtotal));
-                OnPropertyChanged(nameof(Tax));
+
+                CalculateCartTotal();
+                CalculateSubtotal();
+                CalculateTax();
                 CheckCashOnlySale();
                 CheckPaymentSum();
+
                 ClearManualFields();
             }
+        }
+
+        private void CalculateCartTotal()
+        {
+            decimal cartTotal = 0m;
+
+            if (Cart != null)
+            {
+                foreach (CartItemDisplayModel item in Cart)
+                {
+                    cartTotal += _cHelper.ConvertStringToDecimal(item.Total);
+                }
+            }
+
+            CartTotal = _cHelper.ConvertDecimalToString(cartTotal);
+        }
+
+        private void CalculateSubtotal()
+        {
+            decimal divideBy = 1.2m;
+
+            decimal subtotal = _cHelper.ConvertStringToDecimal(_cartTotal) / divideBy;
+            Subtotal = _cHelper.ConvertDecimalToString(subtotal);
+        }
+
+        private void CalculateTax()
+        {
+            decimal tax = _cHelper.ConvertStringToDecimal(_cartTotal) - _cHelper.ConvertStringToDecimal(_subtotal);
+
+            Tax = _cHelper.ConvertDecimalToString(tax);
         }
 
         private void ClearManualFields()
         {
             ManualProductName = null;
             ManualProductDescription = null;
-            ManualCost = 0m;
-            ManualPrice = 0m;
+            ManualCost = null;
+            ManualPrice = null;
             ManualQuantity = 1;
-            Department = null;
-            DepartmentChecked = null;
+            SelectedDepartment = null;
         }
 
         public void EditSelectedCartItem()
         {
-            CartItemEditSetup();
-            RemoveItemFromCart();
+           // todo :  Create new Modal to edit selected cart item
         }
 
-        private void CartItemEditSetup()
+        private string CalculateTotalCartCost()
         {
-            ManualProductName = SelectedCartItem.Product.ProductName;
-            ManualProductDescription = SelectedCartItem.Product.ProductDescription;
-            ManualCost = SelectedCartItem.Product.AverageCost;
-            ManualPrice = SelectedCartItem.Product.Price;
-            ManualQuantity = SelectedCartItem.Quantity;
-
-            ManualEntryLable = "Edit Product";
-
-            if (SelectedCartItem.Product.Id != -1)
+            foreach (CartItemDisplayModel item in Cart)
             {
-                // For products from database - only edit description, price and quantity
-                // Disable Name and cost textboxes
-                EnableManualName = false;
-                EnableManualCost = false;
-            }
-            else
-            {
-                EnableManualName = true;
-                EnableManualCost = true;
-            }
-        }
+                decimal cost = _cHelper.ConvertStringToDecimal(item.Product.ProductCost);
 
-        private decimal CalculateTotalCartCost()
-        {
-            foreach (var item in Cart)
-            {
-                item.TotalCost = (item.Product.AverageCost * item.Quantity);
+                item.TotalCost = _cHelper.ConvertDecimalToString((cost * item.Quantity));
             }
 
             decimal cartCost = 0m;
 
-            foreach (var item in Cart)
+            foreach (CartItemDisplayModel item in Cart)
             {
-                cartCost += item.TotalCost;
+                cartCost += _cHelper.ConvertStringToDecimal(item.TotalCost);
             }
 
-            return cartCost;
+            return _cHelper.ConvertDecimalToString(cartCost);
         }
 
-        public void CompleteSale()
-        {
-            // Check if sum of payment methods == to CartTotal
-            if (CartTotal == SumPayment)
-            {
-                _salesData.SaveSale(CreateSaleForDB(), CreateSaleProductsForDB());
+        //public void CompleteSale()
+        //{
+        //    // Check if sum of payment methods == to CartTotal
+        //    if (CartTotal == SumPayment)
+        //    {
+        //        _salesData.SaveSale(CreateSaleForDB(), CreateSaleProductsForDB());
 
-                // Clear out items from the cart list
-                Cart.Clear();
+        //        // Clear out items from the cart list
+        //        Cart.Clear();
 
-                // Clear out payment o method fields
-                CardPayment = 0m;
-                CashPayment = 0m;
-                CreditPayment = 0m;
-            }
-            else
-            {
-                // Show MessageBox asaking to enter payment method
-                MessageBox.Show("Full payment was not taken. Please enter correct Card, Cash or Credit amount");
-            }
-        }
+        //        // Clear out payment o method fields
+        //        CardPayment = 0m;
+        //        CashPayment = 0m;
+        //        CreditPayment = 0m;
+        //    }
+        //    else
+        //    {
+        //        // Show MessageBox asaking to enter payment method
+        //        MessageBox.Show("Full payment was not taken. Please enter correct Card, Cash or Credit amount");
+        //    }
+        //}
 
-        private SaleModel CreateSaleForDB()
-        {
-            decimal cartProfit = CartTotal - CalculateTotalCartCost();
+        //private SaleModel CreateSaleForDB()
+        //{
+        //    //decimal cartProfit = CartTotal - CalculateTotalCartCost();
 
-            // Set CashIn as int to save in database
-            int cashOnly = 0;
-            if (CashOnlySale == true)
-            {
-                cashOnly = 1;
-            }
-            else
-            {
-                cashOnly = 0;
-            }
+        //    // Set CashIn as int to save in database
+        //    int cashOnly = 0;
+        //    if (CashOnlySale == true)
+        //    {
+        //        cashOnly = 1;
+        //    }
+        //    else
+        //    {
+        //        cashOnly = 0;
+        //    }
 
-            SaleModel sale = new SaleModel
-            {
-                Card = ConvertDecimalToInt(CardPayment),
-                Cash = ConvertDecimalToInt(CashPayment),
-                Credit = ConvertDecimalToInt(CreditPayment),
-                SaleTotal = ConvertDecimalToInt(CartTotal),
-                Tax = ConvertDecimalToInt(Tax),
-                TotalCost = ConvertDecimalToInt(CalculateTotalCartCost()),
-                Profit = ConvertDecimalToInt(cartProfit),
-                CashOnly = cashOnly
-            };
+        //    SaleModel sale = new SaleModel
+        //    {
+        //        Card = ConvertDecimalToInt(CardPayment),
+        //        Cash = ConvertDecimalToInt(CashPayment),
+        //        Credit = ConvertDecimalToInt(CreditPayment),
+        //        SaleTotal = ConvertDecimalToInt(CartTotal),
+        //        Tax = ConvertDecimalToInt(Tax),
+        //        //TotalCost = ConvertDecimalToInt(CalculateTotalCartCost()),
+        //        Profit = ConvertDecimalToInt(cartProfit),
+        //        CashOnly = cashOnly
+        //    };
 
-            return sale;
-        }
+        //    return sale;
+        //}
 
         private List<SaleProductModel> CreateSaleProductsForDB()
         {
@@ -598,8 +558,8 @@ namespace DesktopUI.ViewModels
                     ProductId = item.Product.Id,
                     ProductName = item.Product.ProductName,
                     ProductDescription = item.Product.ProductDescription,
-                    ProductCost = ConvertDecimalToInt(item.Product.AverageCost),
-                    SalePrice = ConvertDecimalToInt(item.Price),
+                    ProductCost = _cHelper.ConvertStringToInt(item.Product.ProductCost),
+                    SalePrice = _cHelper.ConvertStringToInt(item.Price),
                     QuantitySold = item.Quantity,
                     Department = item.Product.Department
                 });
@@ -608,16 +568,13 @@ namespace DesktopUI.ViewModels
             return saleProducts;
         }
 
-        private int ConvertDecimalToInt(decimal decimalValue)
-        {
-            int intValue = Convert.ToInt32(Math.Truncate(decimalValue * 100m));
-
-            return intValue;
-        }
-
         private void CheckPaymentSum()
         {
-            decimal total = _cardPayment + _cashPayment + _creditPayment;
+            decimal card = _cHelper.ConvertStringToDecimal(_cardPayment);
+            decimal cash = _cHelper.ConvertStringToDecimal(_cashPayment);
+            decimal credit = _cHelper.ConvertStringToDecimal(_creditPayment);
+
+            decimal total = card + cash + credit;
 
             SumPayment = Math.Round(total, 2);
         }
@@ -629,69 +586,32 @@ namespace DesktopUI.ViewModels
         {
             Cart.Remove(SelectedCartItem);
 
-            OnPropertyChanged(nameof(CartTotal));
-            OnPropertyChanged(nameof(Subtotal));
-            OnPropertyChanged(nameof(Tax));
+            CalculateCartTotal();
+            CalculateSubtotal();
+            CalculateTax();
         }
 
         private void CheckCashOnlySale()
         {
             if (CashOnlySale == true)
             {
-                CashPayment = CartTotal;
-                CardPayment = 0m;
+                decimal balance = _cHelper.ConvertStringToDecimal(CartTotal) - _cHelper.ConvertStringToDecimal(CreditPayment);
+
+                CashPayment = _cHelper.ConvertDecimalToString(balance);
+                CardPayment = "0.00";
 
                 EnableCash = true;
                 EnableCard = false;
             }
             else
             {
-                CashPayment = 0m;
-                CardPayment = 0m;
+                CashPayment = "0.00";
+                CardPayment = "0.00";
 
                 EnableCard = true;
                 EnableCash = true;
             }
         }
-
-        public void SelectMobile()
-        {
-            Department = "Mobile";
-        }
-
-        public void SelectCamera()
-        {
-            Department = "Camera";
-        }
-
-        public void SelectComputer()
-        {
-            Department = "Computer";
-        }
-
-        public void SelectHome()
-        {
-            Department = "Home";
-        }
-
-        public void SelectRepair()
-        {
-            Department = "Repair";
-        }
-        #endregion
-
-        #region INotifyPropertyChanged implimentation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
         #endregion
     }
 }

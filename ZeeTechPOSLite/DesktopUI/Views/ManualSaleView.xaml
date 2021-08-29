@@ -11,7 +11,7 @@
              TextElement.FontSize="14"
              FontFamily="{materialDesign:MaterialDesignFont}"
              xmlns:local="clr-namespace:DesktopUI.Views" 
-             xmlns:components="clr-namespace:DesktopUI.Components"
+             xmlns:components="clr-namespace:DesktopUI.Components" d:DataContext="{d:DesignInstance Type=viewModel:ManualSaleViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1700" >
 
@@ -25,6 +25,15 @@
             <Setter Property="Margin" Value="0" />
         </Style>
 
+        <!-- Header Lable style -->
+        <Style TargetType="Label" x:Key="HeaderLable"
+               BasedOn="{StaticResource MaterialDesignLabel}">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
+        </Style>
+
         <!-- Default TextBlock style -->
         <Style TargetType="TextBlock"
                BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
@@ -33,10 +42,10 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
-        <!-- Default TextBox style -->
-        <Style TargetType="TextBox"
+        <!-- Header TextBox style -->
+        <Style TargetType="TextBox" x:Key="HeaderTextBox"
                BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontSize" Value="20" />
         </Style>
 
         <!-- Floating Hint TextBox -->
@@ -56,12 +65,14 @@
             <Setter Property="Margin" Value="-5 0 0 -5" />
         </Style>
 
+        <!-- ListBox Small TextBox -->
         <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
                BasedOn="{StaticResource MaterialDesignTextBox}">
             <Setter Property="HorizontalContentAlignment" Value="Center"  />
 
         </Style>
 
+        <!-- ListBox textblock -->
         <Style TargetType="TextBlock" x:Key="ListBoxTextBlock"
                BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -83,25 +94,29 @@
 
     </UserControl.Resources>
 
-    <Grid Margin="10">
-        <!--DataContext="{StaticResource SaleVM}"-->
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="New Sale"
-                       FontSize="40"/>
-        </StackPanel>
+        <materialDesign:ColorZone Grid.Column="0" Grid.Row="0"
+                                  Grid.ColumnSpan="2"
+                                  Mode="PrimaryDark">
+            <TextBlock  Text="New Sale"
+                   HorizontalAlignment="Center"
+                   FontSize="30"/>
+        </materialDesign:ColorZone>
+        
 
         <!--#region Product Entry-->
-        <Grid Grid.Column="0" Grid.Row="2">
+        <Grid Grid.Column="0" Grid.Row="2"
+              Margin="5 0 0 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="200" />
                 <RowDefinition Height="*" />
@@ -116,6 +131,8 @@
                 <StackPanel>
                     <!-- Lable -->
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
+                           Margin="0 10 0 0"
+                           Style="{StaticResource HeaderLable}"
                            HorizontalAlignment="Center" VerticalAlignment="Center"
                            Content="Cstomer Information" />
                 </StackPanel>
@@ -144,8 +161,9 @@
 
                     <!-- Lable -->
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
-                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Content="Search Entry" />
+                           Style="{StaticResource HeaderLable}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Content="Search Product Entry" />
                     <!-- Product search box -->
                     <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4"
                              VerticalContentAlignment="Center"
@@ -159,13 +177,13 @@
 
                     <!-- Qty -->
                     <TextBox Grid.Column="0" Grid.Row="3" Margin="10"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    materialDesign:HintAssist.Hint="Qty" />
+                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                             materialDesign:HintAssist.Hint="Qty" />
 
                     <!-- Price -->
                     <TextBox Grid.Column="1" Grid.Row="3" Margin="10"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    materialDesign:HintAssist.Hint="Price" />
+                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                             materialDesign:HintAssist.Hint="Price" />
 
                     <!-- Cost -->
                     <TextBox Grid.Column="2" Grid.Row="3" Margin="10"
@@ -184,109 +202,128 @@
             <!--#endregion-->
 
             <!--#region Manual entry-->
-            <materialDesign:Card Grid.Row="2"
+            <Expander HorizontalAlignment="Stretch"
+                      Grid.Row="2"
+                      Header="Manual Sale">
+                
+                <StackPanel Orientation="Vertical">
+                    <materialDesign:Card 
+                                 Margin="10"
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                 UniformCornerRadius="15" >
+
+                        <Grid Grid.Column="0" Grid.Row="3" Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="60" />
+                                <RowDefinition Height="60" />
+                                <RowDefinition Height="80" />
+                                <RowDefinition Height="80" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Lable -->
+                            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
+                                   HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                                   Content="Manual Product Entry" 
+                                   FontSize="20"/>
+
+                            <!-- Name/Model -->
+                            <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" 
+                                     VerticalContentAlignment="Center"
+                                     Margin="10"
+                                     Text="{Binding ManualProductName, Mode=TwoWay}"
+                                     IsEnabled="{Binding EnableManualName}"
+                                     materialDesign:HintAssist.Hint="Name/Model" />
+
+                            <!-- Department -->
+                            <ComboBox Grid.Column="2" Grid.Row="1"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Bottom"
+                                      Margin="10"
+                                      materialDesign:ComboBoxAssist.ClassicMode="True"
+                                      materialDesign:HintAssist.Hint="Department"
+                                      Width="150"
+                                      ItemsSource="{Binding Departments}"
+                                      SelectedItem="{Binding SelectedDepartment, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DepartmentName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <!-- Description -->
+                            <TextBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" VerticalContentAlignment="Center"
+                                     Margin="10"
+                                     Text="{Binding ManualProductDescription, Mode=TwoWay}"
+                                     materialDesign:HintAssist.Hint="Description"  />
+
+                            <!-- Qty -->
+                            <StackPanel Grid.Column="0" Grid.Row="3" Margin="5">
+                                <Label Content="Quantity" HorizontalAlignment="Center"
+                                       Foreground="#FFA0A0A0"/>
+
+                                <TextBox HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding ManualQuantity, Mode=TwoWay}"/>
+                            </StackPanel>
+
+                            <!-- Price -->
+                            <StackPanel Grid.Column="1" Grid.Row="3" Margin="5">
+                                <Label Content="Price" HorizontalAlignment="Center" 
+                                       Foreground="#FFA0A0A0"/>
+
+                                <TextBox HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding ManualPrice, Mode=TwoWay}"/>
+
+                            </StackPanel>
+
+                            <!-- Code -->
+                            <StackPanel Grid.Column="0" Grid.Row="4" Margin="5">
+                                <Label Content="Code" HorizontalAlignment="Center" 
+                                       Foreground="#FFA0A0A0"/>
+
+                                <TextBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                         Text="{Binding ManualCode, Mode=TwoWay}" />
+                            </StackPanel>
+
+                            <!-- Add to cart button -->
+                            <Button Grid.Column="3" Grid.Row="4"
+                                    HorizontalAlignment="Right"
                                     Margin="10"
-                                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                    UniformCornerRadius="15" >
+                                    Width="150"
+                                    Content="Add"
+                                    FontSize="20"
+                                    Command="{Binding AddManualProduct}"/>
 
-                <Grid Grid.Column="0" Grid.Row="3" Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="80" />
-                        <RowDefinition Height="80" />
-                    </Grid.RowDefinitions>
+                            <!-- Cost -->
+                            <StackPanel Grid.Column="1" Grid.Row="4" Margin="5">
+                                <Label Content="Cost" HorizontalAlignment="Center" 
+                                       Foreground="#FFA0A0A0"/>
 
-                    <!-- Lable -->
-                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
-                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                           Content="{Binding ManualEntryLable}" 
-                           FontSize="25"/>
-
-                    <!-- Name/Model -->
-                    <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" 
-                             VerticalContentAlignment="Center"
-                             Margin="10"
-                             Text="{Binding ManualProductName, Mode=TwoWay}"
-                             IsEnabled="{Binding EnableManualName}"
-                             materialDesign:HintAssist.Hint="Name/Model" />
-
-                    <!-- Description -->
-                    <TextBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" VerticalContentAlignment="Center"
-                             Margin="10"
-                             Text="{Binding ManualProductDescription, Mode=TwoWay}"
-                             materialDesign:HintAssist.Hint="Description"  />
-
-                    <!-- Qty -->
-                    <StackPanel Grid.Column="0" Grid.Row="3" Margin="5">
-                        <Label Content="Quantity" HorizontalAlignment="Center"
-                               Foreground="#FFA0A0A0"/>
-
-                        <TextBox HorizontalContentAlignment="Center"
-                                 VerticalContentAlignment="Center"
-                                 Text="{Binding ManualQuantity, Mode=TwoWay}"/>
-                    </StackPanel>
-
-                    <!-- Price -->
-                    <StackPanel Grid.Column="1" Grid.Row="3" Margin="5">
-                        <Label Content="Price" HorizontalAlignment="Center" 
-                               Foreground="#FFA0A0A0"/>
-
-                        <TextBox HorizontalContentAlignment="Center"
-                                 VerticalContentAlignment="Center"
-                                 Text="{Binding ManualPrice, Mode=TwoWay}"/>
-
-                    </StackPanel>
-
-                    <!-- Code -->
-                    <StackPanel Grid.Column="0" Grid.Row="4" Margin="5">
-                        <Label Content="Code" HorizontalAlignment="Center" 
-                               Foreground="#FFA0A0A0"/>
-
-                        <TextBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                             Text="{Binding ManualCode, Mode=TwoWay}" />
-                    </StackPanel>
+                                <TextBox HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding ManualCost, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Card>
+                </StackPanel>
+            </Expander>
 
 
-                    <!-- Cost -->
-                    <StackPanel Grid.Column="1" Grid.Row="4" Margin="5">
-                        <Label Content="Cost" HorizontalAlignment="Center" 
-                               Foreground="#FFA0A0A0"/>
-
-                        <TextBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                 Text="{Binding ManualCost, Mode=TwoWay}"
-                                 IsEnabled="{Binding EnableManualCost}" />
-                    </StackPanel>
-
-                    <!-- Add to cart button -->
-                    <Button Grid.Column="3" Grid.Row="4"
-                            HorizontalAlignment="Right"
-                            Margin="10"
-                            Width="150"
-                            Content="Add"
-                            FontSize="20"
-                            Command="{Binding AddManualProduct}"/>
-
-                    <ComboBox Grid.Column="2" Grid.Row="1"
-                              Margin="150 0 10 10"
-                              VerticalAlignment="Bottom">
-                        
-                    </ComboBox>
-
-                </Grid>
-            </materialDesign:Card>
             <!--#endregion-->
         </Grid>
         <!--#endregion-->
 
         <!--#region Cart -->
-        <Grid Grid.Column="1" Grid.Row="2">
+        <Grid Grid.Column="1" Grid.Row="2"
+              Margin="0 0 0 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="180" />
@@ -299,7 +336,9 @@
                                     UniformCornerRadius="15">
                 <StackPanel Orientation="Vertical">
                     <Label HorizontalAlignment="Center"
-                           Content="Cart">
+                           Margin="0 10 0 0"
+                           Content="Cart"
+                           Style="{StaticResource HeaderLable}">
                     </Label>
 
                     <Separator Margin="10 0" />
@@ -361,7 +400,6 @@
 
                                     <!-- Edit Button -->
                                     <Button Grid.Column="5" Grid.Row="0"
-                                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                             Command="{Binding EditCartItem}"
                                             Width="50">
                                         <StackPanel>
@@ -373,7 +411,6 @@
 
                                     <!-- Remove Button -->
                                     <Button Grid.Column="5" Grid.Row="1"
-                                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                             Command="{Binding RemoveFromCart}"
                                             Width="50"
                                             Content="X"/>
@@ -456,7 +493,7 @@
                     <!-- Payment Grid -->
                     <Grid Grid.Column="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="300" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
@@ -473,6 +510,7 @@
 
                             <!-- Card -->
                             <Label Grid.Column="0" Grid.Row="0"
+                                   Style="{StaticResource HeaderLable}"
                                    Content="Card" 
                                    VerticalContentAlignment="Center"
                                    IsHitTestVisible="True">
@@ -482,10 +520,12 @@
                                         VerticalAlignment="Center">
 
                                 <Label Content="£"
+                                       Style="{StaticResource HeaderLable}"
                                          HorizontalContentAlignment="Center">
                                 </Label>
 
-                                <TextBox Text="{Binding CardPayment, Mode=TwoWay}"
+                                <TextBox Style="{StaticResource HeaderTextBox}"
+                                         Text="{Binding CardPayment, Mode=TwoWay}"
                                          IsEnabled="{Binding EnableCard, Mode=TwoWay}"
                                          HorizontalContentAlignment="Center"
                                          VerticalContentAlignment="Bottom"/>
@@ -493,16 +533,19 @@
 
                             <!-- Cash -->
                             <Label Grid.Column="0" Grid.Row="1"
+                                   Style="{StaticResource HeaderLable}"
                                    Content="Cash" 
                                    VerticalAlignment="Center"/>
                             <StackPanel Grid.Column="1" Grid.Row="1"
                                         Orientation="Horizontal" HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
                                 <Label Content="£"
+                                       Style="{StaticResource HeaderLable}"
                                          HorizontalContentAlignment="Center">
                                 </Label>
 
-                                <TextBox Text="{Binding CashPayment, Mode=TwoWay}"
+                                <TextBox Style="{StaticResource HeaderTextBox}"
+                                         Text="{Binding CashPayment, Mode=TwoWay}"
                                          IsEnabled="{Binding EnableCash, Mode=TwoWay}"
                                          HorizontalContentAlignment="Center"
                                          VerticalContentAlignment="Bottom">
@@ -511,16 +554,19 @@
 
                             <!-- Credit -->
                             <Label Grid.Column="0" Grid.Row="2"
+                                   Style="{StaticResource HeaderLable}"
                                    Content="Credit" 
                                    VerticalAlignment="Center"/>
                             <StackPanel Grid.Column="1" Grid.Row="2"
                                         Orientation="Horizontal" HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
                                 <Label Content="£"
+                                       Style="{StaticResource HeaderLable}"
                                          HorizontalContentAlignment="Center">
                                 </Label>
 
-                                <TextBox Text="{Binding CreditPayment, Mode=TwoWay}"
+                                <TextBox Style="{StaticResource HeaderTextBox}"
+                                         Text="{Binding CreditPayment, Mode=TwoWay}"
                                          HorizontalContentAlignment="Center"
                                          VerticalContentAlignment="Bottom">
                                 </TextBox>
@@ -529,7 +575,7 @@
 
                         <!-- Totals -->
                         <Grid Grid.Column="1" HorizontalAlignment="Right"
-                              Margin="10 0 10 0">
+                              Margin="10 0 30 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
@@ -555,27 +601,34 @@
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Right"
                                    Content="SubTotal:"/>
-                            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock Text="£"
+                            
+                            <StackPanel Grid.Column="1" Grid.Row="0"
+                                        Orientation="Horizontal">
+                                <TextBlock Margin="5 0" 
+                                           Text="£"
                                            VerticalAlignment="Center"/>
 
-                                <TextBlock Margin="0 10" VerticalAlignment="Center" MinWidth="100"
-                                       Text="{Binding Subtotal}"/>
+                                <TextBlock Margin="0 10" VerticalAlignment="Center" 
+                                           HorizontalAlignment="Right"
+                                           Text="{Binding Subtotal}"/>
                             </StackPanel>
 
-                            <!-- tax -->
+                            <!-- Tax -->
                             <Label Grid.Column="0" Grid.Row="1" 
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Right"
                                    Content="Tax:"/>
 
-                            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-
-                                <TextBlock Text="£"
+                            <StackPanel Grid.Column="1" Grid.Row="1"
+                                        Orientation="Horizontal"
+                                        DockPanel.Dock="Right">
+                                <TextBlock Margin="5 0" 
+                                           Text="£"
                                            VerticalAlignment="Center"/>
 
-                                <TextBlock Margin="0 10" VerticalAlignment="Center" MinWidth="100"
-                                       Text="{Binding Tax}"/>
+                                <TextBlock Margin="0 10"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Tax}"/>
                             </StackPanel>
 
                             <!-- Total -->
@@ -583,14 +636,16 @@
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Right"
                                    Content="Total:"/>
-                            <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-
-
+                            <StackPanel Grid.Column="1" Grid.Row="2" 
+                                        Orientation="Horizontal" 
+                                        HorizontalAlignment="Right">
                                 <TextBlock Text="£"
+                                           Margin="5 0"
                                            VerticalAlignment="Center"/>
 
-                                <TextBlock Margin="0 10" VerticalAlignment="Center" MinWidth="100"
-                                       Text="{Binding CartTotal}"/>
+                                <TextBlock Margin="0 10" 
+                                           VerticalAlignment="Center" 
+                                           Text="{Binding CartTotal}"/>
                             </StackPanel>
 
                         </Grid>

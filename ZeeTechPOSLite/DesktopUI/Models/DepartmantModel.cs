@@ -6,6 +6,7 @@ namespace DesktopUI.Models
 {
     public class DepartmantModel
     {
+        public int Id { get; set; }
         public string DepartmentName { get; set; }
     }
 }

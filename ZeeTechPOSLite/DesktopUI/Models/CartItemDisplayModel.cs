@@ -7,10 +7,10 @@ namespace DesktopUI.Models
 {
     public class CartItemDisplayModel
     {
-        public ProductModel Product { get; set; }
+        public SaleProductDisplayModel Product { get; set; }
         public int Quantity { get; set; }
-        public decimal TotalCost { get; set; }
-        public decimal Total { get; set; }
-        public decimal Price { get; set; }
+        public string TotalCost { get; set; }
+        public string Total { get; set; }
+        public string Price { get; set; }
     }
 }

@@ -312,9 +312,9 @@ namespace DesktopUI.ViewModels
                     ProductName = product.ProductName,
                     ProductDescription = product.ProductDescription,
                     Department = product.Department,
-                    SalePrice = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(product.SalePrice)),
-                    ProductCost = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(product.ProductCost)),
-                    Total = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(product.Total)),
+                    SalePrice = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertStringToDecimal(product.SalePrice)),
+                    ProductCost = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertStringToDecimal(product.ProductCost)),
+                    Total = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertStringToDecimal(product.Total)),
                     QuantitySold = product.QuantitySold
                 });
             }
@@ -327,13 +327,13 @@ namespace DesktopUI.ViewModels
             SaleModel sale = new SaleModel
             {
                 Id = Id,
-                Card = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(Card)),
-                Cash = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(Cash)),
-                Credit = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(Credit)),
-                SaleTotal = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(SaleTotal)),
-                Tax = _currencyHelper.ConvertDecimalToInt(_currencyHelper.CalculateTax(_currencyHelper.ConvertCurrencyStringToDecimal(SaleTotal))),
-                TotalCost = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(TotalCost)),
-                Profit = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertCurrencyStringToDecimal(TotalProfit))
+                Card = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertStringToDecimal(Card)),
+                Cash = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertStringToDecimal(Cash)),
+                Credit = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertStringToDecimal(Credit)),
+                SaleTotal = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertStringToDecimal(SaleTotal)),
+                Tax = _currencyHelper.ConvertDecimalToInt(_currencyHelper.CalculateTax(_currencyHelper.ConvertStringToDecimal(SaleTotal))),
+                TotalCost = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertStringToDecimal(TotalCost)),
+                Profit = _currencyHelper.ConvertDecimalToInt(_currencyHelper.ConvertStringToDecimal(TotalProfit))
             };
 
             return sale;
@@ -379,8 +379,8 @@ namespace DesktopUI.ViewModels
                 SalePrice = EditPrice,
                 ProductCost = EditCost,
                 QuantitySold = EditQuantity,
-                Total = _currencyHelper.ConvertDecimalToCurrencyString(
-                EditQuantity * _currencyHelper.ConvertCurrencyStringToDecimal(EditPrice))
+                Total = _currencyHelper.ConvertDecimalToString(
+                EditQuantity * _currencyHelper.ConvertStringToDecimal(EditPrice))
             });
 
             SaleProducts.Remove(SelectedProduct);
@@ -400,8 +400,8 @@ namespace DesktopUI.ViewModels
 
         public void CalculateSaleCurrencies()
         {
-            TotalCost = _currencyHelper.ConvertDecimalToCurrencyString(CalculateSaleTotalCost());
-            SaleTotal = _currencyHelper.ConvertDecimalToCurrencyString(CalculateSaleTotal());
+            TotalCost = _currencyHelper.ConvertDecimalToString(CalculateSaleTotalCost());
+            SaleTotal = _currencyHelper.ConvertDecimalToString(CalculateSaleTotal());
             TotalProfit = CalculateProfit();
         }
 
@@ -411,7 +411,7 @@ namespace DesktopUI.ViewModels
 
             foreach (SaleProductDisplayModel product in SaleProducts)
             {
-                total += _currencyHelper.ConvertCurrencyStringToDecimal(product.Total);
+                total += _currencyHelper.ConvertStringToDecimal(product.Total);
             }
 
             return total;
@@ -423,7 +423,7 @@ namespace DesktopUI.ViewModels
 
             foreach (var product in SaleProducts)
             {
-                total += _currencyHelper.ConvertCurrencyStringToDecimal(product.ProductCost) * product.QuantitySold;
+                total += _currencyHelper.ConvertStringToDecimal(product.ProductCost) * product.QuantitySold;
             }
 
             return total;
@@ -431,9 +431,9 @@ namespace DesktopUI.ViewModels
 
         private string CalculateProfit()
         {
-            decimal total = _currencyHelper.ConvertCurrencyStringToDecimal(SaleTotal);
-            decimal totalCost = _currencyHelper.ConvertCurrencyStringToDecimal(TotalCost);
-            return _currencyHelper.ConvertDecimalToCurrencyString(total - totalCost);
+            decimal total = _currencyHelper.ConvertStringToDecimal(SaleTotal);
+            decimal totalCost = _currencyHelper.ConvertStringToDecimal(TotalCost);
+            return _currencyHelper.ConvertDecimalToString(total - totalCost);
         }
 
         private void LoadSoldProducts()

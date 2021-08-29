@@ -8,25 +8,18 @@ using System.Windows.Input;
 
 namespace DesktopUI.Commands.ManualSaleCommands
 {
-    public class AddManualProductCommand : ICommand
+    public class AddManualProductCommand : CommandBase
     {
-        public ManualSaleViewModel ManualSaleVM { get; set; }
+        private readonly ManualSaleViewModel _manualSaleViewModel;
 
-        public AddManualProductCommand(ManualSaleViewModel manualSaleVM)
+        public AddManualProductCommand(ManualSaleViewModel manualSaleViewModel)
         {
-            ManualSaleVM = manualSaleVM;
+            _manualSaleViewModel = manualSaleViewModel;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
+        public override void Execute(object parameter)
         {
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            ManualSaleVM.AddCartManualItem();
+            _manualSaleViewModel.AddToCartManualItem();
         }
     }
 }

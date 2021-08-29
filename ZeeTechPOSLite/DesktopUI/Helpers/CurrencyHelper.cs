@@ -17,7 +17,7 @@ namespace DesktopUI.Helpers
             return stringValue;
         }
 
-        public string ConvertDecimalToCurrencyString(decimal decimalValue)
+        public string ConvertDecimalToString(decimal decimalValue)
         {
             return string.Format("{0:0.00}", decimalValue);
         }
@@ -33,7 +33,7 @@ namespace DesktopUI.Helpers
         }
 
         // Checks if string Value precedes with £, removes it and converts the string value to decimal value.
-        public decimal ConvertCurrencyStringToDecimal(string stringValue)
+        public decimal ConvertStringToDecimal(string stringValue)
         {
             // TODO - Refactor to remove the use of the if statement
             //if (stringValue.StartsWith("£"))
@@ -46,7 +46,7 @@ namespace DesktopUI.Helpers
             return decimalValue;
         }
 
-        public int ConvertCurrencyStringToInt(string stringValue)
+        public int ConvertStringToInt(string stringValue)
         {
             // TODO - Refactor to remove the use of the if statement
             if (stringValue != null && stringValue.StartsWith("£"))
@@ -72,7 +72,7 @@ namespace DesktopUI.Helpers
             return decimalValue - (decimalValue / 1.2m);
         }
 
-        public decimal ConvertIntToDecimalCurrency()
+        public decimal ConvertIntToDecimal()
         {
             // Add logic
             return 0m;

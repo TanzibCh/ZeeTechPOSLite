@@ -24,7 +24,7 @@ namespace DesktopUI.Commands.ManualSaleCommands
 
         public void Execute(object parameter)
         {
-            ManualSaleVM.CompleteSale();
+            //ManualSaleVM.CompleteSale();
         }
     }
 }
