@@ -141,21 +141,10 @@ namespace DesktopUI.ViewModels
 
         public ICommand NavigateBankingCommand { get; }
 
-        //public AddManualProductCommand AddManualProduct { get; set; }
         public ICommand AddManualProduct { get; }
         public PayCommand Pay { get; set; }
 
-        private RemoveFromCartCommand _removeFromCart;
-
-        public RemoveFromCartCommand RemoveFromCart
-        {
-            get { return _removeFromCart; }
-            set
-            {
-                _removeFromCart = value;
-                OnPropertyChanged(nameof(RemoveFromCart));
-            }
-        }
+        public ICommand RemoveItemFromCartCommand { get; }
 
         public EditCartItemCommand EditCartItem { get; set; }
 
@@ -347,17 +336,31 @@ namespace DesktopUI.ViewModels
             CashPayment = "0.00";
             CreditPayment = "0.00";
 
-
+            // Commands
             AddManualProduct = new AddManualProductCommand(this);
-            RemoveFromCart = new RemoveFromCartCommand(this);
+            RemoveItemFromCartCommand = new RemoveFromCartCommand(this);
             EditCartItem = new EditCartItemCommand(this);
             Pay = new PayCommand(this);
+
             Cart = new ObservableCollection<CartItemDisplayModel>();
         }
 
         #endregion
 
         #region Methods
+
+        // Modify Selected Product in Cart
+        private void ModifyCartItem()
+        {
+            if (SelectedCartItem != null)
+            {
+
+            }
+            else
+            {
+                MessageBox.Show("Select a product to modify first.");
+            }
+        }
 
         /// <summary>
         /// Converts Code entered to cost and rounds off at 2 decimal places
@@ -476,7 +479,20 @@ namespace DesktopUI.ViewModels
            // todo :  Create new Modal to edit selected cart item
         }
 
-        private string CalculateTotalCartCost()
+        private decimal CalculateCartProfit()
+        {
+            decimal cartTotal = 0;
+            decimal totalCost = CalculateTotalCartCost();
+
+            foreach (CartItemDisplayModel item in Cart)
+            {
+                cartTotal += _cHelper.ConvertStringToDecimal(item.Total);
+            }
+
+            return cartTotal - totalCost;
+        }
+
+        private decimal CalculateTotalCartCost()
         {
             foreach (CartItemDisplayModel item in Cart)
             {
@@ -492,66 +508,66 @@ namespace DesktopUI.ViewModels
                 cartCost += _cHelper.ConvertStringToDecimal(item.TotalCost);
             }
 
-            return _cHelper.ConvertDecimalToString(cartCost);
+            return cartCost;
         }
 
-        //public void CompleteSale()
-        //{
-        //    // Check if sum of payment methods == to CartTotal
-        //    if (CartTotal == SumPayment)
-        //    {
-        //        _salesData.SaveSale(CreateSaleForDB(), CreateSaleProductsForDB());
+        public void CompleteSale()
+        {
+            // Check if sum of payment methods == to CartTotal
+            if (_cHelper.ConvertStringToDecimal(CartTotal) == SumPayment)
+            {
+                _salesData.SaveSale(CreateSaleForDB(), CreateSaleProductsForDB());
 
-        //        // Clear out items from the cart list
-        //        Cart.Clear();
+                // Clear out items from the cart list
+                Cart.Clear();
 
-        //        // Clear out payment o method fields
-        //        CardPayment = 0m;
-        //        CashPayment = 0m;
-        //        CreditPayment = 0m;
-        //    }
-        //    else
-        //    {
-        //        // Show MessageBox asaking to enter payment method
-        //        MessageBox.Show("Full payment was not taken. Please enter correct Card, Cash or Credit amount");
-        //    }
-        //}
+                // Clear out payment o method fields
+                CardPayment = "0.00";
+                CashPayment = "0.00";
+                CreditPayment = "0.00";
+            }
+            else
+            {
+                // Show MessageBox asaking to enter payment method
+                MessageBox.Show("Full payment was not taken. Please enter correct Card, Cash or Credit amount");
+            }
+        }
 
-        //private SaleModel CreateSaleForDB()
-        //{
-        //    //decimal cartProfit = CartTotal - CalculateTotalCartCost();
+        private SaleModel CreateSaleForDB()
+        {
+            //decimal cartProfit = CartTotal - CalculateTotalCartCost();
 
-        //    // Set CashIn as int to save in database
-        //    int cashOnly = 0;
-        //    if (CashOnlySale == true)
-        //    {
-        //        cashOnly = 1;
-        //    }
-        //    else
-        //    {
-        //        cashOnly = 0;
-        //    }
+            // Set CashIn as int to save in database
+            int cashOnly = 0;
+            if (CashOnlySale == true)
+            {
+                cashOnly = 1;
+            }
+            else
+            {
+                cashOnly = 0;
+            }
 
-        //    SaleModel sale = new SaleModel
-        //    {
-        //        Card = ConvertDecimalToInt(CardPayment),
-        //        Cash = ConvertDecimalToInt(CashPayment),
-        //        Credit = ConvertDecimalToInt(CreditPayment),
-        //        SaleTotal = ConvertDecimalToInt(CartTotal),
-        //        Tax = ConvertDecimalToInt(Tax),
-        //        //TotalCost = ConvertDecimalToInt(CalculateTotalCartCost()),
-        //        Profit = ConvertDecimalToInt(cartProfit),
-        //        CashOnly = cashOnly
-        //    };
+            SaleModel sale = new SaleModel
+            {
+                Card = _cHelper.ConvertStringToInt(CardPayment),
+                Cash = _cHelper.ConvertStringToInt(CashPayment),
+                Credit = _cHelper.ConvertStringToInt(CreditPayment),
+                SaleTotal = _cHelper.ConvertStringToInt(CartTotal),
+                Tax = _cHelper.ConvertStringToInt(Tax),
+                TotalCost = _cHelper.ConvertDecimalToInt(CalculateTotalCartCost()),
+                Profit = _cHelper.ConvertDecimalToInt(CalculateCartProfit()),
+                CashOnly = cashOnly
+            };
 
-        //    return sale;
-        //}
+            return sale;
+        }
 
         private List<SaleProductModel> CreateSaleProductsForDB()
         {
             List<SaleProductModel> saleProducts = new List<SaleProductModel>();
 
-            foreach (var item in Cart)
+            foreach (CartItemDisplayModel item in Cart)
             {
                 saleProducts.Add(new SaleProductModel
                 {

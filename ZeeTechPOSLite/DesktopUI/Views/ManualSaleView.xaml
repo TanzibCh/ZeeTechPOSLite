@@ -334,19 +334,29 @@
                                     BorderBrush="White"
                                     materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                     UniformCornerRadius="15">
-                <StackPanel Orientation="Vertical">
-                    <Label HorizontalAlignment="Center"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="60" />
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Orientation="Vertical"
+                                Grid.Row="0">
+                        <Label HorizontalAlignment="Center"
                            Margin="0 10 0 0"
                            Content="Cart"
                            Style="{StaticResource HeaderLable}">
-                    </Label>
+                        </Label>
 
-                    <Separator Margin="10 0" />
-
+                        <Separator Margin="10 0"/>
+                    </StackPanel>
+                    
                     <!-- Cart ListBox -->
-                    <ListBox Grid.Row="0" HorizontalContentAlignment="Stretch"
-                             Height="650"
-                             Margin="10,10,10,10"
+                    <ListBox Grid.Row="1" 
+                             HorizontalContentAlignment="Stretch"
+                             MinHeight="600"
+                             Margin="10"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ItemsSource="{Binding Cart}"
                              SelectedItem="{Binding SelectedCartItem}">
@@ -398,23 +408,6 @@
                                                    Text="{Binding Product.ProductDescription}" />
                                     </StackPanel>
 
-                                    <!-- Edit Button -->
-                                    <Button Grid.Column="5" Grid.Row="0"
-                                            Command="{Binding EditCartItem}"
-                                            Width="50">
-                                        <StackPanel>
-                                            <materialDesign:PackIcon Kind="BoxEditOutline"
-                                                                     Height="20"
-                                                                     Width="20"/>
-                                        </StackPanel>
-                                    </Button>
-
-                                    <!-- Remove Button -->
-                                    <Button Grid.Column="5" Grid.Row="1"
-                                            Command="{Binding RemoveFromCart}"
-                                            Width="50"
-                                            Content="X"/>
-
                                     <!-- Department -->
                                     <StackPanel Grid.Column="1" Orientation="Vertical"
                                                 Margin="2 0 0 0">
@@ -455,7 +448,27 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </StackPanel>
+                    
+                    <!-- Buttons -->
+                    <StackPanel Grid.Row="2"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        
+                        <!-- Edit Button -->
+                        <Button Grid.Column="5" Grid.Row="0"
+                                Margin="10 0"
+                                Command="{Binding EditCartItem}"
+                                Width="150"
+                                Content="Edit"/>
+
+                        <!-- Remove Button -->
+                        <Button Grid.Column="5" Grid.Row="1"
+                                Margin="10 0"
+                                Command="{Binding RemoveItemFromCartCommand}"
+                                Width="150"
+                                Content="Remove"/>
+                    </StackPanel>
+                </Grid>
 
             </materialDesign:Card>
 

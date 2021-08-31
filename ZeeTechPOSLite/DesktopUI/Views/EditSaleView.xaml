@@ -92,7 +92,7 @@
         </Grid.RowDefinitions>
 
         <materialDesign:ColorZone Grid.Row="0"
-                                  Mode="PrimaryMid">
+                                  Mode="PrimaryDark">
             <TextBlock HorizontalAlignment="Center" 
                        Text="Edit Sales" />
 
@@ -456,7 +456,7 @@
                     </Grid.RowDefinitions>
                     
                     <materialDesign:ColorZone Grid.Row="0"
-                                              Mode="PrimaryMid"
+                                              Mode="PrimaryDark"
                                               Height="40">
                         <TextBlock HorizontalAlignment="Center"
                                    Text="Edit Product" />
@@ -575,7 +575,7 @@
             </materialDesign:Card>
         </Grid>
         <materialDesign:ColorZone Grid.Row="2"
-                                  Mode="PrimaryMid"
+                                  Mode="PrimaryDark"
                                   VerticalAlignment="Stretch">
             <StackPanel Orientation="Horizontal" Margin="0 5 5 0" 
                         HorizontalAlignment="Right">

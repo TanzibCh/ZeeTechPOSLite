@@ -6,25 +6,18 @@ using System.Windows.Input;
 
 namespace DesktopUI.Commands.ManualSaleCommands
 {
-    public class RemoveFromCartCommand : ICommand
+    public class RemoveFromCartCommand : CommandBase
     {
-        public ManualSaleViewModel ManualSaleVM { get; set; }
+        private readonly ManualSaleViewModel _manualSaleViewModel;
 
-        public RemoveFromCartCommand(ManualSaleViewModel manualSaleVM)
+        public RemoveFromCartCommand(ManualSaleViewModel manualSaleViewModel)
         {
-            ManualSaleVM = manualSaleVM;
+            _manualSaleViewModel = manualSaleViewModel;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
+        public override void Execute(object parameter)
         {
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            ManualSaleVM.RemoveItemFromCart();
+            _manualSaleViewModel.RemoveItemFromCart();
         }
     }
 }
