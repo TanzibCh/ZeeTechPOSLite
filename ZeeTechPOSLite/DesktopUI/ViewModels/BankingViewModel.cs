@@ -472,7 +472,6 @@ namespace DesktopUI.ViewModels
 
         #region Commands Properties
 
-        public ICommand NavigateManualSaleCommand { get; }
         public AddExpenseCommand AddExpense { get; set; }
         public ICommand EditExpense { get; set; }
         public RemoveExpenseCommand RemoveExpense { get; set; }

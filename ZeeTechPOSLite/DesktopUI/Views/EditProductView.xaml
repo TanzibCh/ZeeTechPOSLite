@@ -1,0 +1,173 @@
+﻿<UserControl x:Class="DesktopUI.Views.EditProductView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:viewModel="clr-namespace:DesktopUI.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             FontFamily="{materialDesign:MaterialDesignFont}"
+             xmlns:local="clr-namespace:DesktopUI.Views"
+             Height="350" Width="600">
+    <UserControl.Resources>
+        <!-- Default Lable style -->
+        <Style TargetType="Label"
+               BasedOn="{StaticResource MaterialDesignLabel}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
+        </Style>
+
+        <!-- Default TextBlock style -->
+        <Style TargetType="TextBlock"
+               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Default TextBox style -->
+        <Style TargetType="TextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
+        <!-- Floating Hint TextBox -->
+        <Style TargetType="TextBox" x:Key="floatingHintBox"
+               BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+        <!-- Small Label -->
+        <Style TargetType="Label" x:Key="HeadingSmall" 
+               BasedOn="{StaticResource MaterialDesignLabel}">
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="-5 0 0 -5" />
+        </Style>
+
+        <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"  />
+
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="ListBoxTextBlock"
+               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+
+        <!-- Default Button -->
+        <Style TargetType="Button"
+               BasedOn="{StaticResource MaterialDesignRaisedLightButton}">
+            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="15"/>
+            <Setter Property="Margin" Value="10 0" />
+        </Style>
+
+        <!-- Accent Button -->
+        <Style TargetType="Button" x:Key="AccentButton"
+               BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
+            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="15"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Grid.Row="0"
+                                  Mode="PrimaryDark">
+            <TextBlock HorizontalAlignment="Center" 
+                       Text="Edit Product" />
+        </materialDesign:ColorZone>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+            
+            <!-- Name and Description -->
+            <materialDesign:Card Grid.Row="0"
+                                 Margin="10 10 10 5"
+                                 UniformCornerRadius="15">
+                <StackPanel Orientation="Vertical" 
+                            Margin="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Margin="10 0 0 0" materialDesign:HintAssist.Hint="Name/Model" 
+                                 Style="{StaticResource floatingHintBox}"/>
+
+                        <ComboBox Grid.Column="1"
+                                  Margin="50 15 10 0"
+                                  materialDesign:ComboBoxAssist.ClassicMode="True">
+                            
+                        </ComboBox>
+                    </Grid>
+                    
+                    <TextBox Margin="10"
+                             materialDesign:HintAssist.Hint="Description" 
+                             Style="{StaticResource floatingHintBox}"/>
+                </StackPanel>
+                
+            </materialDesign:Card>
+            
+            <!-- Currency -->
+            <materialDesign:Card Grid.Row="1"
+                                 Margin="10 5 10 10"
+                                 UniformCornerRadius="15">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                             Margin="10"
+                             Style="{StaticResource floatingHintBox}"
+                             materialDesign:HintAssist.Hint="Quantity"/>
+                    <TextBox Grid.Column="1"
+                             Margin="10"
+                             Style="{StaticResource floatingHintBox}"
+                             materialDesign:HintAssist.Hint="Cost"/>
+                    <TextBox Grid.Column="2"
+                             Margin="10"
+                             Style="{StaticResource floatingHintBox}"
+                             materialDesign:HintAssist.Hint="Price"/>
+
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+        
+        <!-- Buttons -->
+        <materialDesign:ColorZone Grid.Row="2"
+                                  Mode="PrimaryDark" 
+                                  VerticalAlignment="Stretch">
+
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right">
+                <Button Width="100" 
+                        Content="Undo"/>
+                <Button Width="100" 
+                        Content="Close"/>
+                <Button Width="100"
+                        Margin="10"
+                        Content="Save"
+                        Style="{StaticResource AccentButton}"/>
+            </StackPanel>
+        </materialDesign:ColorZone>
+    </Grid>
+</UserControl>

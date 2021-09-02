@@ -31,6 +31,10 @@
                 <local:EditSaleView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewModel:EditSaleProductViewModel}">
+                <local:EditProductView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewModel:LayoutViewModel}">
                 <components:Layout />
             </DataTemplate>

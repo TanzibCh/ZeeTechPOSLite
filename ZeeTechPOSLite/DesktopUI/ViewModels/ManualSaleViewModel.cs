@@ -13,6 +13,7 @@ using DesktopUI.Commands;
 using DesktopUI.Stores;
 using DesktopUI.Services;
 using DesktopUI.Helpers;
+using System.Linq;
 
 namespace DesktopUI.ViewModels
 {
@@ -174,6 +175,19 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(SelectedCartItem));
             }
         }
+
+        private string _cartProductName;
+
+        public string CartProductName
+        {
+            get { return _cartProductName; }
+            set
+            {
+                _cartProductName = value;
+                OnPropertyChanged(nameof(CartProductName));
+            }
+        }
+
         #endregion
 
         #region Currency Properties
@@ -354,7 +368,12 @@ namespace DesktopUI.ViewModels
         {
             if (SelectedCartItem != null)
             {
+                CartItemDisplayModel item = Cart.FirstOrDefault(i => i == SelectedCartItem);
 
+                if (item != null)
+                {
+                    item.Product.ProductName = CartProductName;
+                }
             }
             else
             {

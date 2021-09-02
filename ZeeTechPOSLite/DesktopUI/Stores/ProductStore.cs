@@ -1,12 +1,22 @@
 ﻿using DesktopUI.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace DesktopUI.Stores
 {
     public class ProductStore
     {
+        private ObservableCollection<CartItemDisplayModel> _cart;
+
+        public ObservableCollection<CartItemDisplayModel> Cart
+        {
+            get { return _cart; }
+            set { _cart = value; }
+        }
+
+
         private SaleProductDisplayModel _selectedSaleProduct;
 
         public SaleProductDisplayModel SelectedSaleProduct
