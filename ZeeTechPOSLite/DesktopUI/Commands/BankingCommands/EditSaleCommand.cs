@@ -37,7 +37,6 @@ namespace DesktopUI.Commands.BankingCommands
 
                 _navigationService.Navigate();
             }
-            
         }
     }
 }

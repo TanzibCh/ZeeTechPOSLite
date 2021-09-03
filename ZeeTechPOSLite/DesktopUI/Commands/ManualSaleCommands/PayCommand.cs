@@ -6,25 +6,18 @@ using System.Windows.Input;
 
 namespace DesktopUI.Commands.ManualSaleCommands
 {
-    public class PayCommand : ICommand
+    public class PayCommand : CommandBase
     {
-        public ManualSaleViewModel ManualSaleVM { get; set; }
+        private readonly ManualSaleViewModel _manualSaleVM;
 
         public PayCommand(ManualSaleViewModel manualSaleVM)
         {
-            ManualSaleVM = manualSaleVM;
+            _manualSaleVM = manualSaleVM;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
+        public override void Execute(object parameter)
         {
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            //ManualSaleVM.CompleteSale();
+            _manualSaleVM.CompleteSale();
         }
     }
 }

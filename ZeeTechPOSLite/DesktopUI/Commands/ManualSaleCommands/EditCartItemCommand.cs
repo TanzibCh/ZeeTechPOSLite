@@ -1,30 +1,44 @@
-﻿using DesktopUI.ViewModels;
+﻿using DesktopUI.Services;
+using DesktopUI.Stores;
+using DesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DesktopUI.Commands.ManualSaleCommands
 {
-    public class EditCartItemCommand : ICommand
+    public class EditCartItemCommand : CommandBase
     {
-        public ManualSaleViewModel ManualSaleVM { get; set; }
+        private readonly ManualSaleViewModel _manualSaleVM;
+        private readonly ProductStore _productStore;
+        private readonly INavigationService _navigationService;
 
-        public EditCartItemCommand(ManualSaleViewModel manualSaleVM)
+        public EditCartItemCommand(ManualSaleViewModel manualSaleVM, 
+            ProductStore productStore, INavigationService navigationService)
         {
-            ManualSaleVM = manualSaleVM;
+            _manualSaleVM = manualSaleVM;
+            _productStore = productStore;
+            _navigationService = navigationService;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
+        public override void Execute(object parameter)
         {
-            return true;
-        }
+            if (_manualSaleVM.Cart == null)
+            {
+                MessageBox.Show("There is no product added to the cart.");
+            }
+            else if (_manualSaleVM.SelectedCartItem == null)
+            {
+                MessageBox.Show("Select a product to deit first.");
+            }
+            else
+            {
+                _productStore.SelectedSaleProduct = _manualSaleVM.SelectedCartItem;
 
-        public void Execute(object parameter)
-        {
-            ManualSaleVM.EditSelectedCartItem();
+                _navigationService.Navigate();
+            }
         }
     }
 }

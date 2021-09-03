@@ -33,6 +33,7 @@ namespace DesktopUI
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<SaleStore>();
             services.AddSingleton<ProductStore>();
+            services.AddSingleton<ProductStore>();
             services.AddSingleton<ModalNavigationStore>();
 
             // Main window
@@ -41,9 +42,12 @@ namespace DesktopUI
             services.AddSingleton<INavigationService>(s => CreateManualSaleNavigationService(_serviceProvider));
 
             // register ViewModels
-            services.AddTransient<ManualSaleViewModel>(s => new ManualSaleViewModel(CreateBankingNavigationService(s)));
+            services.AddTransient<ManualSaleViewModel>(s => new ManualSaleViewModel(CreateEditProductNavigationService(s),
+                s.GetRequiredService<ProductStore>()));
+
             services.AddTransient<BankingViewModel>(s => new BankingViewModel(CreateEditSaleNavigationService(s),
                 s.GetRequiredService<SaleStore>()));
+
             services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(
                 CreateCloseModalNavigationService(s),
                 s.GetRequiredService<SaleStore>()));
@@ -117,16 +121,14 @@ namespace DesktopUI
                 () => new EditSaleViewModel(navigationService, serviceProvider.GetRequiredService<SaleStore>()));
         }
 
-        // Edit SAle Product Navigation Service
+        // Edit Product Navigation Service
         private INavigationService CreateEditProductNavigationService(IServiceProvider serviceProvider)
         {
-            CompositeNavigationService navigationService = new CompositeNavigationService(
-                CreateCloseModalNavigationService(serviceProvider),
-                CreateBankingNavigationService(serviceProvider));
-
             return new ModalNavigationService<EditSaleProductViewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),
-                () => new EditSaleProductViewModel(navigationService));
+                () => new EditSaleProductViewModel(CreateCloseModalNavigationService(serviceProvider),
+                serviceProvider.GetRequiredService<ProductStore>(),
+                serviceProvider.GetRequiredService<ManualSaleViewModel>()));
         }
 
         // Close Modal Navigation Service

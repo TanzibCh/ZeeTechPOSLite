@@ -8,21 +8,26 @@ namespace DesktopUI.Stores
 {
     public class ProductStore
     {
-        private ObservableCollection<CartItemDisplayModel> _cart;
+        // Product Model used in the ManualSale View Model
+        private CartItemDisplayModel _selectedSaleProduct;
 
-        public ObservableCollection<CartItemDisplayModel> Cart
-        {
-            get { return _cart; }
-            set { _cart = value; }
-        }
-
-
-        private SaleProductDisplayModel _selectedSaleProduct;
-
-        public SaleProductDisplayModel SelectedSaleProduct
+        public CartItemDisplayModel SelectedSaleProduct
         {
             get { return _selectedSaleProduct; }
             set { _selectedSaleProduct = value; }
+        }
+
+        // Edited Cart Item in EditSale View Model
+        private CartItemDisplayModel _editedCartItem;
+
+        public CartItemDisplayModel EditedCartItem
+        {
+            get { return _editedCartItem; }
+            set
+            {
+                _editedCartItem = value;
+                EditedCartItemChanged?.Invoke();
+            }
         }
 
         private SaleProductDisplayModel _editedSaleProduct;
@@ -37,6 +42,9 @@ namespace DesktopUI.Stores
             }
         }
 
-        public Action EditedSaleProductChanged;
+
+        public event Action EditedCartItemChanged;
+        public event Action EditedSaleProductChanged;
+        public event Action CartChanged;
     }
 }
