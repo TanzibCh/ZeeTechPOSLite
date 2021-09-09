@@ -432,9 +432,6 @@
                             <Button Content="Refund"
                                             Width="100"
                                             Margin="5" />
-                            <Button Content="Exchange"
-                                            Width="100"
-                                            Margin="5" />
                             <Button Content="Edit"
                                             Width="100"
                                             Margin="5"

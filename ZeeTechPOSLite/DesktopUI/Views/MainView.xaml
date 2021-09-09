@@ -35,6 +35,10 @@
                 <local:EditProductView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewModel:RefundViewModel}">
+                <local:RefundView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewModel:LayoutViewModel}">
                 <components:Layout />
             </DataTemplate>

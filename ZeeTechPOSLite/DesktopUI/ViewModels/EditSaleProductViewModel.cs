@@ -122,7 +122,7 @@ namespace DesktopUI.ViewModels
 
         #endregion
 
-        #region Default Constructor
+        #region Constructors
 
         public EditSaleProductViewModel(INavigationService closeModalNavigationService,
             ProductStore productStore, ManualSaleViewModel manualSaleVM)

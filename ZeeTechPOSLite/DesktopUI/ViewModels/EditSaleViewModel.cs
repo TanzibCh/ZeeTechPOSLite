@@ -251,13 +251,14 @@ namespace DesktopUI.ViewModels
         public ICommand UpdateEditProductCommand { get; }
         public ICommand SaveChangesCommand { get; }
         public ICommand VoidSaleCommand { get; }
+        public ICommand RefundCommand { get; }
 
         #endregion
 
         #region Constructors
 
         // Default Constructor
-        public EditSaleViewModel(INavigationService closeModalNavigationService, SaleStore saleStore)
+        public EditSaleViewModel(INavigationService closeNavigationService, INavigationService refundNavigationService, SaleStore saleStore)
         {
             _saleStore = saleStore;
 
@@ -272,12 +273,13 @@ namespace DesktopUI.ViewModels
             };
 
             // Commands
-            CloseCommand = new CloseModalCommand(closeModalNavigationService);
+            CloseCommand = new CloseModalCommand(closeNavigationService);
             EditProductCommand = new EditProductCommand(this);
             CancelEditProductCoomand = new CancelEditProductCommand(this);
             UpdateEditProductCommand = new UpdateEditProductCommand(this);
             SaveChangesCommand = new SaveChangesCommand(this);
             VoidSaleCommand = new VoidSaleCommand(this);
+            RefundCommand = new RefundCommand(refundNavigationService);
 
             LoadSale();
             LoadSoldProducts();
@@ -299,7 +301,7 @@ namespace DesktopUI.ViewModels
             _salesData.UpdateSale(CreateSaleForUpdate(), CreateProductListForUpdate());
         }
 
-        // Create a new list to products, which will be used to update the database
+        // Create a new list of products, which will be used to update the database
         private List<SaleProductModel> CreateProductListForUpdate()
         {
             List<SaleProductModel> saleProducts = new List<SaleProductModel>();
@@ -366,8 +368,6 @@ namespace DesktopUI.ViewModels
 
         public void UpdateSoldProduct()
         {
-            
-
             SaleProducts.Add(new SaleProductDisplayModel
             {
                 Id = SelectedProduct.Id,

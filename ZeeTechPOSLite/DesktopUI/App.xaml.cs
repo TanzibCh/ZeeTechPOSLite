@@ -48,8 +48,11 @@ namespace DesktopUI
             services.AddTransient<BankingViewModel>(s => new BankingViewModel(CreateEditSaleNavigationService(s),
                 s.GetRequiredService<SaleStore>()));
 
-            services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(
-                CreateCloseModalNavigationService(s),
+            services.AddTransient<RefundViewModel>(s => new RefundViewModel(CreateCloseModalNavigationService(s),
+                s.GetRequiredService<SaleStore>()));
+
+            services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(CreateCloseModalNavigationService(s),
+                CreateRefundNavigationService(s),
                 s.GetRequiredService<SaleStore>()));
 
             services.AddSingleton<MainView>(s => new MainView()
@@ -57,6 +60,7 @@ namespace DesktopUI
                 DataContext = s.GetRequiredService<MainViewModel>()
             });
 
+            // Build service provider
             _serviceProvider = services.BuildServiceProvider();
 
             CultureInfo ci = CultureInfo.CreateSpecificCulture(CultureInfo.CurrentCulture.Name);
@@ -111,14 +115,19 @@ namespace DesktopUI
         // Edit Sale Navigation Service
         private INavigationService CreateEditSaleNavigationService(IServiceProvider serviceProvider)
         {
-            CompositeNavigationService navigationService = new CompositeNavigationService(
+            CompositeNavigationService closeNavigationService = new CompositeNavigationService(
                 CreateCloseModalNavigationService(serviceProvider),
-                CreateBankingNavigationService(serviceProvider)
-                );
+                CreateBankingNavigationService(serviceProvider));
+
+            CompositeNavigationService refundNavigationService = new CompositeNavigationService(
+                CreateCloseModalNavigationService(serviceProvider),
+                CreateRefundNavigationService(serviceProvider));
 
             return new ModalNavigationService<EditSaleViewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),
-                () => new EditSaleViewModel(navigationService, serviceProvider.GetRequiredService<SaleStore>()));
+                () => new EditSaleViewModel(closeNavigationService,
+                refundNavigationService,
+                serviceProvider.GetRequiredService<SaleStore>()));
         }
 
         // Edit Product Navigation Service
@@ -131,6 +140,14 @@ namespace DesktopUI
                 serviceProvider.GetRequiredService<ManualSaleViewModel>()));
         }
 
+        // Refund Navigation Service
+        private INavigationService CreateRefundNavigationService(IServiceProvider serviceProvider)
+        {
+            return new ModalNavigationService<RefundViewModel>(
+                serviceProvider.GetRequiredService<ModalNavigationStore>(),
+                () => new RefundViewModel(CreateCloseModalNavigationService(serviceProvider),
+                serviceProvider.GetRequiredService<SaleStore>()));
+        }
         // Close Modal Navigation Service
         private INavigationService CreateCloseModalNavigationService(IServiceProvider serviceProvider)
         {
