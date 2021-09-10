@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DesktopUI.Helpers
 {
@@ -72,10 +70,9 @@ namespace DesktopUI.Helpers
             return decimalValue - (decimalValue / 1.2m);
         }
 
-        public decimal ConvertIntToDecimal()
+        public decimal ConvertIntToDecimal(int intValue)
         {
-            // Add logic
-            return 0m;
+            return Convert.ToDecimal(intValue);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using DataAccessLibrary.DataAccess.SalesQueries;
 using DataAccessLibrary.Models;
 using DesktopUI.Commands;
-using DesktopUI.Commands.EditSaleCommands;
+using DesktopUI.Commands.RefundCommands;
 using DesktopUI.Helpers;
 using DesktopUI.Models;
 using DesktopUI.Services;
@@ -9,8 +9,9 @@ using DesktopUI.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
+using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace DesktopUI.ViewModels
@@ -19,54 +20,25 @@ namespace DesktopUI.ViewModels
     {
         #region Private Properties
 
+        private readonly CurrencyHelper _cHelper = new CurrencyHelper();
+        private readonly SaleProductData _saleProductData = new SaleProductData();
+        private readonly SalesData _salesData = new SalesData();
         private readonly SaleStore _saleStore;
-        private readonly SaleProductData _saleProductData;
-        private readonly CurrencyHelper _cHelper;
-        private readonly SalesData _salesData;
 
-        #endregion
+        #endregion Private Properties
 
-        #region Public properties
-
-        public int SaleId => _saleStore.SelectedSale.Id;
-
-        private decimal _saleTotal;
-
-        public decimal SaleTotal
-        {
-            get { return _saleTotal; }
-            set
-            {
-                _saleTotal = value;
-                OnPropertyChanged(nameof(SaleTotal));
-            }
-        }
-
-        private decimal _restockingCharge;
-
-        public decimal RestockingCharge
-        {
-            get { return _restockingCharge; }
-            set
-            {
-                _restockingCharge = value;
-                OnPropertyChanged(nameof(RestockingCharge));
-            }
-        }
-
-        private int _quantity;
-
-        public int Quantity
-        {
-            get { return _quantity; }
-            set
-            {
-                _quantity = value;
-                OnPropertyChanged(nameof(Quantity));
-            }
-        }
+        #region Field Properties
 
         private decimal _productTotal;
+        private int _quantity;
+        private decimal _refundTotal;
+        private decimal _restockingCharge;
+        private decimal _saleTotal;
+
+        public bool AddQuantityEnabled { get; set; } = true;
+        public bool RemoveQuantityEnabled { get; set; } = true;
+        public bool QuantityEnabled { get; set; } = true;
+        public bool AddButtonEnabled { get; set; } = true;
 
         public decimal ProductTotal
         {
@@ -78,8 +50,17 @@ namespace DesktopUI.ViewModels
             }
         }
 
-
-        private decimal _refundTotal;
+        public int Quantity
+        {
+            get { return _quantity; }
+            set
+            {
+                _quantity = value;
+                OnPropertyChanged(nameof(Quantity));
+                CheckQuantity();
+                ProductTotal = Math.Round(CalculateProductTotal(SelectedSaleProduct, Quantity), 2);
+            }
+        }
 
         public decimal RefundTotal
         {
@@ -91,37 +72,55 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        #endregion
-
-        #region Commands
-
-        public ICommand AddCommand { get; }
-        public ICommand RemoveCommand { get; }
-        public ICommand UndoCommand { get; }
-        public ICommand CloseCommand { get; }
-        public ICommand CreditCommand { get; }
-        public ICommand RefundCommand { get; }
-        public ICommand AddQuantityCommand { get; }
-        public ICommand RemoveQuantityCommand { get; }
-        public ICommand RefundAllCommand { get; }
-
-        #endregion
-
-        #region List Properties
-
-        private ObservableCollection<SaleProductDisplayModel> _saleProducts;
-
-        public ObservableCollection<SaleProductDisplayModel> SaleProducts
+        public decimal RestockingCharge
         {
-            get { return _saleProducts; }
+            get { return _restockingCharge; }
             set
             {
-                _saleProducts = value;
-                OnPropertyChanged(nameof(SaleProducts));
+                _restockingCharge = value;
+                OnPropertyChanged(nameof(RestockingCharge));
+                ProductTotal = CalculateProductTotal(SelectedSaleProduct, Quantity);
             }
         }
 
+        public int SaleId => _saleStore.SelectedSale.Id;
+
+        public decimal SaleTotal
+        {
+            get { return _saleTotal; }
+            set
+            {
+                _saleTotal = value;
+                OnPropertyChanged(nameof(SaleTotal));
+            }
+        }
+
+        #endregion Field Properties
+
+        #region Commands
+
+        public ICommand AddAllCommand { get; }
+        public ICommand AddCommand { get; }
+        public ICommand AddQuantityCommand { get; }
+        public ICommand CloseCommand { get; }
+        public ICommand CreditCommand { get; }
+        public ICommand GetProductInfoCommand { get; }
+        public ICommand RefundAllCommand { get; }
+        public ICommand RefundCommand { get; }
+        public ICommand RemoveCommand { get; }
+        public ICommand RemoveQuantityCommand { get; }
+        public ICommand UndoCommand { get; }
+
+        #endregion Commands
+
+        #region List Properties
+
         private ObservableCollection<SaleProductDisplayModel> _refundProducts;
+        private ObservableCollection<SaleProductDisplayModel> _saleProducts;
+
+        private SaleProductDisplayModel _selectedRefundProduct;
+
+        private SaleProductDisplayModel _selectedSaleProduct;
 
         public ObservableCollection<SaleProductDisplayModel> RefundProducts
         {
@@ -133,19 +132,15 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private SaleProductDisplayModel _selectedSaleProduct;
-
-        public SaleProductDisplayModel SelectedSaleProduct
+        public ObservableCollection<SaleProductDisplayModel> SaleProducts
         {
-            get { return _selectedSaleProduct; }
+            get { return _saleProducts; }
             set
             {
-                _selectedSaleProduct = value;
-                OnPropertyChanged(nameof(SelectedSaleProduct));
+                _saleProducts = value;
+                OnPropertyChanged(nameof(SaleProducts));
             }
         }
-
-        private SaleProductDisplayModel _selectedRefundProduct;
 
         public SaleProductDisplayModel SelectedRefundProduct
         {
@@ -157,22 +152,300 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        #endregion
+        public SaleProductDisplayModel SelectedSaleProduct
+        {
+            get { return _selectedSaleProduct; }
+            set
+            {
+                _selectedSaleProduct = value;
+                OnPropertyChanged(nameof(SelectedSaleProduct));
+                SelectSaleProduct();
+            }
+        }
 
-        #region Constructors
+        #endregion List Properties
+
+        #region Constructor
 
         public RefundViewModel(INavigationService closeModalNavigationService, SaleStore saleStore)
         {
             _saleStore = saleStore;
+            RefundProducts = new ObservableCollection<SaleProductDisplayModel>();
 
             // Commands
+            GetProductInfoCommand = new GetProductInfoCommand(this);
+            AddCommand = new AddCommand(this);
+            AddAllCommand = new AddAllCommand(this);
+            RemoveCommand = new RemoveCommand(this);
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
-            RefundCommand = new RefundCommand(closeModalNavigationService);
+            RefundCommand = new CreateRefundCommand(this);
+            AddQuantityCommand = new AddQuantityCommand(this);
+            RemoveQuantityCommand = new RemoveQuantityCommand(this);
+            UndoCommand = new UndoChangesCommand(this);
+
+            GetAllProductsInSale();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Methods
+
+        public void AddAllSaleProducts()
+        {
+            if (RestockingCharge == 0m)
+            {
+                MessageBoxResult result = MessageBox.Show("Is there a restocking charge?", "", MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // focus on RestockingCharge property/Field
+                    return;
+                }
+            }
+
+            foreach (SaleProductDisplayModel product in SaleProducts)
+            {
+                RefundProducts.Add(new SaleProductDisplayModel
+                {
+                    Id = product.Id,
+                    SaleId = product.SaleId,
+                    ProductId = product.ProductId,
+                    ProductName = product.ProductName,
+                    ProductDescription = product.ProductDescription,
+                    ProductCost = product.ProductCost,
+                    SalePrice = product.SalePrice,
+                    QuantitySold = product.QuantitySold,
+                    Total = _cHelper.ConvertDecimalToString(CalculateProductTotal(product, product.QuantitySold)),
+                    Department = product.Department
+                });
+            }
+
+            RefundTotal = CalculateTotalRefund();
+            ToggleAddFields();
+        }
+
+        private void ToggleAddFields()
+        {
+            if (AddQuantityEnabled && RemoveQuantityEnabled &&
+                AddButtonEnabled && AddQuantityEnabled)
+            {
+                AddQuantityEnabled = false;
+                RemoveQuantityEnabled = false;
+                QuantityEnabled = false;
+                AddButtonEnabled = false;
+            }
+            else
+            {
+                AddQuantityEnabled = true;
+                RemoveQuantityEnabled = true;
+                QuantityEnabled = true;
+                AddButtonEnabled = true;
+            }
+        }
+
+        // Method for add qty command
+        public void AddQuantity()
+        {
+            if (SelectedSaleProduct?.QuantitySold > Quantity)
+            {
+                Quantity += 1;
+            }
+        }
+
+        // Add item to RefundProducts List
+        public void AddToRefundList()
+        {
+            if (SelectedSaleProduct != null)
+            {
+                SaleProductDisplayModel refundProduct =
+                    RefundProducts.FirstOrDefault(p => p.ProductId == SelectedSaleProduct.ProductId);
+
+                if (refundProduct != null)
+                {
+                    refundProduct.QuantitySold = QuantityAddition(refundProduct.QuantitySold);
+                    refundProduct.Total = _cHelper.ConvertDecimalToString(
+                        CalculateProductTotal(SelectedSaleProduct, refundProduct.QuantitySold));
+
+                    CollectionViewSource.GetDefaultView(RefundProducts).Refresh();
+                }
+                else
+                {
+                    SaleProductDisplayModel product = new SaleProductDisplayModel
+                    {
+                        Id = SelectedSaleProduct.Id,
+                        SaleId = SelectedSaleProduct.SaleId,
+                        ProductId = SelectedSaleProduct.ProductId,
+                        ProductName = SelectedSaleProduct.ProductName,
+                        ProductDescription = SelectedSaleProduct.ProductDescription,
+                        ProductCost = SelectedSaleProduct.ProductCost,
+                        SalePrice = SelectedSaleProduct.SalePrice,
+                        QuantitySold = Quantity,
+                        Total = _cHelper.ConvertDecimalToString(ProductTotal),
+                        Department = SelectedSaleProduct.Department
+                    };
+
+                    RefundProducts.Add(product);
+                }
+            }
+        }
+
+        // Removes an item form the RefundProducts List
+        public void RemoveFromRefundList()
+        {
+            if (SelectedRefundProduct != null)
+            {
+                SaleProductDisplayModel refundProduct =
+                    RefundProducts.FirstOrDefault(p => p.ProductId == SelectedRefundProduct.ProductId);
+
+                if (refundProduct != null)
+                {
+                    refundProduct.QuantitySold = QuantitySubruction(refundProduct.QuantitySold);
+                    refundProduct.Total = _cHelper.ConvertDecimalToString(
+                        CalculateProductTotal(SelectedRefundProduct, refundProduct.QuantitySold));
+
+                    if (refundProduct.QuantitySold == 0)
+                    {
+                        RefundProducts.Remove(refundProduct);
+                    }
+
+                    CollectionViewSource.GetDefaultView(RefundProducts).Refresh();
+                }
+            }
+        }
+
+        private int QuantitySubruction(int refundProductQuantity)
+        {
+            int newQuantity = refundProductQuantity - Quantity;
+
+            if (newQuantity < 0)
+            {
+                newQuantity = 0;
+            }
+
+            return newQuantity;
+        }
+
+        // Checks if the Selected refund products qty is more than the sale product qty
+        // if greater then adds then returns sale product qty.
+        // Otherwise returns Quantity + refund product qty.
+        private int QuantityAddition(int refundProductQuantity)
+        {
+            int newQuantity = Quantity + refundProductQuantity;
+
+            if (newQuantity > SelectedSaleProduct.QuantitySold)
+            {
+                newQuantity = SelectedSaleProduct.QuantitySold;
+            }
+
+            return newQuantity;
+        }
+
+        //On compleation Create Note/Voucher and print
+        public void CreateCredit()
+        {
+            // save to database as a new credit/voucher
+        }
+
+        // On compleation Create Refund and print
+        public void CreateRefund()
+        {
+            //
+            MessageBox.Show("Refund created");
+            // save to database as a new sale, with nagative value
+            //_salesData.SaveSale(, CreateProductForRefund);
+            // of the amount refunded.
+            // In the description of the product add Invoice no. of the
+            // original Invoice the refund is made from.
+        }
+
+        // Method for removing qty command
+        public void RemoveQuantity()
+        {
+            if (Quantity > 1)
+            {
+                Quantity -= 1;
+            }
+        }
+
+        // Get Information of the Selected product
+        public void SelectSaleProduct()
+        {
+            if (Quantity < SelectedSaleProduct.QuantitySold)
+            {
+                Quantity += 1;
+            }
+
+            CalculateProductTotal(SelectedSaleProduct, Quantity);
+        }
+
+        // Undo all changes made
+        public void UndoChanges()
+        {
+            RefundProducts.Clear();
+            ClearEditFields();
+        }
+
+        private decimal CalculateProductTotal(SaleProductDisplayModel product, int quantity)
+        {
+            decimal output = 0m;
+            if (product != null)
+            {
+                decimal total = Convert.ToDecimal(quantity) * _cHelper.ConvertStringToDecimal(product.SalePrice);
+                decimal totalRestockingCharge = Convert.ToDecimal(quantity) * GetProdctRestockingCharge(product);
+
+                output = total - totalRestockingCharge;
+            }
+            return output;
+        }
+
+        private decimal CalculateTotalRefund()
+        {
+            decimal total = 0;
+
+            foreach (SaleProductDisplayModel product in RefundProducts)
+            {
+                total += _cHelper.ConvertStringToDecimal(product.Total);
+            }
+
+            return total;
+        }
+
+        private void CheckQuantity()
+        {
+            if (Quantity > SelectedSaleProduct?.QuantitySold)
+            {
+                Quantity = SelectedSaleProduct.QuantitySold;
+            }
+            else if (Quantity <= 0)
+            {
+                Quantity = 1;
+            }
+        }
+
+        // Clears Editable Fields
+        private void ClearEditFields()
+        {
+            Quantity = 0;
+            RestockingCharge = 0m;
+            ProductTotal = 0m;
+        }
+
+        private List<SaleProductModel> CreateProductForRefund()
+        {
+            List<SaleProductModel> refundProduct = new List<SaleProductModel>();
+
+            refundProduct.Add(new SaleProductModel
+            {
+                ProductId = -1,
+                ProductName = $"Refund ref: Invoice no. {_saleStore.SelectedSale.InvoiceNo}",
+                ProductCost = 0,
+                SalePrice = _cHelper.ConvertDecimalToInt(RefundTotal),
+                QuantitySold = 1,
+                Department = "Refund"
+            });
+
+            return refundProduct;
+        }
 
         // gets all the Products in the selected sale and generates the SaleProduct List
         private void GetAllProductsInSale()
@@ -201,77 +474,12 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        // Method for add qty command
-        public void AddQuantity()
-        {
-            int currentQuantity = Quantity;
-
-            int soldQuantity = SelectedSaleProduct.QuantitySold;
-
-            if (soldQuantity > currentQuantity)
-            {
-                Quantity += 1;
-            }
-        }
-
-        // Method for removing qty command
-        public void RemoveQuantity()
-        {
-            int currentQuantity = Quantity;
-
-            int soldQuantity = SelectedSaleProduct.QuantitySold;
-
-            if (currentQuantity >= 1)
-            {
-                Quantity -= 1;
-            }
-        }
-
-        // Get Information of the Selected product
-        private void SelectSaleProduct()
-        {
-            if (Quantity < SelectedSaleProduct.QuantitySold)
-            {
-                Quantity += 1;
-            }
-
-            CalculateProductTotal();
-        }
-
         // Calculate the amount to deduct after restocking charge
-        private decimal GetProdctRestockingCharge()
+        private decimal GetProdctRestockingCharge(SaleProductDisplayModel product)
         {
             decimal percentage = RestockingCharge / 100m;
 
-            return _cHelper.ConvertStringToDecimal(SelectedSaleProduct.SalePrice) * percentage;
-        }
-
-        private void CalculateProductTotal()
-        {
-            decimal total = Quantity * _cHelper.ConvertStringToDecimal(SelectedSaleProduct.SalePrice);
-            decimal totalRestckCharge = Quantity * GetProdctRestockingCharge();
-
-            ProductTotal = total - totalRestckCharge;
-        }
-
-        // Add item to RefundProducts List
-        private void AddToRefundList()
-        {
-            var product = new SaleProductDisplayModel
-            {
-                Id = SelectedSaleProduct.Id,
-                SaleId = SelectedSaleProduct.SaleId,
-                ProductId = SelectedSaleProduct.ProductId,
-                ProductName = SelectedSaleProduct.ProductName,
-                ProductDescription = SelectedSaleProduct.ProductDescription,
-                ProductCost = SelectedSaleProduct.ProductCost,
-                SalePrice = SelectedSaleProduct.SalePrice,
-                QuantitySold = SelectedSaleProduct.QuantitySold,
-                Total = _cHelper.ConvertDecimalToString(ProductTotal),
-                Department = SelectedSaleProduct.Department
-            };
-
-            RefundProducts.Add(product);
+            return _cHelper.ConvertStringToDecimal(product.SalePrice) * percentage;
         }
 
         // Remove selected item from RefundProducts list
@@ -281,104 +489,23 @@ namespace DesktopUI.ViewModels
             ClearEditFields();
         }
 
-        // Clears Editable Fields
-        private void ClearEditFields()
-        {
-            Quantity = 0;
-            RestockingCharge = 0m;
-            ProductTotal = 0m;
-        }
+        //private SaleModel CreateSale()
+        //{
+        //    SaleModel sale = new SaleModel
+        //    {
+        //        Card = _cHelper.ConvertStringToInt(CardPayment),
+        //        Cash = _cHelper.ConvertStringToInt(CashPayment),
+        //        Credit = _cHelper.ConvertStringToInt(CreditPayment),
+        //        SaleTotal = _cHelper.ConvertStringToInt(CartTotal),
+        //        Tax = _cHelper.ConvertStringToInt(Tax),
+        //        TotalCost = _cHelper.ConvertDecimalToInt(CalculateTotalCartCost()),
+        //        Profit = _cHelper.ConvertDecimalToInt(CalculateCartProfit()),
+        //        CashOnly = cashOnly
+        //    };
 
-        // Undo all changes made
-        private void UndoChanges()
-        {
-            RefundProducts.Clear();
-            ClearEditFields();
-            SelectedSaleProduct = null;
-        }
+        //    return sale;
+        //}
 
-        public void SelectAll()
-        {
-            if (RestockingCharge == 0m)
-            {
-                MessageBoxResult result = MessageBox.Show("Is there a restocking charge?", "", MessageBoxButton.YesNo);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    // focus on RestockingCharge property/Field
-                }
-            }
-
-            foreach (SaleProductDisplayModel product in SaleProducts)
-            {
-                RefundProducts.Add(new SaleProductDisplayModel
-                {
-                    Id = product.Id,
-                    SaleId = product.SaleId,
-                    ProductId = product.ProductId,
-                    ProductName = product.ProductName,
-                    ProductDescription = product.ProductDescription,
-                    ProductCost = product.ProductCost,
-                    SalePrice = product.SalePrice,
-                    QuantitySold = product.QuantitySold,
-                    Total = product.Total,
-                    Department = product.Department
-
-                });
-            }
-
-        }
-
-        // On compleation Create Note/Voucher and print
-        public void CreateCredit()
-        {
-            // save to database as a new credit/voucher
-        }
-
-        // On compleation Create Refund and print
-        public void CreateRefund()
-        {
-            // save to database as a new sale, with nagative value
-            _salesData.SaveSale(, CreateProductForRefund);
-            // of the amount refunded.
-            // In the description of the product add Invoice no. of the
-            // original Invoice the refund is made from.
-        }
-
-        private SaleModel CreateSale()
-        {
-            SaleModel sale = new SaleModel
-            {
-                Card = _cHelper.ConvertStringToInt(CardPayment),
-                Cash = _cHelper.ConvertStringToInt(CashPayment),
-                Credit = _cHelper.ConvertStringToInt(CreditPayment),
-                SaleTotal = _cHelper.ConvertStringToInt(CartTotal),
-                Tax = _cHelper.ConvertStringToInt(Tax),
-                TotalCost = _cHelper.ConvertDecimalToInt(CalculateTotalCartCost()),
-                Profit = _cHelper.ConvertDecimalToInt(CalculateCartProfit()),
-                CashOnly = cashOnly
-            };
-
-            return sale;
-        }
-
-        private List<SaleProductModel> CreateProductForRefund()
-        {
-            List<SaleProductModel> refundProduct = new List<SaleProductModel>();
-
-            refundProduct.Add(new SaleProductModel
-            {
-                ProductId = -1,
-                ProductName = $"Refund ref: Invoice no. {_saleStore.SelectedSale.InvoiceNo}",
-                ProductCost = 0,
-                SalePrice = _cHelper.ConvertDecimalToInt(RefundTotal),
-                QuantitySold = 1,
-                Department = "Refund"
-            });
-
-            return refundProduct;
-        }
-        #endregion
-
+        #endregion Methods
     }
 }

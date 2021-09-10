@@ -17,7 +17,6 @@ namespace DesktopUI.Commands.EditSaleCommands
 
         public override void Execute(object parameter)
         {
-            // Call Refund Method
             _navigationService.Navigate();
         }
     }
