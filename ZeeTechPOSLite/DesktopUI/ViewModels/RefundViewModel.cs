@@ -108,6 +108,7 @@ namespace DesktopUI.ViewModels
         public ICommand RefundAllCommand { get; }
         public ICommand RefundCommand { get; }
         public ICommand RemoveCommand { get; }
+        public ICommand RemoveAllCommand { get;}
         public ICommand RemoveQuantityCommand { get; }
         public ICommand UndoCommand { get; }
 
@@ -177,6 +178,7 @@ namespace DesktopUI.ViewModels
             AddCommand = new AddCommand(this);
             AddAllCommand = new AddAllCommand(this);
             RemoveCommand = new RemoveCommand(this);
+            RemoveAllCommand = new RemoveAllCommand(this);
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
             RefundCommand = new CreateRefundCommand(this);
             AddQuantityCommand = new AddQuantityCommand(this);
@@ -190,6 +192,7 @@ namespace DesktopUI.ViewModels
 
         #region Methods
 
+        // Adds all the sale products to the refund list to process the refund
         public void AddAllSaleProducts()
         {
             if (RestockingCharge == 0m)
@@ -224,6 +227,7 @@ namespace DesktopUI.ViewModels
             ToggleAddFields();
         }
 
+        // enables and disables the edit fields 
         private void ToggleAddFields()
         {
             if (AddQuantityEnabled && RemoveQuantityEnabled &&
@@ -313,6 +317,7 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        // Deducts quantity from the Refund list by the amount in the Quantitt field
         private int QuantitySubruction(int refundProductQuantity)
         {
             int newQuantity = refundProductQuantity - Quantity;
@@ -385,6 +390,7 @@ namespace DesktopUI.ViewModels
             ClearEditFields();
         }
 
+        // Calculates Selected sale product Total amount to refund
         private decimal CalculateProductTotal(SaleProductDisplayModel product, int quantity)
         {
             decimal output = 0m;
@@ -397,7 +403,8 @@ namespace DesktopUI.ViewModels
             }
             return output;
         }
-
+        
+        // Calculates the Total amount to refund
         private decimal CalculateTotalRefund()
         {
             decimal total = 0;
@@ -410,6 +417,7 @@ namespace DesktopUI.ViewModels
             return total;
         }
 
+        // Checks if the Quantity is more than the selected products quantity
         private void CheckQuantity()
         {
             if (Quantity > SelectedSaleProduct?.QuantitySold)
@@ -430,6 +438,7 @@ namespace DesktopUI.ViewModels
             ProductTotal = 0m;
         }
 
+        // Creats new product to use in refund
         private List<SaleProductModel> CreateProductForRefund()
         {
             List<SaleProductModel> refundProduct = new List<SaleProductModel>();

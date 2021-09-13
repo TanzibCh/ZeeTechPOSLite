@@ -252,7 +252,7 @@
                                Margin="10 0 60 0"
                                Style="{StaticResource GayLable}" />
                     </StackPanel>
-                    <ListBox Height="250"
+                    <ListBox Height="275"
                              ItemsSource="{Binding RefundProducts}"
                              SelectedItem="{Binding SelectedRefundProduct}">
                         <ListBox.ItemTemplate>
@@ -276,14 +276,15 @@
                                Style="{StaticResource MaterialDesignLightSeparator}" />
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="120" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <Button Grid.Column="0"
-                                Width="90"
+                                Width="110"
                                 Margin="5"
-                                Content="Remove" />
+                                Content="Remove All" 
+                                Command="{Binding RefundAllCommand}"/>
                         <StackPanel Grid.Column="1"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Right">
