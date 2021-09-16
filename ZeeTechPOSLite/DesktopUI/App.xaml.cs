@@ -1,4 +1,3 @@
-
 using DesktopUI.Components;
 using DesktopUI.Models;
 using DesktopUI.Services;
@@ -46,6 +45,7 @@ namespace DesktopUI
                 s.GetRequiredService<ProductStore>()));
 
             services.AddTransient<BankingViewModel>(s => new BankingViewModel(CreateEditSaleNavigationService(s),
+                CreateRefundNavigationService(s),
                 s.GetRequiredService<SaleStore>()));
 
             services.AddTransient<RefundViewModel>(s => new RefundViewModel(CreateCloseModalNavigationService(s),
@@ -109,6 +109,7 @@ namespace DesktopUI
                 serviceProvider.GetRequiredService<NavigationStore>(),
                 () => CreateNavigationBarViewModel(serviceProvider),
                 () => new BankingViewModel(CreateEditSaleNavigationService(serviceProvider),
+                CreateRefundNavigationService(serviceProvider),
                 serviceProvider.GetRequiredService<SaleStore>()));
         }
 
@@ -148,6 +149,7 @@ namespace DesktopUI
                 () => new RefundViewModel(CreateCloseModalNavigationService(serviceProvider),
                 serviceProvider.GetRequiredService<SaleStore>()));
         }
+
         // Close Modal Navigation Service
         private INavigationService CreateCloseModalNavigationService(IServiceProvider serviceProvider)
         {
@@ -174,7 +176,7 @@ namespace DesktopUI
                 new RoutedEventHandler(SelectAllText));
         }
 
-        void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
+        private void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
         {
             // Find the TextBox
             DependencyObject parent = e.OriginalSource as UIElement;
@@ -194,7 +196,7 @@ namespace DesktopUI
             }
         }
 
-        void SelectAllText(object sender, RoutedEventArgs e)
+        private void SelectAllText(object sender, RoutedEventArgs e)
         {
             var textBox = e.OriginalSource as TextBox;
             if (textBox != null)

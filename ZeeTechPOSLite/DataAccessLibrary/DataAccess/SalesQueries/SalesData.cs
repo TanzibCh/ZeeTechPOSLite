@@ -9,7 +9,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 {
     public class SalesData
     {
-        SQLiteDataAccess _db = new SQLiteDataAccess();
+        private SQLiteDataAccess _db = new SQLiteDataAccess();
         private const string _connectionStringName = "SQLiteDB";
 
         // Change the IsActive status of a sale
@@ -37,6 +37,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             }, _connectionStringName);
         }
 
+        // Updates sales details and sale products
         public void UpdateSale(SaleModel sale, List<SaleProductModel> saleProducts)
         {
             UpdateSaleDetails(sale);
@@ -44,6 +45,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             UpdateSaleProducts(saleProducts, sale.Id);
         }
 
+        // Updates sales Details
         private void UpdateSaleDetails(SaleModel sale)
         {
             string sql = @"UPDATE Sale
@@ -56,7 +58,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                                Profit = @profit
                            WHERE Id = @id;";
 
-            _db.SaveData(sql, new 
+            _db.SaveData(sql, new
             {
                 card = sale.Card,
                 cash = sale.Cash,
@@ -69,6 +71,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             }, _connectionStringName);
         }
 
+        // Updates sales products
         private void UpdateSaleProducts(List<SaleProductModel> saleProducts, int saleId)
         {
             string sql = @"UPDATE SaleProduct
@@ -80,8 +83,6 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                                QuantitySold = @quantitySold,
                                total = @total
                            WHERE Id = @id;";
-
-
 
             foreach (SaleProductModel product in saleProducts)
             {
@@ -134,9 +135,13 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
                           WHERE SaleDate = @selectedDate
                           AND IsActive = 1;";
 
-            List<SaleModel> sales = _db.LoadData<SaleModel, dynamic > (sql, new { selectedDate }, _connectionStringName);
+            List<SaleModel> sales = _db.LoadData<SaleModel, dynamic>(sql, new { selectedDate }, _connectionStringName);
 
             return sales;
+        }
+
+        public void SaveRefund()
+        {
         }
 
         public void SaveSale(SaleModel saleInfo, List<SaleProductModel> saleProducts)
@@ -157,7 +162,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 
         private int GetLatestSaleId()
         {
-            string sql = @"SELECT Id 
+            string sql = @"SELECT Id
                            FROM Sale
                            ORDER BY Id DESC
                            LIMIT 1;";

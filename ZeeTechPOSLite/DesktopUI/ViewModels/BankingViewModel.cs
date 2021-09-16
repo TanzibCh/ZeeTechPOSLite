@@ -1,7 +1,6 @@
 ﻿using DataAccessLibrary.DataAccess.ExpenseQueries;
 using DataAccessLibrary.DataAccess.SalesQueries;
 using DataAccessLibrary.Models;
-using DesktopUI.Commands;
 using DesktopUI.Commands.BankingCommands;
 using DesktopUI.Helpers;
 using DesktopUI.Models;
@@ -9,10 +8,8 @@ using DesktopUI.Services;
 using DesktopUI.Stores;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -26,16 +23,16 @@ namespace DesktopUI.ViewModels
 
         // Need to use DI in the future
         private SalesData _salesData = new SalesData();
+
         private SaleProductData _saleProductData = new SaleProductData();
         private ExpenseData _expenseData = new ExpenseData();
 
         private int _selectedExpenseId;
         private CurrencyHelper _currencyHelper = new CurrencyHelper();
-        private readonly NavigationStore _navigationStore;
+        private SaleStore _saleStore;
 
-        #endregion
+        #endregion private Properties
 
-        // Properties for Totals
         #region Totals Properties
 
         private string _total;
@@ -78,7 +75,7 @@ namespace DesktopUI.ViewModels
 
         public string TotalCard
         {
-            get {return _totalCard; }
+            get { return _totalCard; }
             set
             {
                 _totalCard = value;
@@ -121,6 +118,7 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(TotalCredit));
             }
         }
+
         public string TotalRefund
         {
             get
@@ -142,11 +140,8 @@ namespace DesktopUI.ViewModels
             }
         }
 
-      
+        #endregion Totals Properties
 
-        #endregion
-
-        // Properties for Department overview
         #region Department Properties
 
         private int _mobileCount;
@@ -165,7 +160,7 @@ namespace DesktopUI.ViewModels
 
         public string MobileTotal
         {
-            get{ return _mobileTotal; }
+            get { return _mobileTotal; }
             set
             {
                 _mobileTotal = value;
@@ -177,7 +172,7 @@ namespace DesktopUI.ViewModels
 
         public int ComputerCount
         {
-            get{ return _computerCount; }
+            get { return _computerCount; }
             set
             {
                 _computerCount = value;
@@ -235,10 +230,10 @@ namespace DesktopUI.ViewModels
 
         private string _homeTotal;
 
-        public string HomeTotal 
-        { 
+        public string HomeTotal
+        {
             get { return _homeTotal; }
-            set 
+            set
             {
                 _homeTotal = value;
                 OnPropertyChanged(nameof(HomeTotal));
@@ -293,9 +288,8 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        #endregion
+        #endregion Department Properties
 
-        // Properties for Expenses
         #region Expense properties
 
         private string _cardExpense;
@@ -367,10 +361,8 @@ namespace DesktopUI.ViewModels
             }
         }
 
+        #endregion Expense properties
 
-        #endregion
-
-        // Properties for Sales and SaleProducts List
         #region List Properties
 
         private BindingList<SaleProductDisplayModel> _saleProducts;
@@ -435,7 +427,8 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(SelectedExpense));
             }
         }
-        #endregion
+
+        #endregion List Properties
 
         #region Date and Time properties
 
@@ -468,7 +461,7 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        #endregion
+        #endregion Date and Time properties
 
         #region Commands Properties
 
@@ -479,14 +472,16 @@ namespace DesktopUI.ViewModels
         public ICommand EditSale { get; }
         public ICommand DateBackCommand { get; }
         public ICommand DateNextCommand { get; }
+        public ICommand RefundCommand { get; }
 
-        #endregion
+        #endregion Commands Properties
 
-        // Default Constructor
         #region Constructor
 
-        public BankingViewModel(INavigationService editSaleNavigationService, SaleStore saleStore)
+        public BankingViewModel(INavigationService editSaleNavigationService,
+            INavigationService refundNavigationService, SaleStore saleStore)
         {
+            _saleStore = saleStore;
             SelectedDate = DateTime.UtcNow.Date;
             ExpenseLable = "New Expense";
             ExpenseButtonContent = "Add";
@@ -502,6 +497,7 @@ namespace DesktopUI.ViewModels
             EditSale = new EditSaleCommand(editSaleNavigationService, saleStore, this);
             DateBackCommand = new DateBackCommand(this);
             DateNextCommand = new DateNextCommand(this);
+            RefundCommand = new RefundCommand(refundNavigationService, this, saleStore);
 
             // Populate Sale and Expenses ListBoxes
             LoadSales();
@@ -510,10 +506,14 @@ namespace DesktopUI.ViewModels
             GetDayOfWeek();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Methods
 
+        public void SetupSaleForRefund()
+        {
+            _saleStore.SelectedSale = SelectedSale;
+        }
 
         private void GetDayOfWeek()
         {
@@ -705,7 +705,6 @@ namespace DesktopUI.ViewModels
 
             BindingList<SaleDisplayModel> displaySales = new BindingList<SaleDisplayModel>();
 
-
             foreach (SaleModel item in saleList)
             {
                 displaySales.Add(new SaleDisplayModel
@@ -835,9 +834,8 @@ namespace DesktopUI.ViewModels
 
         public void ShowCashOnly()
         {
-
         }
 
-        #endregion
+        #endregion Methods
     }
 }

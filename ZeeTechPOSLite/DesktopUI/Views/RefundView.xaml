@@ -12,7 +12,7 @@
              FontFamily="{materialDesign:MaterialDesignFont}"
              d:DataContext="{d:DesignInstance Type=viewModel:RefundViewModel}"
              mc:Ignorable="d"
-             Height="480" Width="800">
+             Height="485" Width="800">
     <UserControl.Resources>
         <!-- Default Lable style -->
         <Style TargetType="Label"
@@ -252,7 +252,7 @@
                                Margin="10 0 60 0"
                                Style="{StaticResource GayLable}" />
                     </StackPanel>
-                    <ListBox Height="275"
+                    <ListBox Height="285"
                              ItemsSource="{Binding RefundProducts}"
                              SelectedItem="{Binding SelectedRefundProduct}">
                         <ListBox.ItemTemplate>
@@ -274,17 +274,18 @@
                     </ListBox>
                     <Separator Margin="10 -2"
                                Style="{StaticResource MaterialDesignLightSeparator}" />
-                    <Grid>
+                    <Grid Margin="10 0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-
-                        <Button Grid.Column="0"
-                                Width="110"
-                                Margin="5"
-                                Content="Remove All" 
-                                Command="{Binding RefundAllCommand}"/>
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Vertical">
+                            <CheckBox Content="Card"
+                                      IsChecked="{Binding CardPayment}" />
+                            <CheckBox Content="Cash"
+                                      IsChecked="{Binding CashPayment}" />
+                        </StackPanel>
                         <StackPanel Grid.Column="1"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Right">

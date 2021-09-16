@@ -40,6 +40,22 @@ namespace DesktopUI.ViewModels
         public bool QuantityEnabled { get; set; } = true;
         public bool AddButtonEnabled { get; set; } = true;
 
+        private bool _cardPayment;
+
+        public bool CardPayment
+        {
+            get { return _cardPayment; }
+            set { _cardPayment = value; }
+        }
+
+        private bool _cashPayment;
+
+        public bool CashPayment
+        {
+            get { return _cashPayment; }
+            set { _cashPayment = value; }
+        }
+
         public decimal ProductTotal
         {
             get { return _productTotal; }
@@ -108,7 +124,6 @@ namespace DesktopUI.ViewModels
         public ICommand RefundAllCommand { get; }
         public ICommand RefundCommand { get; }
         public ICommand RemoveCommand { get; }
-        public ICommand RemoveAllCommand { get;}
         public ICommand RemoveQuantityCommand { get; }
         public ICommand UndoCommand { get; }
 
@@ -178,7 +193,6 @@ namespace DesktopUI.ViewModels
             AddCommand = new AddCommand(this);
             AddAllCommand = new AddAllCommand(this);
             RemoveCommand = new RemoveCommand(this);
-            RemoveAllCommand = new RemoveAllCommand(this);
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
             RefundCommand = new CreateRefundCommand(this);
             AddQuantityCommand = new AddQuantityCommand(this);
@@ -206,6 +220,9 @@ namespace DesktopUI.ViewModels
                 }
             }
 
+            // Empty out Refund List before adding all the products to the list
+            RefundProducts.Clear();
+
             foreach (SaleProductDisplayModel product in SaleProducts)
             {
                 RefundProducts.Add(new SaleProductDisplayModel
@@ -227,7 +244,7 @@ namespace DesktopUI.ViewModels
             ToggleAddFields();
         }
 
-        // enables and disables the edit fields 
+        // enables and disables the edit fields
         private void ToggleAddFields()
         {
             if (AddQuantityEnabled && RemoveQuantityEnabled &&
@@ -262,7 +279,7 @@ namespace DesktopUI.ViewModels
             if (SelectedSaleProduct != null)
             {
                 SaleProductDisplayModel refundProduct =
-                    RefundProducts.FirstOrDefault(p => p.ProductId == SelectedSaleProduct.ProductId);
+                    RefundProducts.FirstOrDefault(p => p.Id == SelectedSaleProduct.Id);
 
                 if (refundProduct != null)
                 {
@@ -271,6 +288,7 @@ namespace DesktopUI.ViewModels
                         CalculateProductTotal(SelectedSaleProduct, refundProduct.QuantitySold));
 
                     CollectionViewSource.GetDefaultView(RefundProducts).Refresh();
+                    RefundTotal = CalculateTotalRefund();
                 }
                 else
                 {
@@ -289,6 +307,7 @@ namespace DesktopUI.ViewModels
                     };
 
                     RefundProducts.Add(product);
+                    RefundTotal = CalculateTotalRefund();
                 }
             }
         }
@@ -299,7 +318,7 @@ namespace DesktopUI.ViewModels
             if (SelectedRefundProduct != null)
             {
                 SaleProductDisplayModel refundProduct =
-                    RefundProducts.FirstOrDefault(p => p.ProductId == SelectedRefundProduct.ProductId);
+                    RefundProducts.FirstOrDefault(p => p.Id == SelectedRefundProduct.Id);
 
                 if (refundProduct != null)
                 {
@@ -313,6 +332,7 @@ namespace DesktopUI.ViewModels
                     }
 
                     CollectionViewSource.GetDefaultView(RefundProducts).Refresh();
+                    RefundTotal = CalculateTotalRefund();
                 }
             }
         }
@@ -354,6 +374,13 @@ namespace DesktopUI.ViewModels
         // On compleation Create Refund and print
         public void CreateRefund()
         {
+            if (CardPayment == false && CashPayment == false)
+            {
+                MessageBox.Show("Please select a method of payment.");
+
+                return;
+            }
+
             //
             MessageBox.Show("Refund created");
             // save to database as a new sale, with nagative value
@@ -375,9 +402,13 @@ namespace DesktopUI.ViewModels
         // Get Information of the Selected product
         public void SelectSaleProduct()
         {
-            if (Quantity < SelectedSaleProduct.QuantitySold)
+            if (Quantity > SelectedSaleProduct.QuantitySold)
             {
-                Quantity += 1;
+                Quantity = SelectedSaleProduct.QuantitySold;
+            }
+            else
+            {
+                Quantity = 1;
             }
 
             CalculateProductTotal(SelectedSaleProduct, Quantity);
@@ -403,7 +434,7 @@ namespace DesktopUI.ViewModels
             }
             return output;
         }
-        
+
         // Calculates the Total amount to refund
         private decimal CalculateTotalRefund()
         {
@@ -498,22 +529,27 @@ namespace DesktopUI.ViewModels
             ClearEditFields();
         }
 
-        //private SaleModel CreateSale()
-        //{
-        //    SaleModel sale = new SaleModel
-        //    {
-        //        Card = _cHelper.ConvertStringToInt(CardPayment),
-        //        Cash = _cHelper.ConvertStringToInt(CashPayment),
-        //        Credit = _cHelper.ConvertStringToInt(CreditPayment),
-        //        SaleTotal = _cHelper.ConvertStringToInt(CartTotal),
-        //        Tax = _cHelper.ConvertStringToInt(Tax),
-        //        TotalCost = _cHelper.ConvertDecimalToInt(CalculateTotalCartCost()),
-        //        Profit = _cHelper.ConvertDecimalToInt(CalculateCartProfit()),
-        //        CashOnly = cashOnly
-        //    };
+        private void CreateSale()
+        {
+            SaleModel sale = new SaleModel();
+            //{
+            //    Card = _cHelper.ConvertStringToInt(CardPayment),
+            //    Cash = _cHelper.ConvertStringToInt(CashPayment),
+            //    Credit = _cHelper.ConvertStringToInt(CreditPayment),
+            //    SaleTotal = _cHelper.ConvertStringToInt(CartTotal),
+            //    Tax = _cHelper.ConvertStringToInt(Tax),
+            //    TotalCost = _cHelper.ConvertDecimalToInt(CalculateTotalCartCost()),
+            //    Profit = _cHelper.ConvertDecimalToInt(CalculateCartProfit()),
+            //    CashOnly = cashOnly
+            //};
 
-        //    return sale;
-        //}
+            //return sale;
+        }
+
+        public void ClearSelectedSale()
+        {
+            _saleStore.SelectedSale = null;
+        }
 
         #endregion Methods
     }
