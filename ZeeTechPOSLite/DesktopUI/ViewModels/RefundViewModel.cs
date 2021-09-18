@@ -368,7 +368,27 @@ namespace DesktopUI.ViewModels
         //On compleation Create Note/Voucher and print
         public void CreateCredit()
         {
+            int isCashAccount;
+            if (_saleStore.SelectedSale.CashOnly == true)
+            {
+                isCashAccount = 1;
+            }
+            else
+            {
+                isCashAccount = 0;
+            }
+
             // save to database as a new credit/voucher
+            CreditModel credit = new CreditModel
+            {
+                InvoiceNumber = _saleStore.SelectedSale.InvoiceNo,
+                IsCashAccount = isCashAccount,
+                CreditNote = "",// TODO create a field for taking note info for the credid
+                CreditAmount = _cHelper.ConvertDecimalToInt(RefundTotal),
+                ValidTillDate = "", // TODO create a field to take date info for the credit
+            };
+
+            //SaveCredit();
         }
 
         // On compleation Create Refund and print
