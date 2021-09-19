@@ -18,5 +18,10 @@ namespace DesktopUI.ViewModels
             NavigateManualSaleCommand = new NavigateCommand(manualSaleNavigationService);
             NavigateBankingCommand = new NavigateCommand(bankingNavigationService);
         }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
     }
 }

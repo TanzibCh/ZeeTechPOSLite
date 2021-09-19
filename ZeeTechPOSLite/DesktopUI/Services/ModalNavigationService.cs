@@ -20,7 +20,7 @@ namespace DesktopUI.Services
 
         public void Navigate()
         {
-            _modalNavigationStore.CurrentViewModel = _createViewModel();
+            _modalNavigationStore.Push(_createViewModel());
         }
     }
 }

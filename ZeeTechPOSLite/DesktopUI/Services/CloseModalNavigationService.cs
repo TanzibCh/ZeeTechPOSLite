@@ -16,7 +16,7 @@ namespace DesktopUI.Services
 
         public void Navigate()
         {
-            _navigationStore.Close();
+            _navigationStore.Pop();
         }
     }
 }

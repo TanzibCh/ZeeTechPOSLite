@@ -7,30 +7,69 @@ namespace DesktopUI.Stores
 {
     public class ModalNavigationStore
     {
-        public event Action CurrentViewModelChanged;
+        private readonly Stack<ViewModelBase> _viewModelHistory;
 
-        private ViewModelBase _currentViewModel;
         public ViewModelBase CurrentViewModel
         {
-            get => _currentViewModel;
-            set
+            get
             {
-                _currentViewModel = value;
-                OnCurrentViewModelChanged();
+                if (_viewModelHistory.Count == 0)
+                {
+                    return null;
+                }
+
+                return _viewModelHistory.Peek();
             }
         }
 
         public bool IsOpen => CurrentViewModel != null;
 
+        public event Action CurrentViewModelChanged;
+
+        public ModalNavigationStore()
+        {
+            _viewModelHistory = new Stack<ViewModelBase>();
+        }
+
+        public void Push(ViewModelBase viewModel)
+        {
+            _viewModelHistory.Push(viewModel);
+            OnCurrentViewModelChanged();
+        }
+
+        public void Pop()
+        {
+            if (_viewModelHistory.Count == 0)
+            {
+                return;
+            }
+
+            ViewModelBase previousViewModel = _viewModelHistory.Pop();
+            previousViewModel.Dispose();
+
+            OnCurrentViewModelChanged();
+        }
+
         public void Close()
         {
-            CurrentViewModel = null;
+            while (_viewModelHistory.Count > 0)
+            {
+                ViewModelBase previousViewModel = _viewModelHistory.Pop();
+                previousViewModel.Dispose();
+            }
+
+            OnCurrentViewModelChanged();
         }
 
         public void UpdateClose()
         {
+            while (_viewModelHistory.Count > 0)
+            {
+                ViewModelBase previousViewModel = _viewModelHistory.Pop();
+                previousViewModel.Dispose();
+            }
 
-            CurrentViewModel = null;
+            OnCurrentViewModelChanged();
         }
 
         private void OnCurrentViewModelChanged()
