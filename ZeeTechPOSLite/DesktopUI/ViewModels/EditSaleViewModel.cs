@@ -17,11 +17,13 @@ namespace DesktopUI.ViewModels
     {
         #region Private properties
 
-        private readonly BankingViewModel _bankingViewModel;
+        //private readonly BankingViewModel _bankingViewModel;
         private readonly SaleStore _saleStore;
+
         private CurrencyHelper _currencyHelper = new CurrencyHelper();
         private SaleProductData _saleProductData = new SaleProductData();
         private SalesData _salesData = new SalesData();
+
         #endregion Private properties
 
         #region Sales info Display properties
@@ -32,6 +34,7 @@ namespace DesktopUI.ViewModels
         private string _saleTotal;
         private string _totalCost;
         private string _totalProfit;
+
         public string Card
         {
             get { return _card; }
@@ -67,6 +70,7 @@ namespace DesktopUI.ViewModels
         public string InvoiceDate => _saleStore.SelectedSale.SaleDate;
         public int InvoiceNo => _saleStore.SelectedSale.InvoiceNo;
         public string InvoiceTime => _saleStore.SelectedSale.SaleTime;
+
         public string SaleTotal
         {
             get { return _saleTotal; }
@@ -86,6 +90,7 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(TotalCost));
             }
         }
+
         public string TotalProfit
         {
             get { return _totalProfit; }
@@ -95,6 +100,7 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(TotalProfit));
             }
         }
+
         #endregion Sales info Display properties
 
         #region Sale Products Display properties
@@ -112,6 +118,7 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(SaleProducts));
             }
         }
+
         public SaleProductDisplayModel SelectedProduct
         {
             get { return _selectedProduct; }
@@ -151,6 +158,7 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(Departments));
             }
         }
+
         public string EditCost
         {
             get { return _editCost; }
@@ -220,6 +228,7 @@ namespace DesktopUI.ViewModels
                 OnPropertyChanged(nameof(SelectedDepartment));
             }
         }
+
         #endregion Edit Product Properties
 
         #region Command Properties
@@ -231,6 +240,7 @@ namespace DesktopUI.ViewModels
         public ICommand SaveChangesCommand { get; }
         public ICommand UpdateEditProductCommand { get; }
         public ICommand VoidSaleCommand { get; }
+
         #endregion Command Properties
 
         #region Constructors
@@ -292,12 +302,15 @@ namespace DesktopUI.ViewModels
 
         public void SetupProductToEdit()
         {
-            EditName = SelectedProduct.ProductName;
-            EditDescription = SelectedProduct.ProductDescription;
-            EditCost = SelectedProduct.ProductCost;
-            EditPrice = SelectedProduct.SalePrice;
-            EditQuantity = SelectedProduct.QuantitySold;
-            SelectedDepartment = FindDepartment(SelectedProduct.Department);
+            if (SelectedProduct != null)
+            {
+                EditName = SelectedProduct.ProductName;
+                EditDescription = SelectedProduct.ProductDescription;
+                EditCost = SelectedProduct.ProductCost;
+                EditPrice = SelectedProduct.SalePrice;
+                EditQuantity = SelectedProduct.QuantitySold;
+                SelectedDepartment = FindDepartment(SelectedProduct.Department);
+            }
         }
 
         public void UpdateSoldProduct()
@@ -325,6 +338,7 @@ namespace DesktopUI.ViewModels
         {
             _salesData.ChangeSaleActiveStatus(Id, _saleStore.SelectedSale.IsActive);
         }
+
         private string CalculateProfit()
         {
             decimal total = _currencyHelper.ConvertStringToDecimal(SaleTotal);
@@ -400,6 +414,7 @@ namespace DesktopUI.ViewModels
         {
             return Departments.Where(x => x.DepartmentName == name).FirstOrDefault();
         }
+
         private void LoadSale()
         {
             // insert data to all the fields
@@ -410,6 +425,7 @@ namespace DesktopUI.ViewModels
             Credit = _saleStore.SelectedSale.Credit;
             TotalProfit = CalculateProfit();
         }
+
         private void LoadSoldProducts()
         {
             List<SaleProductModel> products = _saleProductData.GetSaleProductBySaleId(Id);

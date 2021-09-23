@@ -183,7 +183,8 @@ namespace DesktopUI.ViewModels
 
         #region Constructor
 
-        public RefundViewModel(INavigationService closeModalNavigationService, SaleStore saleStore)
+        public RefundViewModel(INavigationService closeModalNavigationService,
+            INavigationService refundCompleteNavigationService, SaleStore saleStore, CreditStore creditStore)
         {
             _saleStore = saleStore;
             RefundProducts = new ObservableCollection<SaleProductDisplayModel>();
@@ -194,7 +195,7 @@ namespace DesktopUI.ViewModels
             AddAllCommand = new AddAllCommand(this);
             RemoveCommand = new RemoveCommand(this);
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
-            RefundCommand = new CreateRefundCommand(this);
+            RefundCommand = new CompleteCommand(refundCompleteNavigationService, creditStore, this);
             AddQuantityCommand = new AddQuantityCommand(this);
             RemoveQuantityCommand = new RemoveQuantityCommand(this);
             UndoCommand = new UndoChangesCommand(this);

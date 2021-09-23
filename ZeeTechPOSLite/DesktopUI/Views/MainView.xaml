@@ -10,7 +10,7 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         xmlns:viewModel="clr-namespace:DesktopUI.ViewModels"
-        xmlns:local="clr-namespace:DesktopUI.Views" 
+        xmlns:local="clr-namespace:DesktopUI.Views"
         xmlns:components="clr-namespace:DesktopUI.Components"
         xmlns:custom="clr-namespace:ModalControl;assembly=ModalControl"
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
@@ -39,15 +39,19 @@
                 <local:RefundView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewModel:ReturnCompleteViewModel}">
+                <local:ReturnCompleteView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewModel:LayoutViewModel}">
                 <components:Layout />
             </DataTemplate>
         </Grid.Resources>
-        
+
         <custom:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
             <ContentControl Content="{Binding CurrentModalViewModel}" />
         </custom:Modal>
 
-        <ContentControl Content="{Binding CurrentViewModel}"/>
+        <ContentControl Content="{Binding CurrentViewModel}" />
     </Grid>
 </Window>

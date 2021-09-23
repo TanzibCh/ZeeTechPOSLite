@@ -577,7 +577,8 @@
                 </Grid.RowDefinitions>
 
                 <!--#region Totals -->
-                <materialDesign:ColorZone Grid.Row="0" Margin="5 0 0 5"
+                <materialDesign:ColorZone Grid.Row="0"
+                                          Margin="5 0 0 5"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                           Mode="PrimaryLight"
                                           CornerRadius="15"

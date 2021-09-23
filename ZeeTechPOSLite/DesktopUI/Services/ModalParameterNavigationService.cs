@@ -20,7 +20,7 @@ namespace DesktopUI.Services
 
         public void Navigate(TParameter parameter)
         {
-            _navigationStore.CurrentViewModel = _createViewModel(parameter);
+            //_navigationStore.CurrentViewModel = _createViewModel(parameter);
         }
     }
 }

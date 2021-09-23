@@ -32,7 +32,7 @@ namespace DesktopUI
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<SaleStore>();
             services.AddSingleton<ProductStore>();
-            services.AddSingleton<ProductStore>();
+            services.AddSingleton<CreditStore>();
             services.AddSingleton<ModalNavigationStore>();
 
             // Main window
@@ -49,7 +49,12 @@ namespace DesktopUI
                 s.GetRequiredService<SaleStore>()));
 
             services.AddTransient<RefundViewModel>(s => new RefundViewModel(CreateCloseModalNavigationService(s),
-                s.GetRequiredService<SaleStore>()));
+                CreateReturnCompleteNavigationService(s),
+                s.GetRequiredService<SaleStore>(),
+                s.GetRequiredService<CreditStore>()));
+
+            services.AddTransient<ReturnCompleteViewModel>(s => new ReturnCompleteViewModel(s.GetRequiredService<CreditStore>(),
+                CreateCloseModalNavigationService(s)));
 
             services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(CreateCloseModalNavigationService(s),
                 CreateRefundNavigationService(s),
@@ -63,6 +68,7 @@ namespace DesktopUI
             // Build service provider
             _serviceProvider = services.BuildServiceProvider();
 
+            // Culture setup
             CultureInfo ci = CultureInfo.CreateSpecificCulture(CultureInfo.CurrentCulture.Name);
             ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
             Thread.CurrentThread.CurrentCulture = ci;
@@ -147,7 +153,17 @@ namespace DesktopUI
             return new ModalNavigationService<RefundViewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),
                 () => new RefundViewModel(CreateCloseModalNavigationService(serviceProvider),
-                serviceProvider.GetRequiredService<SaleStore>()));
+                CreateReturnCompleteNavigationService(serviceProvider),
+                serviceProvider.GetRequiredService<SaleStore>(),
+                serviceProvider.GetRequiredService<CreditStore>()));
+        }
+
+        private INavigationService CreateReturnCompleteNavigationService(IServiceProvider serviceProvider)
+        {
+            return new ModalNavigationService<ReturnCompleteViewModel>(
+                serviceProvider.GetRequiredService<ModalNavigationStore>(),
+                () => new ReturnCompleteViewModel(serviceProvider.GetRequiredService<CreditStore>(),
+                CreateCloseModalNavigationService(serviceProvider)));
         }
 
         // Close Modal Navigation Service
