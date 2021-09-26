@@ -29,6 +29,7 @@ namespace DesktopUI.ViewModels
 
         private int _selectedExpenseId;
         private CurrencyHelper _currencyHelper = new CurrencyHelper();
+        private DateTimeHelper _dateTimeHelper = new DateTimeHelper();
         private SaleStore _saleStore;
 
         #endregion private Properties
@@ -531,6 +532,7 @@ namespace DesktopUI.ViewModels
             GetAvDetails();
         }
 
+        // Calculates all the total fields
         private void GetTotals()
         {
             decimal totalCard = Sales.Sum(x => _currencyHelper.ConvertStringToDecimal(x.Card));
@@ -661,6 +663,7 @@ namespace DesktopUI.ViewModels
             AvCount = sales.Sum(x => x.QuantitySold);
         }
 
+        // Gets all the products sold in the selected sale
         private void LoadSaleProducts()
         {
             if (SelectedSale != null)
@@ -691,13 +694,13 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private string ConvertToLocalTime(string timeValue)
-        {
-            DateTime utcTime = Convert.ToDateTime(timeValue);
-            DateTime localTime = utcTime.ToLocalTime();
+        //private string ConvertToLocalTime(string timeValue)
+        //{
+        //    DateTime utcTime = Convert.ToDateTime(timeValue);
+        //    DateTime localTime = utcTime.ToLocalTime();
 
-            return localTime.ToString("hh:mm tt");
-        }
+        //    return localTime.ToString("hh:mm tt");
+        //}
 
         public void LoadSales()
         {
@@ -712,7 +715,7 @@ namespace DesktopUI.ViewModels
                     Id = item.Id,
                     InvoiceNo = item.InvoiceNo,
                     SaleDate = item.SaleDate,
-                    SaleTime = ConvertToLocalTime(item.SaleTime),
+                    SaleTime = _dateTimeHelper.ConvertToLocalTime(item.SaleTime).ToString("hh:mm tt"),
                     Card = _currencyHelper.ConvertIntToCurrencyString(item.Card),
                     Cash = _currencyHelper.ConvertIntToCurrencyString(item.Cash),
                     Credit = _currencyHelper.ConvertIntToCurrencyString(item.Credit),

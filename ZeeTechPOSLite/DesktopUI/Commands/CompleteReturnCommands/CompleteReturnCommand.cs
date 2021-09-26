@@ -9,13 +9,13 @@ namespace DesktopUI.Commands.CompleteReturnCommands
     public class CompleteReturnCommand : CommandBase
     {
         private readonly ReturnCompleteViewModel _returnCompleteViewModel;
-        private readonly CreditStore _creditStore;
+        private readonly ReturnStore _returnStore;
 
         public CompleteReturnCommand(ReturnCompleteViewModel returnCompleteViewModel,
-            CreditStore creditStore)
+            ReturnStore returnStore)
         {
             _returnCompleteViewModel = returnCompleteViewModel;
-            _creditStore = creditStore;
+            _returnStore = returnStore;
         }
 
         public override void Execute(object parameter)

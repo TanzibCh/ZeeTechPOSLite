@@ -32,7 +32,7 @@ namespace DesktopUI
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<SaleStore>();
             services.AddSingleton<ProductStore>();
-            services.AddSingleton<CreditStore>();
+            services.AddSingleton<ReturnStore>();
             services.AddSingleton<ModalNavigationStore>();
 
             // Main window
@@ -51,9 +51,9 @@ namespace DesktopUI
             services.AddTransient<RefundViewModel>(s => new RefundViewModel(CreateCloseModalNavigationService(s),
                 CreateReturnCompleteNavigationService(s),
                 s.GetRequiredService<SaleStore>(),
-                s.GetRequiredService<CreditStore>()));
+                s.GetRequiredService<ReturnStore>()));
 
-            services.AddTransient<ReturnCompleteViewModel>(s => new ReturnCompleteViewModel(s.GetRequiredService<CreditStore>(),
+            services.AddTransient<ReturnCompleteViewModel>(s => new ReturnCompleteViewModel(s.GetRequiredService<ReturnStore>(),
                 CreateCloseModalNavigationService(s)));
 
             services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(CreateCloseModalNavigationService(s),
@@ -155,14 +155,14 @@ namespace DesktopUI
                 () => new RefundViewModel(CreateCloseModalNavigationService(serviceProvider),
                 CreateReturnCompleteNavigationService(serviceProvider),
                 serviceProvider.GetRequiredService<SaleStore>(),
-                serviceProvider.GetRequiredService<CreditStore>()));
+                serviceProvider.GetRequiredService<ReturnStore>()));
         }
 
         private INavigationService CreateReturnCompleteNavigationService(IServiceProvider serviceProvider)
         {
             return new ModalNavigationService<ReturnCompleteViewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),
-                () => new ReturnCompleteViewModel(serviceProvider.GetRequiredService<CreditStore>(),
+                () => new ReturnCompleteViewModel(serviceProvider.GetRequiredService<ReturnStore>(),
                 CreateCloseModalNavigationService(serviceProvider)));
         }
 

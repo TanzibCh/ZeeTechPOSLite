@@ -184,7 +184,8 @@ namespace DesktopUI.ViewModels
         #region Constructor
 
         public RefundViewModel(INavigationService closeModalNavigationService,
-            INavigationService refundCompleteNavigationService, SaleStore saleStore, CreditStore creditStore)
+            INavigationService refundCompleteNavigationService, SaleStore saleStore, ReturnStore returnStore
+            )
         {
             _saleStore = saleStore;
             RefundProducts = new ObservableCollection<SaleProductDisplayModel>();
@@ -195,7 +196,7 @@ namespace DesktopUI.ViewModels
             AddAllCommand = new AddAllCommand(this);
             RemoveCommand = new RemoveCommand(this);
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
-            RefundCommand = new CompleteCommand(refundCompleteNavigationService, creditStore, this);
+            RefundCommand = new CompleteCommand(refundCompleteNavigationService, returnStore, this);
             AddQuantityCommand = new AddQuantityCommand(this);
             RemoveQuantityCommand = new RemoveQuantityCommand(this);
             UndoCommand = new UndoChangesCommand(this);
@@ -382,11 +383,10 @@ namespace DesktopUI.ViewModels
             // save to database as a new credit/voucher
             CreditModel credit = new CreditModel
             {
-                InvoiceNumber = _saleStore.SelectedSale.InvoiceNo,
-                IsCashAccount = isCashAccount,
+                SaleId = _saleStore.SelectedSale.Id,
                 CreditNote = "",// TODO create a field for taking note info for the credid
-                CreditAmount = _cHelper.ConvertDecimalToInt(RefundTotal),
-                ValidTillDate = "", // TODO create a field to take date info for the credit
+                Amount = _cHelper.ConvertDecimalToInt(RefundTotal),
+                ValidTill = "", // TODO create a field to take date info for the credit
             };
 
             //SaveCredit();

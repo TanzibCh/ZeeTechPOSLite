@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DesktopUI.Stores
 {
-    public class RefundStore
+    public class ReturnStore
     {
         public int SaleId { get; set; }
         public decimal Amount { get; set; }

@@ -15,42 +15,18 @@ namespace DataAccessLibrary.DataAccess.CreditQueries
         public void SaveCredit(CreditModel credit)
         {
             string sql = @"INSERT INTO Credit
-                          (InvoiceNumber, CreditNumber, IsCashAccount, CreditNote, CreditAmount, ValidTillDate, IsClaimed)
-                          VALUES (@invoiceNumber, @creditNumber, @isCashAccount, @creditNote, @creditAmount, @validTillDate, @isClaimed); ";
+                          (SaleId,  CreditNote, Amount, ValidTill, IsClaimed)
+                          VALUES (@saleId, @creditNote, @Amount, @validTill, @isClaimed); ";
 
             // Insert Credit data into the database
             _db.SaveData(sql, new
             {
-                invoiceNumber = credit.InvoiceNumber,
-                creditNumber = GetNewCreditNo(),
-                isCashAccount = credit.IsCashAccount,
+                saleId = credit.SaleId,
                 creditNote = credit.CreditNote,
-                creditAmount = credit.CreditAmount,
-                validTillDate = credit.ValidTillDate,
+                Amount = credit.Amount,
+                validTill = credit.ValidTill,
                 isClaimed = credit.IsClaimed
             }, _connectionStringName);
-        }
-
-        private int GetNewCreditNo()
-        {
-            string sql = @"SELECT CreditNumber
-                           FROM Credit
-                           ORDER BY CreditNumber DESC
-                           LIMIT 1;";
-
-            CreditModel credit = _db.LoadData<CreditModel, dynamic>(
-                sql, new { }, _connectionStringName).FirstOrDefault();
-
-            int output;
-            if (credit == null)
-            {
-                output = 1;
-            }
-            else
-            {
-                output = credit.CreditNumber + 1;
-            }
-            return output;
         }
 
         #endregion Save Credit

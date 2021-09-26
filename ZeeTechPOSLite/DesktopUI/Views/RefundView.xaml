@@ -8,108 +8,24 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
              TextElement.FontWeight="Medium"
-             TextElement.FontSize="14"
              FontFamily="{materialDesign:MaterialDesignFont}"
              d:DataContext="{d:DesignInstance Type=viewModel:RefundViewModel}"
              mc:Ignorable="d"
-             Height="485" Width="800">
-    <UserControl.Resources>
-        <!-- Default Lable style -->
-        <Style TargetType="Label"
-               BasedOn="{StaticResource MaterialDesignLabel}">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0" />
-        </Style>
-
-        <!-- Small Gray Label -->
-        <Style TargetType="Label" x:Key="HeadingSmall"
-               BasedOn="{StaticResource MaterialDesignLabel}">
-            <Setter Property="Foreground" Value="Gray" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="-5 0 0 -5" />
-        </Style>
-        <!-- Gray Lable style -->
-        <Style TargetType="Label" x:Key="GayLable"
-               BasedOn="{StaticResource MaterialDesignLabel}">
-            <Setter Property="Foreground" Value="Gray" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0" />
-        </Style>
-
-        <!-- Default TextBlock style -->
-        <Style TargetType="TextBlock"
-               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-
-        <!-- Default TextBox style -->
-        <Style TargetType="TextBox"
-               BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Setter Property="FontSize" Value="18" />
-        </Style>
-
-        <!-- Floating Hint TextBox -->
-        <Style TargetType="TextBox" x:Key="floatingHintBox"
-               BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontSize" Value="16" />
-        </Style>
-
-        <!-- ListBox Small TextBox-->
-        <Style TargetType="TextBox"  x:Key="ListSmallTextBox"
-               BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-        </Style>
-
-        <!-- ListBox TextBox-->
-        <Style TargetType="TextBlock" x:Key="ListBoxTextBlock"
-               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-        </Style>
-
-        <!-- Default Button -->
-        <Style TargetType="Button"
-               BasedOn="{StaticResource MaterialDesignRaisedLightButton}">
-            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="15" />
-        </Style>
-
-        <!-- Accent Button -->
-        <Style TargetType="Button" x:Key="AccentButton"
-               BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
-            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="15" />
-        </Style>
-
-        <!-- Big content Button -->
-        <Style TargetType="Button" x:Key="BigCintentButton"
-               BasedOn="{StaticResource MaterialDesignRaisedLightButton}">
-            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="15" />
-            <Setter Property="FontSize" Value="20" />
-        </Style>
-    </UserControl.Resources>
-
+             Height="490" Width="800">
     <Grid>
-
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="55" />
         </Grid.RowDefinitions>
 
         <!-- Top Panel -->
         <materialDesign:ColorZone Grid.Row="0"
                                   Mode="PrimaryDark"
                                   Margin="0 0 0 5">
-            <TextBlock HorizontalAlignment="Center"
-                       Text="Sale Refund" />
+            <Label HorizontalAlignment="Center"
+                   Style="{StaticResource HeaderWhiteLabel}"
+                   Content="Sale Return" />
         </materialDesign:ColorZone>
 
         <!-- Body -->
@@ -135,14 +51,11 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Name"
                                Margin="5 0 5 0"
-                               Width="165"
-                               Style="{StaticResource GayLable}" />
+                               Width="165"/>
                         <Label Content="Qty"
-                               Margin="10 0 5 0"
-                               Style="{StaticResource GayLable}" />
+                               Margin="10 0 5 0" />
                         <Label Content="Price"
-                               Margin="10 0 5 0"
-                               Style="{StaticResource GayLable}" />
+                               Margin="10 0 5 0"/>
                     </StackPanel>
                     <ListBox Height="290"
                              ItemsSource="{Binding SaleProducts}"
@@ -180,8 +93,7 @@
                             Command="{Binding AddAllCommand}" />
 
                     <!-- Restocking charge -->
-                    <TextBox Margin="0 20"
-                             materialDesign:HintAssist.Hint="Restocking charge"
+                    <TextBox materialDesign:HintAssist.Hint="Restocking charge"
                              materialDesign:TextFieldAssist.SuffixText="%"
                              HorizontalContentAlignment="Center"
                              Width="134"
@@ -190,8 +102,8 @@
                     <StackPanel Orientation="Horizontal" Margin="0 30"
                                 HorizontalAlignment="Center">
                         <!-- Remove quantity button -->
-                        <Button Style="{StaticResource BigCintentButton}"
-                                Content="-"
+                        <Button Content="-"
+                                Width="30"
                                 Command="{Binding RemoveQuantityCommand}"
                                 IsEnabled="{Binding RemoveQuantityEnabled}" />
                         <!-- Quantity -->
@@ -203,8 +115,8 @@
                                  Text="{Binding Quantity, Mode=TwoWay}"
                                  IsEnabled="{Binding QuantityEnabled}" />
                         <!-- Add quantity button -->
-                        <Button Style="{StaticResource BigCintentButton}"
-                                Content="+"
+                        <Button Content="+"
+                                Width="30"
                                 Command="{Binding AddQuantityCommand}"
                                 IsEnabled="{Binding AddQuantityEnabled}" />
                     </StackPanel>
@@ -244,14 +156,11 @@
                     <!-- ListBoox Headers -->
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Name"
-                               Margin="5 0 100 0"
-                               Style="{StaticResource GayLable}" />
+                               Margin="5 0 100 0"/>
                         <Label Content="Qty"
-                               Margin="10 0 40 0"
-                               Style="{StaticResource GayLable}" />
+                               Margin="10 0 40 0" />
                         <Label Content="Price"
-                               Margin="10 0 60 0"
-                               Style="{StaticResource GayLable}" />
+                               Margin="10 0 60 0" />
                     </StackPanel>
                     <ListBox Height="285"
                              ItemsSource="{Binding RefundProducts}"
@@ -306,24 +215,17 @@
                                   Mode="PrimaryDark"
                                   VerticalAlignment="Stretch">
             <StackPanel Orientation="Horizontal" Margin="0 5 5 0"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
                 <Button Content="Close"
-                        Width="80"
                         Margin="5 0"
                         Command="{Binding CloseCommand}" />
                 <Button Content="Undo"
-                        Width="80"
                         Margin="5 0"
                         Command="{Binding UndoCommand}" />
-                <Button Content="Credit"
-                        Style="{StaticResource AccentButton}"
-                        Width="80"
-                        Margin="5 0"
-                        Command="{Binding CreditCommand}" />
-                <Button Content="Refund"
+                <Button Content="Complete"
                         Style="{StaticResource AccentButton}"
                         Command="{Binding RefundCommand}"
-                        Width="80"
                         Margin="5 0" />
             </StackPanel>
         </materialDesign:ColorZone>

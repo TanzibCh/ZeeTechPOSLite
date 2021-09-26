@@ -13,7 +13,7 @@ namespace DesktopUI.ViewModels
     {
         #region Private properties
 
-        private readonly CreditStore _creditStore;
+        private readonly ReturnStore _returnStore;
 
         #endregion Private properties
 
@@ -102,21 +102,8 @@ namespace DesktopUI.ViewModels
             {
                 _creditIsExpanded = value;
                 OnPropertyChanged(nameof(CreditIsExpanded));
-
-                if (CreditIsExpanded == true)
-                {
-                    if (RefundIsExpanded == true)
-                    {
-                        RefundIsExpanded = false;
-                    }
-                }
-                else
-                {
-                    if (RefundIsExpanded == false)
-                    {
-                        RefundIsExpanded = true;
-                    }
-                }
+                ToggleCredit();
+                CheckCreditOrRfund();
             }
         }
 
@@ -129,6 +116,32 @@ namespace DesktopUI.ViewModels
             {
                 _refundIsExpanded = value;
                 OnPropertyChanged(nameof(RefundIsExpanded));
+                ToggleRefund();
+                CheckCreditOrRfund();
+            }
+        }
+
+        private string _completeLable;
+
+        public string CompleteLable
+        {
+            get { return _completeLable; }
+            set
+            {
+                _completeLable = value;
+                OnPropertyChanged(nameof(CompleteLable));
+            }
+        }
+
+        private DateTime _selectedDate;
+
+        public DateTime SelectedDate
+        {
+            get { return _selectedDate; }
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged(nameof(SelectedDate));
             }
         }
 
@@ -143,24 +156,80 @@ namespace DesktopUI.ViewModels
 
         #region Constructor
 
-        public ReturnCompleteViewModel(CreditStore creditStore,
+        public ReturnCompleteViewModel(ReturnStore returnStore,
             INavigationService closeModalNavigationService)
         {
-            _creditStore = creditStore;
+            _returnStore = returnStore;
 
+            // Set Credit as the default option
             CreditIsExpanded = true;
             RefundIsExpanded = false;
-            Amount = _creditStore.Amount;
-            SaleId = _creditStore.SaleId;
+
+            // Fill in the information from the return store
+            Amount = _returnStore.Amount;
+            SaleId = _returnStore.SaleId;
+            ValidTill = DateTime.Now.AddDays(30);
 
             // Commads
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
-            CompleteCommand = new CompleteReturnCommand(this, creditStore);
+            CompleteCommand = new CompleteReturnCommand(this, returnStore);
         }
 
         #endregion Constructor
 
         #region Methods
+
+        // Method to opan close Credit section and close
+        private void ToggleCredit()
+        {
+            if (CreditIsExpanded == true)
+            {
+                if (RefundIsExpanded == true)
+                {
+                    RefundIsExpanded = false;
+                }
+            }
+            else
+            {
+                if (RefundIsExpanded == false)
+                {
+                    RefundIsExpanded = true;
+                }
+            }
+        }
+
+        // Method to open and close the Refund section
+        private void ToggleRefund()
+        {
+            if (RefundIsExpanded == true)
+            {
+                if (CreditIsExpanded == true)
+                {
+                    CreditIsExpanded = false;
+                }
+            }
+            else
+            {
+                if (CreditIsExpanded == false)
+                {
+                    CreditIsExpanded = true;
+                }
+            }
+        }
+
+        // Changes the text in the Complete button depending on
+        // Credit or Refund selection
+        private void CheckCreditOrRfund()
+        {
+            if (CreditIsExpanded == true && RefundIsExpanded == false)
+            {
+                CompleteLable = "Create Credit";
+            }
+            else if (RefundIsExpanded == true && CreditIsExpanded == false)
+            {
+                CompleteLable = "Create Refund";
+            }
+        }
 
         private void CompleteReturn()
         {
