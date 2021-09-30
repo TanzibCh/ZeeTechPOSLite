@@ -116,6 +116,8 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 
         #region Update Sale
 
+        // Change the IsActive status of a sale If Active change to not active, if not active chage
+        // to active
         public void ChangeSaleActiveStatus(int id, bool activeStatus)
         {
             int isActive = 0;
@@ -204,9 +206,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 
         #endregion Update Sale
 
-        // Change the IsActive status of a sale If Active change to not active, if not active chage
-        // to active
-
+        #region Get Sale
         public List<SaleModel> GetCashOnlySalesByDate(string selectedDate)
         {
             string sql = @"SELECT Id, InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly
@@ -260,6 +260,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             SaleModel sale = _db.LoadData<SaleModel, dynamic>(sql, new { id }, _connectionStringName).FirstOrDefault();
 
             return sale;
-        }
+        } 
+        #endregion
     }
 }

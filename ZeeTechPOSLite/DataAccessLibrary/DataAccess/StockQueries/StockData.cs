@@ -11,6 +11,7 @@ namespace DataAccessLibrary.DataAccess.StockQueries
         private const string _connectionStringName = "SQLiteDB";
         private SQLiteDataAccess _db = new SQLiteDataAccess();
 
+        // Add a new stock
         public void AddStock(int locationId, ProductModel product,
             int quantity, StockLogModel stockLog)
         {
@@ -30,9 +31,29 @@ namespace DataAccessLibrary.DataAccess.StockQueries
             AddStockLog(stockLog);
         }
 
-        // When ever stock is altered need to call this method
-        // to add a record of the transaction
-        private void AddStockLog(StockLogModel stockLog)
+        public void AdjustStock(int locationId, int productId, int quantity, StockLogModel stockLog)
+        {
+            string sql = @"UPDATE Stock
+                          SET Quantity = @quantity
+                          WHERE ProductId = @productId
+                          AND LocatuinId = @locationId";
+
+            // Adjust the stock level of a product
+            // that already has a stock entry in the database
+            _db.SaveData(sql, new
+            {
+                productId = productId,
+                locationId = locationId,
+                quantity = quantity
+            }, _connectionStringName);
+
+            // Add stock log
+            AddStockLog(stockLog);
+        }
+
+    // When ever stock is altered need to call this method
+    // to add a record of the transaction
+    private void AddStockLog(StockLogModel stockLog)
         {
             string sql = @"INSERT INTO Stock
                           (LogTypeId, LogDate, Comments)
