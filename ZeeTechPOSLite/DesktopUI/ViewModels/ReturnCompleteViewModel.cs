@@ -231,10 +231,6 @@ namespace DesktopUI.ViewModels
             }
         }
 
-        private void CompleteReturn()
-        {
-        }
-
         #endregion Methods
     }
 }

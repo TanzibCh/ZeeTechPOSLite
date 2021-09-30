@@ -163,7 +163,7 @@
                                Margin="10 0 60 0" />
                     </StackPanel>
                     <ListBox Height="285"
-                             ItemsSource="{Binding RefundProducts}"
+                             ItemsSource="{Binding ReturnProducts}"
                              SelectedItem="{Binding SelectedRefundProduct}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>

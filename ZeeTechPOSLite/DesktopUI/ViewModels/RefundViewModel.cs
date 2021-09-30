@@ -131,20 +131,20 @@ namespace DesktopUI.ViewModels
 
         #region List Properties
 
-        private ObservableCollection<SaleProductDisplayModel> _refundProducts;
+        private ObservableCollection<SaleProductDisplayModel> _returnProducts;
         private ObservableCollection<SaleProductDisplayModel> _saleProducts;
 
         private SaleProductDisplayModel _selectedRefundProduct;
 
         private SaleProductDisplayModel _selectedSaleProduct;
 
-        public ObservableCollection<SaleProductDisplayModel> RefundProducts
+        public ObservableCollection<SaleProductDisplayModel> ReturnProducts
         {
-            get { return _refundProducts; }
+            get { return _returnProducts; }
             set
             {
-                _refundProducts = value;
-                OnPropertyChanged(nameof(RefundProducts));
+                _returnProducts = value;
+                OnPropertyChanged(nameof(ReturnProducts));
             }
         }
 
@@ -188,7 +188,7 @@ namespace DesktopUI.ViewModels
             )
         {
             _saleStore = saleStore;
-            RefundProducts = new ObservableCollection<SaleProductDisplayModel>();
+            ReturnProducts = new ObservableCollection<SaleProductDisplayModel>();
 
             // Commands
             GetProductInfoCommand = new GetProductInfoCommand(this);
@@ -223,11 +223,11 @@ namespace DesktopUI.ViewModels
             }
 
             // Empty out Refund List before adding all the products to the list
-            RefundProducts.Clear();
+            ReturnProducts.Clear();
 
             foreach (SaleProductDisplayModel product in SaleProducts)
             {
-                RefundProducts.Add(new SaleProductDisplayModel
+                ReturnProducts.Add(new SaleProductDisplayModel
                 {
                     Id = product.Id,
                     SaleId = product.SaleId,
@@ -281,7 +281,7 @@ namespace DesktopUI.ViewModels
             if (SelectedSaleProduct != null)
             {
                 SaleProductDisplayModel refundProduct =
-                    RefundProducts.FirstOrDefault(p => p.Id == SelectedSaleProduct.Id);
+                    ReturnProducts.FirstOrDefault(p => p.Id == SelectedSaleProduct.Id);
 
                 if (refundProduct != null)
                 {
@@ -289,7 +289,7 @@ namespace DesktopUI.ViewModels
                     refundProduct.Total = _cHelper.ConvertDecimalToString(
                         CalculateProductTotal(SelectedSaleProduct, refundProduct.QuantitySold));
 
-                    CollectionViewSource.GetDefaultView(RefundProducts).Refresh();
+                    CollectionViewSource.GetDefaultView(ReturnProducts).Refresh();
                     RefundTotal = CalculateTotalRefund();
                 }
                 else
@@ -308,7 +308,7 @@ namespace DesktopUI.ViewModels
                         Department = SelectedSaleProduct.Department
                     };
 
-                    RefundProducts.Add(product);
+                    ReturnProducts.Add(product);
                     RefundTotal = CalculateTotalRefund();
                 }
             }
@@ -320,7 +320,7 @@ namespace DesktopUI.ViewModels
             if (SelectedRefundProduct != null)
             {
                 SaleProductDisplayModel refundProduct =
-                    RefundProducts.FirstOrDefault(p => p.Id == SelectedRefundProduct.Id);
+                    ReturnProducts.FirstOrDefault(p => p.Id == SelectedRefundProduct.Id);
 
                 if (refundProduct != null)
                 {
@@ -330,10 +330,10 @@ namespace DesktopUI.ViewModels
 
                     if (refundProduct.QuantitySold == 0)
                     {
-                        RefundProducts.Remove(refundProduct);
+                        ReturnProducts.Remove(refundProduct);
                     }
 
-                    CollectionViewSource.GetDefaultView(RefundProducts).Refresh();
+                    CollectionViewSource.GetDefaultView(ReturnProducts).Refresh();
                     RefundTotal = CalculateTotalRefund();
                 }
             }
@@ -438,7 +438,7 @@ namespace DesktopUI.ViewModels
         // Undo all changes made
         public void UndoChanges()
         {
-            RefundProducts.Clear();
+            ReturnProducts.Clear();
             ClearEditFields();
         }
 
@@ -461,7 +461,7 @@ namespace DesktopUI.ViewModels
         {
             decimal total = 0;
 
-            foreach (SaleProductDisplayModel product in RefundProducts)
+            foreach (SaleProductDisplayModel product in ReturnProducts)
             {
                 total += _cHelper.ConvertStringToDecimal(product.Total);
             }
@@ -546,7 +546,7 @@ namespace DesktopUI.ViewModels
         // Remove selected item from RefundProducts list
         private void RemoveProductFromRefundProducts()
         {
-            RefundProducts.Remove(SelectedRefundProduct);
+            ReturnProducts.Remove(SelectedRefundProduct);
             ClearEditFields();
         }
 

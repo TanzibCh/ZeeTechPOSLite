@@ -12,8 +12,7 @@
              xmlns:local="clr-namespace:DesktopUI.Views"
              d:DataContext="{d:DesignInstance Type=viewModel:ReturnCompleteViewModel}"
              mc:Ignorable="d"
-             Height="340" Width="700">
-
+             Height="370" Width="700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -23,50 +22,57 @@
         <!-- Header -->
         <materialDesign:ColorZone Grid.Row="0"
                                   Mode="PrimaryMid">
-            <TextBlock Text="Complete Return"
-                       HorizontalAlignment="Center" />
+            <Label Content="Complete Return"
+                   HorizontalAlignment="Center"
+                   Style="{StaticResource HeaderWhiteLabel}"/>
         </materialDesign:ColorZone>
 
         <!-- Main body -->
         <StackPanel Grid.Row="1"
                     Orientation="Vertical">
             <!-- Credit -->
-            <materialDesign:Card Margin="10"
-                                 UniformCornerRadius="15">
-                <Expander Header="Credit"
+            <Expander Header="Credit"
                           IsExpanded="{Binding CreditIsExpanded}">
+                <materialDesign:Card Margin="10"
+                                 UniformCornerRadius="15">
                     <StackPanel Orientation="Vertical"
-                                Margin="10">
+                                Margin="20">
                         <Label Content="Valid till" />
                         <DatePicker Width="200"
                                     HorizontalAlignment="Left"
-                                    Margin="0 0 0 10" />
+                                    Margin="0 0 0 10" 
+                                    SelectedDate="{Binding SelectedDate, Mode=TwoWay}"/>
                         <TextBox Style="{StaticResource floatingHintBox}"
                                  materialDesign:HintAssist.Hint="Note"
-                                 Margin="0 0 0 10" />
+                                 Margin="0 0 0 10" 
+                                 Text="{Binding CreditNote, Mode=TwoWay}"/>
                     </StackPanel>
-                </Expander>
-            </materialDesign:Card>
+                </materialDesign:Card>
+            </Expander>
             <!-- Refund -->
-            <materialDesign:Card Margin="10"
-                                 UniformCornerRadius="15">
-                <Expander Header="Refund"
+            <Expander Header="Refund"
                           IsExpanded="{Binding RefundIsExpanded}">
+                <materialDesign:Card Margin="10"
+                                 UniformCornerRadius="15">
+
                     <StackPanel Orientation="Vertical"
-                                Margin="10">
+                                Margin="20">
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center">
-                            <CheckBox Content="Card"
-                                      Margin="10 10" />
-                            <CheckBox Content="Card" 
-                                      Margin="10 10"/>
+                            <RadioButton Content="Card"
+                                         Margin="10 10"
+                                         IsChecked="{Binding Card}"/>
+                            <RadioButton Content="Card" 
+                                         Margin="10 10"
+                                         IsChecked="{Binding Cash}"/>
                         </StackPanel>
                         <TextBox Style="{StaticResource floatingHintBox}"
                                  materialDesign:HintAssist.Hint="Note"
-                                 Margin="0 0 0 10" />
+                                 Margin="0 10 0 10" 
+                                 Text="{Binding RefundNote}"/>
                     </StackPanel>
-                </Expander>
-            </materialDesign:Card>
+                </materialDesign:Card>
+            </Expander>
         </StackPanel>
 
         <!-- Bottom bar -->
@@ -78,7 +84,8 @@
                 <Button Content="close"
                         Command="{Binding CloseCommand}" />
                 <Button Content="{Binding CompleteLable}"
-                        Style="{StaticResource AccentButton}" />
+                        Style="{StaticResource AccentButton}" 
+                        Command="{Binding CompleteCommand}"/>
             </StackPanel>
         </materialDesign:ColorZone>
     </Grid>
