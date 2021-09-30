@@ -7,7 +7,7 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Bold"
-        TextElement.FontSize="14"
+        TextElement.FontSize="18"
         FontFamily="{materialDesign:MaterialDesignFont}"
         xmlns:viewModel="clr-namespace:DesktopUI.ViewModels"
         xmlns:local="clr-namespace:DesktopUI.Views"

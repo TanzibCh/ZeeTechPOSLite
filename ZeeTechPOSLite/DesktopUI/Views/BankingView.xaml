@@ -8,7 +8,6 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
              TextElement.FontWeight="Medium"
-             TextElement.FontSize="18"
              FontFamily="{materialDesign:MaterialDesignFont}"
              xmlns:local="clr-namespace:DesktopUI.Views"
              xmlns:components="clr-namespace:DesktopUI.Components"
@@ -16,32 +15,7 @@
              mc:Ignorable="d"
              d:DesignHeight="1000" d:DesignWidth="1600">
 
-    <!-- Custom Styles -->
-    <UserControl.Resources>
-
-        <Style TargetType="Label" x:Key="HeadingSmall"
-               BasedOn="{StaticResource MaterialDesignLabel}">
-            <Setter Property="Foreground" Value="LightGray" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="-5 0 0 -5" />
-        </Style>
-
-        <Style TargetType="TextBox"
-               x:Key="ListSmallTextBox"
-               BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-        </Style>
-
-        <Style TargetType="TextBlock" x:Key="ListBoxTextBlock"
-               BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-        </Style>
-    </UserControl.Resources>
-
+    <!-- Main Grid -->
     <Grid Grid.Column="1" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -88,6 +62,7 @@
                 <Viewbox Grid.Column="1">
                     <Label
                        Content="Daily Banking"
+                        Style="{StaticResource HeaderWhiteLabel}"
                        FontSize="16" />
                 </Viewbox>
 
@@ -103,7 +78,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="800" />
-                <ColumnDefinition Width="600" />
+                <ColumnDefinition MinWidth="500" />
                 <ColumnDefinition Width="260" />
             </Grid.ColumnDefinitions>
 
@@ -211,20 +186,17 @@
                                     </Grid.ColumnDefinitions>
                                     <!-- Time -->
                                     <TextBlock Grid.Column="0" Margin="0 5 5 0"
-                                           Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding SaleTime}" />
 
                                     <!-- InvoiceNo -->
                                     <TextBlock Grid.Column="1" Margin="0 5 5 0"
-                                           Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding InvoiceNo}" />
 
                                     <!-- Card -->
                                     <StackPanel Grid.Column="2" Orientation="Horizontal">
                                         <TextBlock Grid.Column="1" Margin="0 5 5 0"
-                                           Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding Card}" />
                                     </StackPanel>
@@ -232,7 +204,6 @@
                                     <!-- Cash -->
                                     <StackPanel Grid.Column="3" Orientation="Horizontal">
                                         <TextBlock
-                                           Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding Cash}" />
                                     </StackPanel>
@@ -240,7 +211,6 @@
                                     <!-- Credit -->
                                     <StackPanel Grid.Column="4" Orientation="Horizontal">
                                         <TextBlock
-                                           Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding Credit}" />
                                     </StackPanel>
@@ -249,7 +219,6 @@
                                     <StackPanel Grid.Column="5" Orientation="Horizontal"
                                                 Margin="10 0 0 0">
                                         <TextBlock
-                                           Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding SaleTotal}" />
                                     </StackPanel>
@@ -257,14 +226,13 @@
                                     <!-- Cost -->
                                     <StackPanel Grid.Column="6" Orientation="Horizontal">
                                         <TextBlock
-                                           Style="{StaticResource ListBoxTextBlock}"
                                            HorizontalAlignment="Left"
                                            Text="{Binding TotalCost}" />
                                     </StackPanel>
 
                                     <!-- Profit -->
                                     <StackPanel Grid.Column="7" Orientation="Horizontal">
-                                        <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                        <TextBlock 
                                            HorizontalAlignment="Left"
                                            Text="{Binding Profit}" />
                                     </StackPanel>
@@ -290,8 +258,6 @@
                                         Content="Edit"
                                         Width="80"
                                         materialDesign:ButtonAssist.CornerRadius="15"
-
-                                        Style="{StaticResource MaterialDesignRaisedLightButton}"
                                         Command="{Binding EditSale}"
                                         CommandParameter="{Binding SelectedSale}" />
 
@@ -299,14 +265,12 @@
                                         Content="Refund"
                                         Width="80"
                                         materialDesign:ButtonAssist.CornerRadius="15"
-                                        Style="{StaticResource MaterialDesignRaisedLightButton}"
                                         Command="{Binding RefundCommand}" />
 
                                 <Button Margin="10 2"
                                         Content="Void"
                                         Width="80"
-                                        materialDesign:ButtonAssist.CornerRadius="15"
-                                        Style="{StaticResource MaterialDesignRaisedLightButton}" />
+                                        materialDesign:ButtonAssist.CornerRadius="15" />
                             </StackPanel>
                         </StackPanel>
                     </materialDesign:ColorZone>
@@ -364,10 +328,10 @@
                                                 <StackPanel Grid.Column="0"
                                                             Orientation="Vertical">
 
-                                                    <Label Style="{StaticResource HeadingSmall}"
+                                                    <Label 
                                                            Content="Name/Model" />
 
-                                                    <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                                    <TextBlock 
                                                                Text="{Binding ProductName}" />
                                                 </StackPanel>
 
@@ -375,10 +339,10 @@
                                                 <StackPanel Grid.Column="1"
                                                             Orientation="Vertical" HorizontalAlignment="Right">
 
-                                                    <Label Style="{StaticResource HeadingSmall}"
+                                                    <Label 
                                                            Content="Department" />
 
-                                                    <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                                    <TextBlock 
                                                                Text="{Binding Department}" />
                                                 </StackPanel>
                                             </Grid>
@@ -387,11 +351,11 @@
                                             <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
                                                         Orientation="Vertical">
 
-                                                <Label Style="{StaticResource HeadingSmall}"
+                                                <Label 
                                                        Content="Description"
                                                        HorizontalAlignment="Left" />
 
-                                                <TextBlock Style="{StaticResource ListBoxTextBlock}"
+                                                <TextBlock 
                                                            TextWrapping="Wrap"
                                                            Text="{Binding ProductDescription}" />
                                             </StackPanel>
@@ -403,7 +367,7 @@
                                             <DockPanel Grid.Column="2" Grid.Row="0"
                                                        Margin="0 2">
 
-                                                <Label Style="{StaticResource HeadingSmall}"
+                                                <Label 
                                                        Content="Qty:" />
 
                                                 <TextBlock Margin="5 0 0 0"
@@ -415,7 +379,7 @@
                                             <DockPanel Grid.Column="0" Grid.Row="0"
                                                        Margin="0 2">
 
-                                                <Label Style="{StaticResource HeadingSmall}"
+                                                <Label 
                                                    Content="Cost:" />
 
                                                 <TextBlock Margin="5 0 0 0"
@@ -427,7 +391,7 @@
                                             <DockPanel Grid.Column="1" Grid.Row="0"
                                                        Margin="0 2">
 
-                                                <Label Style="{StaticResource HeadingSmall}"
+                                                <Label 
                                                    Content="Price:" />
 
                                                 <TextBlock Margin="5 0 0 0"
@@ -439,7 +403,7 @@
                                             <DockPanel Grid.Column="3" Grid.Row="0"
                                                        Margin="0 2">
 
-                                                <Label Style="{StaticResource HeadingSmall}"
+                                                <Label 
                                                    Content="Total:" />
 
                                                 <TextBlock Margin="5 0 0 0"
@@ -544,7 +508,6 @@
                                     HorizontalAlignment="Center">
                                 <!-- Edit -->
                                 <Button Width="70"
-                                    Style="{StaticResource MaterialDesignRaisedLightButton}"
                                     Content="{materialDesign:PackIcon Kind=FileDocumentEditOutline}"
                                     materialDesign:ButtonAssist.CornerRadius="15"
                                     Margin="10 0"
@@ -553,10 +516,8 @@
 
                                 <!-- Delete Expense -->
                                 <Button Width="70"
-                                    Style="{StaticResource MaterialDesignRaisedLightButton}"
                                     Content="{materialDesign:PackIcon Kind=DeleteCircle}"
                                     materialDesign:ButtonAssist.CornerRadius="15"
-
                                     Margin="10 0"
                                     Command="{Binding RemoveExpense}"
                                     CommandParameter="{Binding SelectedExpense}" />
@@ -764,7 +725,7 @@
                         <materialDesign:Card Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
                                              Margin="0 5"
                                              UniformCornerRadius="15"
-                                             Background="#FFF1DDB2"
+                                             Background="Gray"
                                              materialDesign:ShadowAssist.ShadowDepth="Depth1">
                         </materialDesign:Card>
 
@@ -788,7 +749,7 @@
                         <materialDesign:Card Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"
                                              Margin="0 5"
                                              UniformCornerRadius="15"
-                                             Background="#FFC9B2F1"
+                                             Background="DarkGray"
                                              materialDesign:ShadowAssist.ShadowDepth="Depth1">
                         </materialDesign:Card>
                         <Label Grid.Column="0" Grid.Row="1"
@@ -811,7 +772,7 @@
                         <materialDesign:Card Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"
                                              Margin="0 5"
                                              UniformCornerRadius="15"
-                                             Background="#FFB2F1DA"
+                                             Background="Gray"
                                              materialDesign:ShadowAssist.ShadowDepth="Depth1">
                         </materialDesign:Card>
                         <Label Grid.Column="0" Grid.Row="2"
@@ -834,7 +795,7 @@
                         <materialDesign:Card Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"
                                              Margin="0 5"
                                              UniformCornerRadius="15"
-                                             Background="#FFB2DAF1"
+                                             Background="DarkGray"
                                              materialDesign:ShadowAssist.ShadowDepth="Depth1">
                         </materialDesign:Card>
                         <Label Grid.Column="0" Grid.Row="3"
@@ -857,7 +818,7 @@
                         <materialDesign:Card Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3"
                                              Margin="0 5"
                                              UniformCornerRadius="15"
-                                             Background="#FFF1B2B2"
+                                             Background="Gray"
                                              materialDesign:ShadowAssist.ShadowDepth="Depth1">
                         </materialDesign:Card>
                         <Label Grid.Column="0" Grid.Row="4"
@@ -880,7 +841,7 @@
                         <materialDesign:Card Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3"
                                              Margin="0 5"
                                              UniformCornerRadius="15"
-                                             Background="#FFF1B2B2"
+                                             Background="DarkGray"
                                              materialDesign:ShadowAssist.ShadowDepth="Depth1">
                         </materialDesign:Card>
                         <Label Grid.Column="0" Grid.Row="5"
@@ -932,7 +893,7 @@
                                      Text="{Binding CardExpense, Mode=TwoWay}"
                                      materialDesign:HintAssist.Hint="Card"
                                      materialDesign:TextFieldAssist.PrefixText="£"
-                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Style="{StaticResource floatingHintBox}"
                                      VerticalAlignment="Center" />
 
                             <TextBox Grid.Column="1" Grid.Row="0"
@@ -941,29 +902,23 @@
                                      Text="{Binding CashExpense, Mode=TwoWay}"
                                      materialDesign:HintAssist.Hint="Cash"
                                      materialDesign:TextFieldAssist.PrefixText="£"
-                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Style="{StaticResource floatingHintBox}"
                                      VerticalAlignment="Center" />
 
                             <TextBox Grid.Column="0" Grid.Row="1"
                                      Grid.ColumnSpan="2"
                                      Text="{Binding ExpenseDetails}"
                                      materialDesign:HintAssist.Hint="Details"
-                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Style="{StaticResource floatingHintBox}"
                                      VerticalAlignment="Center" />
 
                             <Button Grid.Column="0" Grid.Row="2"
-                                    Style="{StaticResource MaterialDesignFlatDarkBgButton}"
                                     materialDesign:ButtonAssist.CornerRadius="15"
-                                    Margin="10"
-                                    Width="100"
                                     Content="Clear"
                                     Command="{Binding ClearExpense}" />
 
                             <Button Grid.Column="1" Grid.Row="2"
-                                    Style="{StaticResource MaterialDesignFlatDarkBgButton}"
                                     materialDesign:ButtonAssist.CornerRadius="15"
-                                    Margin="10"
-                                    Width="100"
                                     Content="{Binding ExpenseButtonContent}"
                                     Command="{Binding AddExpense}" />
                             <StackPanel Orientation="Horizontal"

@@ -11,6 +11,7 @@ namespace DataAccessLibrary.Models
         public int LocationId { get; set; }
         public int SupplierId { get; set; }
         public string PurchaseDate { get; set; }
+        public string DeliveryReceivedDate { get; set; }
         public int Quantity { get; set; }
         public int PurchasePrice { get; set; }
     }

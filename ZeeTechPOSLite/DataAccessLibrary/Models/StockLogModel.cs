@@ -4,13 +4,11 @@ using System.Text;
 
 namespace DataAccessLibrary.Models
 {
-    public class CreditModel
+    public class StockLogModel
     {
         public int Id { get; set; }
-        public int SaleId { get; set; }
+        public int LogTypeId { get; set; }
+        public string LogDate { get; set; } // DateTime
         public string Comments { get; set; }
-        public string ValidTill { get; set; }
-        public int Amount { get; set; }
-        public int IsClaimed { get; set; }
     }
 }

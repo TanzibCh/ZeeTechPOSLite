@@ -28,11 +28,11 @@
         <Setter Property="Margin" Value="-5 0 0 -5" />
     </Style>
 
-    <!--Header Lable-->
+    <!--Headerb White Lable-->
     <Style TargetType="Label" x:Key="HeaderWhiteLabel"
                BasedOn="{StaticResource LabelBase}">
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontSize" Value="25" />
         <Setter Property="FontWeight" Value="DemiBold" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -105,5 +105,25 @@
            BasedOn="{StaticResource MaterialDesignChoiceChipAccentRadioButton}">
         
     </Style>
+
+    <!--#region ListBox -->
+    
+    <!--ListBox Selection trigger-->
+        <!--<ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="Background" Value="Transparent" />
+                    </Trigger>
+                </Style.Triggers>
+                <Style.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                </Style.Resources>
+            </Style>
+        </ListBox.ItemContainerStyle>-->
+
+    <!--#endregion-->
+    
     <!--#endregion-->
 </ResourceDictionary>
