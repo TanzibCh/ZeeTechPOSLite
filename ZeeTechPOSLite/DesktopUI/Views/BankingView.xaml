@@ -22,7 +22,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--#region Top Bar -->
+        <!--Top Bar -->
         <materialDesign:Card Grid.Row="0" Margin="5 0 0 10"
                              UniformCornerRadius="15"
                              materialDesign:ShadowAssist.ShadowDepth="Depth1">
@@ -72,17 +72,16 @@
                               IsChecked="True" />
             </Grid>
         </materialDesign:Card>
-        <!--#endregion-->
 
         <!-- Main body Grid -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="800" />
-                <ColumnDefinition MinWidth="500" />
+                <ColumnDefinition MinWidth="400" MaxWidth="500"/>
                 <ColumnDefinition Width="260" />
             </Grid.ColumnDefinitions>
 
-            <!--#region Sales List -->
+            <!-- Sales List -->
             <materialDesign:Card Grid.Column="0"
                                  Margin="5 0 5 0"
                                  UniformCornerRadius="15"
@@ -113,6 +112,7 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
 
+                        <!--ListBox Headers-->
                         <ListBox.Template>
                             <ControlTemplate>
                                 <DockPanel LastChildFill="True">
@@ -241,6 +241,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
+                    <!--Bottom panel-->
                     <materialDesign:ColorZone Grid.Row="1"
                                               Mode="Custom" CornerRadius="0 0 15 15"
                                               Height="50"
@@ -276,16 +277,15 @@
                     </materialDesign:ColorZone>
                 </Grid>
             </materialDesign:Card>
-            <!--#endregion-->
 
-            <!--#region Sale Products and Expenses List -->
+            <!-- Sale Products and Expenses List -->
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="310" />
                 </Grid.RowDefinitions>
 
-                <!--#region Sale Products -->
+                <!-- Sale Products -->
                 <materialDesign:Card Grid.Row="0" Margin="5 0 5 5"
                                  UniformCornerRadius="15"
                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
@@ -420,9 +420,8 @@
                         </ListView>
                     </StackPanel>
                 </materialDesign:Card>
-                <!--#endregion-->
 
-                <!--#region Expenses -->
+                <!--Expenses -->
                 <materialDesign:Card Grid.Row="1" Margin="5 5 5 0"
                                      UniformCornerRadius="15"
                                      materialDesign:ShadowAssist.ShadowDepth="Depth1">
@@ -495,8 +494,8 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <!-- Buttons -->
 
+                        <!-- Buttons -->
                         <StackPanel Grid.Row="2"
                                     Orientation="Vertical">
                             <materialDesign:ColorZone Margin="10 0 10 10"
@@ -525,11 +524,9 @@
                         </StackPanel>
                     </Grid>
                 </materialDesign:Card>
-                <!--#endregion-->
             </Grid>
-            <!--#endregion-->
 
-            <!--#region Totals -->
+            <!--Totals -->
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition MinHeight="400" />
@@ -537,7 +534,7 @@
                     <RowDefinition MinHeight="180" MaxHeight="400" />
                 </Grid.RowDefinitions>
 
-                <!--#region Totals -->
+                <!-- Totals Breakdown-->
                 <materialDesign:ColorZone Grid.Row="0"
                                           Margin="5 0 0 5"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth1"
@@ -698,9 +695,8 @@
                         </Grid>
                     </StackPanel>
                 </materialDesign:ColorZone>
-                <!--#endregion-->
 
-                <!--#region  Departments -->
+                <!-- Departments -->
                 <materialDesign:Card Grid.Row="1" Margin="5 5 0 5"
                                      UniformCornerRadius="15"
                                      materialDesign:ShadowAssist.ShadowDepth="Depth1">
@@ -861,9 +857,8 @@
                                    FontSize="16" />
                     </Grid>
                 </materialDesign:Card>
-                <!--#endregion-->
 
-                <!--#region  New Expense -->
+                <!-- New Expense -->
                 <materialDesign:ColorZone Grid.Row="2" Margin="5 5 0 0"
                                           Mode="PrimaryDark"
                                           CornerRadius="15"
@@ -927,9 +922,7 @@
                         </Grid>
                     </StackPanel>
                 </materialDesign:ColorZone>
-                <!--#endregion-->
             </Grid>
-            <!--#endregion-->
         </Grid>
     </Grid>
 </UserControl>

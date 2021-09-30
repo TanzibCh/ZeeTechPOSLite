@@ -31,7 +31,7 @@ namespace DataAccessLibrary.DataAccess.ExpenseQueries
         {
             string sql = @"SELECT Id, ExpenseDate, ExpenseDetails, Card, Cash, ExpenseTotal
                           FROM Expense
-                          WHERE VoidExpense= 0
+                          WHERE IsActive = 1
                           AND ExpenseDate = @selectedDate;";
 
             List<ExpenseModel> expenses = _db.LoadData<ExpenseModel, dynamic>(sql, new { selectedDate }, _connectionStringName);
@@ -58,7 +58,7 @@ namespace DataAccessLibrary.DataAccess.ExpenseQueries
         public void VoidExpense(int Id)
         {
             string sql = @"UPDATE Expense
-                           SET VoidExpense = 1
+                           SET IsActive = 0
                            WHERE Id = @id";
 
             _db.SaveData(sql, new { Id }, _connectionStringName);

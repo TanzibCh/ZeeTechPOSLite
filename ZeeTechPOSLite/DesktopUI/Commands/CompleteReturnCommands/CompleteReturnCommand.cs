@@ -36,11 +36,14 @@ namespace DesktopUI.Commands.CompleteReturnCommands
             if (_returnCompleteViewModel.CreditIsExpanded == true)
             {
                 SaveCredit();
+                // Save returnd products
+
             }
             else if (_returnCompleteViewModel.RefundIsExpanded == true)
             {
                 //Logic for saving Refund
                 //ToDo: Add products back to stock
+                //ToDo: Save returned products
             }
             else
             {
@@ -53,7 +56,7 @@ namespace DesktopUI.Commands.CompleteReturnCommands
             CreditModel credit = new CreditModel
             {
                 SaleId = _returnStore.SaleId,
-                CreditNote = _returnCompleteViewModel.CreditNote,
+                Comments = _returnCompleteViewModel.CreditNote,
                 ValidTill = _returnCompleteViewModel.ValidTill.Date.ToString(),
                 Amount = _cHelper.ConvertDecimalToInt(_returnCompleteViewModel.Amount)
             };

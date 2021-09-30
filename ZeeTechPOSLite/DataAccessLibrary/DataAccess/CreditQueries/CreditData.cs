@@ -15,15 +15,15 @@ namespace DataAccessLibrary.DataAccess.CreditQueries
         public void SaveCredit(CreditModel credit)
         {
             string sql = @"INSERT INTO Credit
-                          (SaleId,  CreditNote, Amount, ValidTill, IsClaimed)
-                          VALUES (@saleId, @creditNote, @Amount, @validTill, @isClaimed); ";
+                          (SaleId,  Comments, Amount, ValidTill, IsClaimed)
+                          VALUES (@saleId, @commants, @amount, @validTill, @isClaimed);";
 
             // Insert Credit data into the database
             _db.SaveData(sql, new
             {
                 saleId = credit.SaleId,
-                creditNote = credit.CreditNote,
-                Amount = credit.Amount,
+                comments = credit.Comments,
+                amount = credit.Amount,
                 validTill = credit.ValidTill,
                 isClaimed = credit.IsClaimed
             }, _connectionStringName);

@@ -384,7 +384,7 @@ namespace DesktopUI.ViewModels
             CreditModel credit = new CreditModel
             {
                 SaleId = _saleStore.SelectedSale.Id,
-                CreditNote = "",// TODO create a field for taking note info for the credid
+                Comments = "",// TODO create a field for taking note info for the credid
                 Amount = _cHelper.ConvertDecimalToInt(RefundTotal),
                 ValidTill = "", // TODO create a field to take date info for the credit
             };
