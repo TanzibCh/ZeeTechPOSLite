@@ -6,12 +6,16 @@ using System.Text;
 
 namespace DataAccessLibrary.DataAccess.StockQueries
 {
+    // This class saves, loads and updates
+    // Stock data and StockLog data in the database
     public class StockData
     {
+        #region Save Stock
         private const string _connectionStringName = "SQLiteDB";
-        private SQLiteDataAccess _db = new SQLiteDataAccess();
+        private readonly SQLiteDataAccess _db = new SQLiteDataAccess();
 
-        // Add a new stock
+        // Add a new stock to the database when the product has no
+        // entry in the database. eg. newly created product.
         public void AddStock(int locationId, ProductModel product,
             int quantity, StockLogModel stockLog)
         {
@@ -31,6 +35,8 @@ namespace DataAccessLibrary.DataAccess.StockQueries
             AddStockLog(stockLog);
         }
 
+        // Adjust the stock level of a product
+        // that already has a stock entry in the database
         public void AdjustStock(int locationId, int productId, int quantity, StockLogModel stockLog)
         {
             string sql = @"UPDATE Stock
@@ -38,8 +44,7 @@ namespace DataAccessLibrary.DataAccess.StockQueries
                           WHERE ProductId = @productId
                           AND LocatuinId = @locationId";
 
-            // Adjust the stock level of a product
-            // that already has a stock entry in the database
+            // Save the data
             _db.SaveData(sql, new
             {
                 productId = productId,
@@ -50,10 +55,60 @@ namespace DataAccessLibrary.DataAccess.StockQueries
             // Add stock log
             AddStockLog(stockLog);
         }
+        #endregion
 
-    // When ever stock is altered need to call this method
-    // to add a record of the transaction
-    private void AddStockLog(StockLogModel stockLog)
+        #region Get Stock
+
+        public List<StockModel> GetAllStock(StockLogModel stockLog)
+        {
+            string sql = @"SELECT ProductId, LocationId, Quantity
+                          FROM Stock;";
+
+            List<StockModel> stock = _db.LoadData<StockModel, dynamic>(sql, new { }, _connectionStringName);
+
+            return stock;
+        }
+
+        public List<StockModel> GetStockByLocation(int locationId)
+        {
+            string sql = @"SELECT ProductId, LocationId, Quantity
+                          FROM Stock
+                          WHERE LocationId = @locationId;";
+
+            List<StockModel> stock = _db.LoadData<StockModel, dynamic>(sql, new { locationId }, _connectionStringName);
+
+            return stock;
+        }
+
+        public List<StockModel> GetStockByProduct(int productId)
+        {
+            string sql = @"SELECT ProductId, LocationId, Quantity
+                          FROM Stock
+                          WHERE LocationId = @productId;";
+
+            List<StockModel> stock = _db.LoadData<StockModel, dynamic>(sql, new { productId }, _connectionStringName);
+
+            return stock;
+        }
+
+        public List<StockModel> GetStockByProductAndLocation(int productId, int locationId)
+        {
+            string sql = @"SELECT ProductId, LocationId, Quantity
+                          FROM Stock
+                          WHERE ProductId = @productId
+                          AND LocationId = @locationId;";
+
+            List<StockModel> stock = _db.LoadData<StockModel, dynamic>(sql, new { productId, locationId }, _connectionStringName);
+
+            return stock;
+        }
+        #endregion
+
+        #region Log Entry
+
+        // When ever stock is altered need to call this method
+        // to add a record of the transaction
+        private void AddStockLog(StockLogModel stockLog)
         {
             string sql = @"INSERT INTO Stock
                           (LogTypeId, LogDate, Comments)
@@ -67,5 +122,12 @@ namespace DataAccessLibrary.DataAccess.StockQueries
                 comments = stockLog.Comments
             }, _connectionStringName);
         }
+
+        public void GetStockLog()
+        {
+
+        }
+
+        #endregion
     }
 }

@@ -5,6 +5,8 @@ using System.Linq;
 
 namespace DataAccessLibrary.DataAccess.SalesQueries
 {
+    // This class saves, loads and updates
+    // Sale data in the database
     public class SalesData
     {
         private SQLiteDataAccess _db = new SQLiteDataAccess();
