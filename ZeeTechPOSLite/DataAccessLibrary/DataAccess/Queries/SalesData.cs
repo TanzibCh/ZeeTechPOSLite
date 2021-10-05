@@ -53,7 +53,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 
         private void SaveSaleDetails(SaleModel saleInfo)
         {
-            // Create Sale and save it in database
+            // Query to save Sale data
             string sql = @"INSERT INTO Sale
                           (InvoiceNo, SaleDate, SaleTime, Card, Cash, Credit, SaleTotal, Tax, TotalCost, Profit, CashOnly)
                           values (@invoiceNo, @saleDate, @saleTime, @card, @cash, @credit, @saleTotal, @tax, @totalCost, @profit, @cashOnly);";

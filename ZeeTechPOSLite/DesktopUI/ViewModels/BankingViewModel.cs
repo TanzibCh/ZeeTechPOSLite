@@ -36,6 +36,9 @@ namespace DesktopUI.ViewModels
 
         #region Totals Properties
 
+        /// <summary>
+        /// 
+        /// </summary>
         private string _total;
 
         public string Total

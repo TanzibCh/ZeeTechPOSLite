@@ -11,5 +11,6 @@ namespace DataAccessLibrary.Models
         public int SupplierId { get; set; }
         public int LocationId { get; set; }
         public string Address { get; set; }
+        public int IsActive { get; set; } // bool
     }
 }

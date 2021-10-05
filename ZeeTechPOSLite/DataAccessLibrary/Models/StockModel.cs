@@ -9,5 +9,7 @@ namespace DataAccessLibrary.Models
         public int ProductId { get; set; }
         public int LocationId { get; set; }
         public int Quantity { get; set; }
+        public string ProductName { get; set; } // Inner join to Product
+        public string LocationName { get; set; } // Inner joun to Location
     }
 }
