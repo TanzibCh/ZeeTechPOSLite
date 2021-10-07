@@ -133,12 +133,7 @@ namespace DataAccessLibrary.DataAccess.StockQueries
                           VALUES (@productId, @logDate, @comments);";
 
             // Insert to stoclog
-            _db.SaveData(sql, new
-            {
-                productId = productId,
-                logDate = logDate,
-                comments = comments
-            }, _connectionStringName);
+            _db.SaveData(sql, new { productId, logDate, comments }, _connectionStringName);
         }
 
         public void GetStockLog()

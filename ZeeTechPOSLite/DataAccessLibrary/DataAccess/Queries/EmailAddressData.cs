@@ -2,6 +2,7 @@
 using DataAccessLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DataAccessLibrary.DataAccess.Queries
@@ -46,33 +47,61 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         public EmailAddressModel GetEmailById(int id)
         {
-            string sql = @"SELECT s.ProductId, s.LocationId, s.Quantity, p.ProductName, l.LocationName
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
                           FROM EmailAddress e
                           INNER JOIN Customer c on e.CustomerId = c.Id
                           INNER JOIN Supplier s on e.SupplierId = s.Id
-                          INNER JOIN Location l on s.LocationId = l.Id;";
+                          INNER JOIN Location l on e.LocationId = l.Id
+                          WHERE e.Id = @id;";
 
-            return _db.LoadData<CustomerModel, dynamic>(sql, new { }, _connectionStringName);
+            return _db.LoadData<EmailAddressModel, dynamic>(sql, new { id }, _connectionStringName).FirstOrDefault();
         }
 
         public List<EmailAddressModel> GetAllEmailAddress()
         {
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
+                          FROM EmailAddress e
+                          INNER JOIN Customer c on e.CustomerId = c.Id
+                          INNER JOIN Supplier s on e.SupplierId = s.Id
+                          INNER JOIN Location l on e.LocationId = l.Id;";
 
+            return _db.LoadData<EmailAddressModel, dynamic>(sql, new {  }, _connectionStringName);
         }
 
-        public List<EmailAddressModel> GetAllCustomerEmailAddress()
+        public List<EmailAddressModel> GetAllCustomerEmailAddress(int customerId)
         {
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
+                          FROM EmailAddress e
+                          INNER JOIN Customer c on e.CustomerId = c.Id
+                          INNER JOIN Supplier s on e.SupplierId = s.Id
+                          INNER JOIN Location l on e.LocationId = l.Id
+                          WHERE e.CustomerId = @customerId;";
 
+            return _db.LoadData<EmailAddressModel, dynamic>(sql, new { customerId }, _connectionStringName);
         }
 
-        public List<EmailAddressModel> GetAllSupplierEmailAddress()
+        public List<EmailAddressModel> GetAllSupplierEmailAddress(int supplierId)
         {
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
+                          FROM EmailAddress e
+                          INNER JOIN Customer c on e.CustomerId = c.Id
+                          INNER JOIN Supplier s on e.SupplierId = s.Id
+                          INNER JOIN Location l on e.LocationId = l.Id
+                          WHERE e.SupplierId = @supplierId;";
 
+            return _db.LoadData<EmailAddressModel, dynamic>(sql, new { supplierId }, _connectionStringName);
         }
 
-        public List<EmailAddressModel> GetAllLocationEmailAddress()
+        public List<EmailAddressModel> GetAllLocationEmailAddress(int locationId)
         {
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
+                          FROM EmailAddress e
+                          INNER JOIN Customer c on e.CustomerId = c.Id
+                          INNER JOIN Supplier s on e.SupplierId = s.Id
+                          INNER JOIN Location l on e.LocationId = l.Id
+                          WHERE e.LocationId = @locationId;";
 
+            return _db.LoadData<EmailAddressModel, dynamic>(sql, new { locationId }, _connectionStringName);
         }
         #endregion
     }
