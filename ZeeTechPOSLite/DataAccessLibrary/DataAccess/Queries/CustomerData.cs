@@ -78,9 +78,28 @@ namespace DataAccessLibrary.DataAccess.Queries
             return _db.LoadData<CustomerModel, dynamic>(sql, new { id }, _connectionStringName).FirstOrDefault();
         }
 
-        public CustomerModel GetCustomerByName()
+        public List<CustomerModel> GetCustomerByFirstName(string firstName)
         {
+            string sql = @"SELECT Id, FirstName, LastName
+                          FROM Customer
+                          WHERE IsActive = 1
+                          AND FirstName like ?";
 
+            firstName = "%" + firstName + "%";
+
+            return _db.LoadData<CustomerModel, dynamic>(sql, new { firstName }, _connectionStringName);
+        }
+
+        public List<CustomerModel> GetCustomerByLastName(string lastName)
+        {
+            string sql = @"SELECT Id, FirstName, LastName
+                          FROM Customer
+                          WHERE IsActive = 1
+                          AND LastName like ?";
+
+            lastName = "%" + lastName + "%";
+
+            return _db.LoadData<CustomerModel, dynamic>(sql, new { lastName }, _connectionStringName);
         }
     }
 }

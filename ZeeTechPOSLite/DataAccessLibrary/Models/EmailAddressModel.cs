@@ -11,5 +11,8 @@ namespace DataAccessLibrary.Models
         public int SupplierId { get; set; }
         public int LocationId { get; set; }
         public string EmailAdderss { get; set; }
+        public string CustomerName { get; set; }
+        public string SupplierName { get; set; }
+        public string LocationName { get; set; }
     }
 }
