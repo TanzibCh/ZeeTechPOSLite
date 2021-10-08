@@ -1,4 +1,5 @@
-﻿using DataAccessLibrary.DataAccess.Internal.SQLiteDataAccess;
+﻿
+using DataAccessLibrary.DataAccess.Internal.SQLiteDataAccess;
 using DataAccessLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -247,10 +248,6 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
             List<SaleModel> sales = _db.LoadData<SaleModel, dynamic>(sql, new { selectedDate }, _connectionStringName);
 
             return sales;
-        }
-
-        public void SaveRefund()
-        {
         }
 
         public SaleModel GetSaleById(int id)

@@ -61,7 +61,7 @@ namespace DesktopUI.Commands.CompleteReturnCommands
                 Amount = _cHelper.ConvertDecimalToInt(_returnCompleteViewModel.Amount)
             };
 
-            _creditData.SaveCredit(credit);
+            _creditData.SaveNewCredit(credit);
 
             // Get list of products for adding to stock from ReturnStore
             List<SaleProductDisplayModel> returnProducts = _returnStore.ReturnProducts.FindAll(p => p.ProductId != -1);

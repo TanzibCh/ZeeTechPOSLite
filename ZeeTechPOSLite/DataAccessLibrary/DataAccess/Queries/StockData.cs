@@ -20,9 +20,8 @@ namespace DataAccessLibrary.DataAccess.StockQueries
         /// entry in the database. eg. newly created product.
         /// </summary>
         /// <param name="locationId">Needs an int parameter for LocationId</param>
-        /// <param name="product">Needs an int parameter for ProductId</param>
+        /// <param name="productId">Needs an int parameter for ProductId</param>
         /// <param name="quantity">Needs an int parameter for Quantity</param>
-        /// <param name="stockLog">Needs a StockLog Model</param>
         public void AddStock(int locationId, int productId,
             int quantity, string comments)
         {
@@ -52,12 +51,7 @@ namespace DataAccessLibrary.DataAccess.StockQueries
                           AND LocationId = @locationId";
 
             // Save the data
-            _db.SaveData(sql, new
-            {
-                productId = productId,
-                locationId = locationId,
-                quantity = quantity
-            }, _connectionStringName);
+            _db.SaveData(sql, new { productId, locationId, quantity }, _connectionStringName);
 
             // Add stock log
             AddStockLog(productId, DateTime.UtcNow.Date.ToString(), comments);

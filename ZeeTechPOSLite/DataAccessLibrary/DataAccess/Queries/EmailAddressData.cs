@@ -47,7 +47,8 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         public EmailAddressModel GetEmailById(int id)
         {
-            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, 
+                          e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
                           FROM EmailAddress e
                           INNER JOIN Customer c on e.CustomerId = c.Id
                           INNER JOIN Supplier s on e.SupplierId = s.Id
@@ -59,7 +60,8 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         public List<EmailAddressModel> GetAllEmailAddress()
         {
-            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, 
+                          e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
                           FROM EmailAddress e
                           INNER JOIN Customer c on e.CustomerId = c.Id
                           INNER JOIN Supplier s on e.SupplierId = s.Id
@@ -70,7 +72,8 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         public List<EmailAddressModel> GetAllCustomerEmailAddress(int customerId)
         {
-            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, 
+                          e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
                           FROM EmailAddress e
                           INNER JOIN Customer c on e.CustomerId = c.Id
                           INNER JOIN Supplier s on e.SupplierId = s.Id
@@ -82,7 +85,8 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         public List<EmailAddressModel> GetAllSupplierEmailAddress(int supplierId)
         {
-            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId,
+                          e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
                           FROM EmailAddress e
                           INNER JOIN Customer c on e.CustomerId = c.Id
                           INNER JOIN Supplier s on e.SupplierId = s.Id
@@ -94,7 +98,8 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         public List<EmailAddressModel> GetAllLocationEmailAddress(int locationId)
         {
-            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
+            string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, 
+                          e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
                           FROM EmailAddress e
                           INNER JOIN Customer c on e.CustomerId = c.Id
                           INNER JOIN Supplier s on e.SupplierId = s.Id

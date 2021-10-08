@@ -8,5 +8,6 @@ namespace DataAccessLibrary.Models
     {
         public int Id { get; set; }
         public string LocationName { get; set; }
+        public int IsActive { get; set; }
     }
 }
