@@ -10,6 +10,10 @@ namespace DataAccessLibrary.Models
         public int CustomerId { get; set; }
         public int SupplierId { get; set; }
         public int LocationId { get; set; }
-        public string PhoneNumber { get; set; }
+        public string Number { get; set; }
+        public int IsActive { get; set; }
+        public string CustomerName { get; set; }
+        public string SupplierName { get; set; }
+        public string LocationName { get; set; }
     }
 }

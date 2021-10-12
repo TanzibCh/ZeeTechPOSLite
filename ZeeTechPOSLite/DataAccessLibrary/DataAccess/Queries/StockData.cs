@@ -11,7 +11,7 @@ namespace DataAccessLibrary.DataAccess.StockQueries
     public class StockData
     {
         private const string _connectionStringName = "SQLiteDB";
-        private readonly SQLiteDataAccess _db = new SQLiteDataAccess();
+        private readonly Internal.SQLiteDataAccess.SQLiteDataAccess _db = new Internal.SQLiteDataAccess.SQLiteDataAccess();
 
         #region Save Stock
 

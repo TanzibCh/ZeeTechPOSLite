@@ -9,7 +9,7 @@ namespace DataAccessLibrary.DataAccess.Queries
 {
     public class CustomerData
     {
-        private SQLiteDataAccess _db = new SQLiteDataAccess();
+        private Internal.SQLiteDataAccess.SQLiteDataAccess _db = new Internal.SQLiteDataAccess.SQLiteDataAccess();
         private const string _connectionStringName = "SQLiteDB";
 
         public void SaveNewCustomer(CustomerModel customer)

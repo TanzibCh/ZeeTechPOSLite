@@ -12,7 +12,7 @@ namespace DataAccessLibrary.DataAccess.Queries
     public class EmailAddressData
     {
         private const string _connectionStringName = "SQLiteDB";
-        private readonly SQLiteDataAccess _db = new SQLiteDataAccess();
+        private readonly Internal.SQLiteDataAccess.SQLiteDataAccess _db = new Internal.SQLiteDataAccess.SQLiteDataAccess();
 
         #region Save EmailAddress
 
@@ -70,7 +70,7 @@ namespace DataAccessLibrary.DataAccess.Queries
             return _db.LoadData<EmailAddressModel, dynamic>(sql, new {  }, _connectionStringName);
         }
 
-        public List<EmailAddressModel> GetAllCustomerEmailAddress(int customerId)
+        public List<EmailAddressModel> GetEmailAddressByCustomerId(int customerId)
         {
             string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, 
                           e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
@@ -83,7 +83,7 @@ namespace DataAccessLibrary.DataAccess.Queries
             return _db.LoadData<EmailAddressModel, dynamic>(sql, new { customerId }, _connectionStringName);
         }
 
-        public List<EmailAddressModel> GetAllSupplierEmailAddress(int supplierId)
+        public List<EmailAddressModel> GetEmailAddressBySupplierId(int supplierId)
         {
             string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId,
                           e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName
@@ -96,7 +96,7 @@ namespace DataAccessLibrary.DataAccess.Queries
             return _db.LoadData<EmailAddressModel, dynamic>(sql, new { supplierId }, _connectionStringName);
         }
 
-        public List<EmailAddressModel> GetAllLocationEmailAddress(int locationId)
+        public List<EmailAddressModel> GetEmailAddressByLocationId(int locationId)
         {
             string sql = @"SELECT e.Id, e.CustomerId, e.SupplierId, e.LocationId, 
                           e.EmailAddress, c.CustomerName, s.SupplierName, l.LocationName

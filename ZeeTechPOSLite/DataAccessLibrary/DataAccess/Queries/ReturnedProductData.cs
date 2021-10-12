@@ -9,7 +9,7 @@ namespace DataAccessLibrary.DataAccess.ProductQueries
     public class ReturnedProductData
     {
         private const string _connectionStringName = "SQLiteDB";
-        private SQLiteDataAccess _db = new SQLiteDataAccess();
+        private Internal.SQLiteDataAccess.SQLiteDataAccess _db = new Internal.SQLiteDataAccess.SQLiteDataAccess();
 
         public void SaveReturnedProduct(ReturnedProductModel returnedProductModel)
         {

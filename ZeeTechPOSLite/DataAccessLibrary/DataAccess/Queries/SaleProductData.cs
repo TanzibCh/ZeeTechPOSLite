@@ -8,7 +8,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
 {
     public class SaleProductData
     {
-        private readonly SQLiteDataAccess _db = new SQLiteDataAccess();
+        private readonly Internal.SQLiteDataAccess.SQLiteDataAccess _db = new Internal.SQLiteDataAccess.SQLiteDataAccess();
         private const string _connectionStringName = "SQLiteDB";
 
         public List<SaleProductModel> GetSaleProductBySaleId(int saleId)

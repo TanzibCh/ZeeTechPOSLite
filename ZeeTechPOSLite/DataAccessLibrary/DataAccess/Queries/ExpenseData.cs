@@ -8,7 +8,7 @@ namespace DataAccessLibrary.DataAccess.ExpenseQueries
 {
     public class ExpenseData
     {
-        private SQLiteDataAccess _db = new SQLiteDataAccess();
+        private Internal.SQLiteDataAccess.SQLiteDataAccess _db = new Internal.SQLiteDataAccess.SQLiteDataAccess();
         private const string _connectionStringName = "SQLiteDB";
 
         public void SaveExpense(ExpenseModel expense)

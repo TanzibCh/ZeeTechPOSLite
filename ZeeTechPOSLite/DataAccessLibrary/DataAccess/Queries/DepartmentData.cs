@@ -8,7 +8,7 @@ namespace DataAccessLibrary.DataAccess.Queries
 {
     public class DepartmentData
     {
-        private SQLiteDataAccess _db = new SQLiteDataAccess();
+        private Internal.SQLiteDataAccess.SQLiteDataAccess _db = new Internal.SQLiteDataAccess.SQLiteDataAccess();
         private const string _connectionStringName = "SQLiteDB";
 
         #region Save Department

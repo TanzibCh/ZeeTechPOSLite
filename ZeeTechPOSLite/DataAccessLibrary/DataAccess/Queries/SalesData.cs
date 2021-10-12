@@ -10,7 +10,7 @@ namespace DataAccessLibrary.DataAccess.SalesQueries
     // Sale data in the database
     public class SalesData
     {
-        private SQLiteDataAccess _db = new SQLiteDataAccess();
+        private Internal.SQLiteDataAccess.SQLiteDataAccess _db = new Internal.SQLiteDataAccess.SQLiteDataAccess();
         private const string _connectionStringName = "SQLiteDB";
 
         #region Save Sale
