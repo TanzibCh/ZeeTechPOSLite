@@ -60,5 +60,47 @@ namespace DataAccessLibrary.DataAccess.Queries
             }, _connectionStringName);
         }
         #endregion
+
+        #region Get Product
+
+
+        public List<ProductModel> GetAllActiveProducts()
+        {
+            string sql = @"SELECT Id, ProductName, ProductDescription, Barcode,
+                          AverageCost, Price, Department, IsActive
+                          FROM Product
+                          WHERE IsActive = 1";
+
+            return _db.LoadData<ProductModel, dynamic>(sql, new { }, _connectionStringName);
+        }
+
+        public List<ProductModel> GetAllInActiveProducts()
+        {
+            string sql = @"SELECT Id, ProductName, ProductDescription, Barcode,
+                          AverageCost, Price, Department, IsActive
+                          FROM Product
+                          WHERE IsActive = 0";
+
+            return _db.LoadData<ProductModel, dynamic>(sql, new { }, _connectionStringName);
+        }
+
+        /// <summary>
+        /// Method for the Sales page product search. It shows the top 10 selling products.
+        /// </summary>
+        /// <returns></returns>
+        public List<ProductModel> GetTopTenSellingProducts()
+        {
+            string sql = @"SELECT  p.Id, p.ProductName, p.ProductDescription, p.Barcode,
+                          p.AverageCost, p.Price, p.Department, p.IsActive, sum(sp.QuantitySold)
+                          FROM Product p
+                          INNER JOIN SaleProduct sp on p.Id = sp.ProductId
+                          GROUP BY p.Id
+                          ORDER By
+                          sum(sp.QuantitySold) DESC
+                          LIMIT 10;";
+
+            return _db.LoadData<ProductModel, dynamic>(sql, new { }, _connectionStringName);
+        }
+        #endregion
     }
 }

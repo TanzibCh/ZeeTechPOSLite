@@ -93,7 +93,7 @@ namespace DataAccessLibrary.DataAccess.AddressQueries
         /// </summary>
         /// <param name="customerId">Id of the Customer</param>
         /// <returns></returns>
-        public List<AddressModel> GetAddressByCustomer(int customerId)
+        public List<AddressModel> GetAddressByCustomerId(int customerId)
         {
             string sql = @"SELECT Id, CustomerId, SupplierId, LocationId, Address
                           FROM Address
@@ -108,7 +108,7 @@ namespace DataAccessLibrary.DataAccess.AddressQueries
         /// </summary>
         /// <param name="supplierId">Id of the Supplier</param>
         /// <returns></returns>
-        public List<AddressModel> GetAddressBySupplier(int supplierId)
+        public List<AddressModel> GetAddressBySupplierId(int supplierId)
         {
             string sql = @"SELECT Id, CustomerId, SupplierId, LocationId, Address
                           FROM Address
@@ -123,7 +123,7 @@ namespace DataAccessLibrary.DataAccess.AddressQueries
         /// </summary>
         /// <param name="locationId">Id of the Location</param>
         /// <returns></returns>
-        public List<AddressModel> GetAddressByLocation(int locationId)
+        public List<AddressModel> GetAddressByLocationId(int locationId)
         {
             string sql = @"SELECT Id, CustomerId, SupplierId, LocationId, Address
                           FROM Address
