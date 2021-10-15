@@ -63,7 +63,7 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         #region Get Product
 
-
+        // Query to get all the active products
         public List<ProductModel> GetAllActiveProducts()
         {
             string sql = @"SELECT Id, ProductName, ProductDescription, Barcode,
@@ -74,6 +74,7 @@ namespace DataAccessLibrary.DataAccess.Queries
             return _db.LoadData<ProductModel, dynamic>(sql, new { }, _connectionStringName);
         }
 
+        // Query to get all the inactive products
         public List<ProductModel> GetAllInActiveProducts()
         {
             string sql = @"SELECT Id, ProductName, ProductDescription, Barcode,
