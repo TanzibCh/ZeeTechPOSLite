@@ -39,15 +39,15 @@ namespace DataAccessLibrary.DataAccess.Queries
         {
             string sql = @"UPDATE Product
                            SET ProductName = @productName,
-                           ProductDescription = @productDescription
-                           Barcode = @barcode
-                           AverageCost = @averageCost
-                           Price = @price
-                           Department = @department
+                           ProductDescription = @productDescription,
+                           Barcode = @barcode,
+                           AverageCost = @averageCost,
+                           Price = @price,
+                           Department = @department,
                            IsActive = @isActive
                            WHERE Id = @id;";
 
-            _db.SaveData(sql, new 
+            _db.SaveData(sql, new
             {
                 productName = product.ProductName,
                 productDescription = product.ProductDescription,
@@ -89,19 +89,59 @@ namespace DataAccessLibrary.DataAccess.Queries
         /// Method for the Sales page product search. It shows the top 10 selling products.
         /// </summary>
         /// <returns></returns>
-        public List<ProductModel> GetTopTenSellingProducts()
+        public List<ProductSearchModel> GetTopTenSellingProducts()
         {
             string sql = @"SELECT  p.Id, p.ProductName, p.ProductDescription, p.Barcode,
-                          p.AverageCost, p.Price, p.Department, p.IsActive, sum(sp.QuantitySold)
+                          p.AverageCost, p.Price, p.Department, p.IsActive, sum(sp.QuantitySold) AS TotalSold
                           FROM Product p
                           INNER JOIN SaleProduct sp on p.Id = sp.ProductId
                           GROUP BY p.Id
                           ORDER By
-                          sum(sp.QuantitySold) DESC
+                          TotalSold DESC
                           LIMIT 10;";
 
-            return _db.LoadData<ProductModel, dynamic>(sql, new { }, _connectionStringName);
+            return _db.LoadData<ProductSearchModel, dynamic>(sql, new { }, _connectionStringName);
         }
-        #endregion
+
+        public List<ProductSearchModel> SearchProductByName(int locationId, string productName)
+        {
+            string sql = @"SELECT p.Id, p.ProductName, p.ProductDescription, p.Barcode,
+                          p.AverageCost, p.Price, p.Department, p.IsActive, s.Quantity,
+                          (
+	                          SELECT  sum(Quantity)
+	                          FROM Stock
+	                          WHERE Stock.ProductId = p.Id
+	                          GROUP BY ProductId
+                          )
+                          TotalQuantity
+                          FROM Product p
+                          INNER JOIN Stock s on p.Id = s.ProductId
+                          WHERE s.LocationId = @locationId
+                          AND ProductName like @productName;";
+
+            productName = $"% {productName} %";
+
+            return _db.LoadData<ProductSearchModel, dynamic>(sql, new { locationId, productName }, _connectionStringName);
+        }
+
+        public List<ProductSearchModel> SearchProductByBarcode(int locationId, string barcode)
+        {
+            string sql = @"SELECT p.Id, p.ProductName, p.ProductDescription, p.Barcode,
+                          p.AverageCost, p.Price, p.Department, p.IsActive, s.Quantity,
+                          (
+	                          SELECT  sum(Quantity)
+	                          FROM Stock
+	                          WHERE Stock.ProductId = p.Id
+	                          GROUP BY ProductId
+                          )
+                          TotalQuantity
+                          FROM Product p
+                          INNER JOIN Stock s on p.Id = s.ProductId
+                          WHERE s.LocationId = @locationId
+                          AND ProductName = @barcode;";
+
+            return _db.LoadData<ProductSearchModel, dynamic>(sql, new { locationId, barcode }, _connectionStringName);
+            #endregion
+        }
     }
 }

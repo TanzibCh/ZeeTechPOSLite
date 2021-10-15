@@ -12,5 +12,6 @@ namespace DataAccessLibrary.Models
         public int Amount { get; set; }
         public int Card { get; set; }
         public int Cash { get; set; }
+        public int IsActive { get; set; } // bool
     }
 }

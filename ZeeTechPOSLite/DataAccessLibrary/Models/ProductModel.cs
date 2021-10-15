@@ -14,6 +14,5 @@ namespace DataAccessLibrary.Models
         public int Price { get; set; }
         public string Department { get; set; }
         public int IsActive { get; set; } // bool
-        public int SumOfSoldQuantity { get; set; } // Total quantity sold vallue. Used for Search filtering
     }
 }
