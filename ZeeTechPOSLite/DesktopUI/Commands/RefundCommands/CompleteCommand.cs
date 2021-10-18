@@ -13,7 +13,7 @@ namespace DesktopUI.Commands.RefundCommands
     {
         private readonly CurrencyHelper _currencyHelper = new CurrencyHelper();
         private readonly INavigationService _navigationService;
-        private readonly ReturnStore _returnStore;
+        private  ReturnStore _returnStore;
         private readonly RefundViewModel _refundViewModel;
 
         public CompleteCommand(INavigationService navigationService,
@@ -28,22 +28,43 @@ namespace DesktopUI.Commands.RefundCommands
         {
             _returnStore.SaleId = _refundViewModel.SaleId;
             _returnStore.Amount = _refundViewModel.RefundTotal;
-            foreach (SaleProductDisplayModel product in _refundViewModel.ReturnProducts)
+
+            if (_refundViewModel.ReturnProducts != null)
             {
-                _returnStore.ReturnProducts.Add(new SaleProductDisplayModel
+                foreach (SaleProductDisplayModel product in _refundViewModel.ReturnProducts)
                 {
-                    Id = product.Id,
-                    SaleId = product.SaleId,
-                    ProductId = product.ProductId,
-                    ProductName = product.ProductName,
-                    ProductDescription = product.ProductDescription,
-                    ProductCost = product.ProductCost,
-                    SalePrice = product.SalePrice,
-                    QuantitySold = product.QuantitySold,
-                    Total = product.Total,
-                    Department = product.Department
-                });
+                    SaleProductDisplayModel returenProduct = new SaleProductDisplayModel
+                    {
+                        Id = product.Id,
+                        SaleId = product.SaleId,
+                        ProductId = product.ProductId,
+                        ProductName = product.ProductName,
+                        ProductDescription = product.ProductDescription,
+                        ProductCost = product.ProductCost,
+                        SalePrice = product.SalePrice,
+                        QuantitySold = product.QuantitySold,
+                        Total = product.Total,
+                        Department = product.Department
+                    };
+
+                    _returnStore.ReturnProducts.Add(returenProduct);
+
+                    //_returnStore.ReturnProducts.Add(new SaleProductDisplayModel
+                    //{
+                    //    Id = product.Id,
+                    //    SaleId = product.SaleId,
+                    //    ProductId = product.ProductId,
+                    //    ProductName = product.ProductName,
+                    //    ProductDescription = product.ProductDescription,
+                    //    ProductCost = product.ProductCost,
+                    //    SalePrice = product.SalePrice,
+                    //    QuantitySold = product.QuantitySold,
+                    //    Total = product.Total,
+                    //    Department = product.Department
+                    //});
+                }
             }
+            
 
             _navigationService.Navigate();
         }
