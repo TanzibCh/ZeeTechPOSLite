@@ -41,22 +41,29 @@ namespace DesktopUI
             services.AddSingleton<INavigationService>(s => CreateManualSaleNavigationService(_serviceProvider));
 
             // register ViewModels
-            services.AddTransient<ManualSaleViewModel>(s => new ManualSaleViewModel(CreateEditProductNavigationService(s),
+            services.AddTransient<ManualSaleViewModel>(s => new ManualSaleViewModel(
+                CreateEditProductNavigationService(s),
                 s.GetRequiredService<ProductStore>()));
 
-            services.AddTransient<BankingViewModel>(s => new BankingViewModel(CreateEditSaleNavigationService(s),
+            services.AddTransient<BankingViewModel>(s => new BankingViewModel(
+                CreateEditSaleNavigationService(s),
                 CreateRefundNavigationService(s),
                 s.GetRequiredService<SaleStore>()));
 
-            services.AddTransient<RefundViewModel>(s => new RefundViewModel(CreateCloseModalNavigationService(s),
+            services.AddTransient<RefundViewModel>(s => new RefundViewModel(
+                CreateCloseModalNavigationService(s),
                 CreateReturnCompleteNavigationService(s),
                 s.GetRequiredService<SaleStore>(),
                 s.GetRequiredService<ReturnStore>()));
 
-            services.AddTransient<ReturnCompleteViewModel>(s => new ReturnCompleteViewModel(s.GetRequiredService<ReturnStore>(),
-                CreateCloseModalNavigationService(s)));
+            services.AddTransient<ReturnCompleteViewModel>(s => new ReturnCompleteViewModel(
+                s.GetRequiredService<ReturnStore>(),
+                CreateCloseModalNavigationService(s),
+                s.GetRequiredService<LocationStore>(),
+                CreateCloseAllModalNavigationService(s));
 
-            services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(CreateCloseModalNavigationService(s),
+            services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(
+                CreateCloseModalNavigationService(s),
                 CreateRefundNavigationService(s),
                 s.GetRequiredService<SaleStore>()));
 
@@ -162,8 +169,11 @@ namespace DesktopUI
         {
             return new ModalNavigationService<ReturnCompleteViewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),
-                () => new ReturnCompleteViewModel(serviceProvider.GetRequiredService<ReturnStore>(),
-                CreateCloseModalNavigationService(serviceProvider)));
+                () => new ReturnCompleteViewModel(
+                    serviceProvider.GetRequiredService<ReturnStore>(),
+                    CreateCloseModalNavigationService(serviceProvider),
+                    serviceProvider.GetRequiredService<LocationStore>(),
+                    CreateCloseAllModalNavigationService(serviceProvider)));
         }
 
         // Close Modal Navigation Service
@@ -172,6 +182,14 @@ namespace DesktopUI
             ModalNavigationStore modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
 
             return new CloseModalNavigationService(modalNavigationStore);
+        }
+
+        // Close All Modal Navigation Service
+        private INavigationService CreateCloseAllModalNavigationService(IServiceProvider serviceProvider)
+        {
+            ModalNavigationStore modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
+
+            return new CloseAllModalNavigationService(modalNavigationStore);
         }
 
         // Select the item in a ListBox when clicked on any controles within that item.

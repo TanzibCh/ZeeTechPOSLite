@@ -14,6 +14,7 @@ namespace DesktopUI.ViewModels
         #region Private properties
 
         private readonly ReturnStore _returnStore;
+        private readonly LocationStore _locationStore;
 
         #endregion Private properties
 
@@ -157,9 +158,12 @@ namespace DesktopUI.ViewModels
         #region Constructor
 
         public ReturnCompleteViewModel(ReturnStore returnStore,
-            INavigationService closeModalNavigationService)
+            INavigationService closeModalNavigationService,
+            LocationStore locationStore,
+            CloseAllModalNavigationService closeAllNavigationService)
         {
             _returnStore = returnStore;
+            _locationStore = locationStore;
 
             // Set Credit as the default option
             CreditIsExpanded = true;
@@ -172,7 +176,8 @@ namespace DesktopUI.ViewModels
 
             // Commads
             CloseCommand = new CloseModalCommand(closeModalNavigationService);
-            CompleteCommand = new CompleteReturnCommand(this, returnStore);
+            CompleteCommand = new CompleteReturnCommand(this, returnStore,
+                locationStore, closeAllNavigationService);
         }
 
         #endregion Constructor

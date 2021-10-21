@@ -50,6 +50,20 @@ namespace DesktopUI.Stores
             OnCurrentViewModelChanged();
         }
 
+        public void Clear()
+        {
+            if (_viewModelHistory.Count == 0)
+            {
+                return;
+            }
+
+            //ViewModelBase previousViewModel = _viewModelHistory.Pop();
+            //previousViewModel.Dispose();
+
+            _viewModelHistory.Clear();
+
+            OnCurrentViewModelChanged();
+        }
         public void Close()
         {
             while (_viewModelHistory.Count > 0)

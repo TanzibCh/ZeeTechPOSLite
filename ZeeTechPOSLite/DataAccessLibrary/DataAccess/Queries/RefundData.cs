@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DataAccessLibrary.DataAccess.RefundQueries
+namespace DataAccessLibrary.DataAccess.Queries
 {
     public class RefundData
     {
@@ -56,6 +56,16 @@ namespace DataAccessLibrary.DataAccess.RefundQueries
         #endregion
 
         #region Get Refund
+
+        public RefundModel GetLatestRefund()
+        {
+            string sql = @"SELECT Id, SaleId, Comments, Amount, Card, cash
+                          FROM Refund
+                          ORDER BY Id DESC
+                          LIMIT 1;";
+
+            return _db.LoadData<RefundModel, dynamic>(sql, new { }, _connectionStringName).FirstOrDefault();
+        }
 
         public List<RefundModel> GetAllRefund()
         {

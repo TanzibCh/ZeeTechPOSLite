@@ -3,7 +3,7 @@ using DataAccessLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataAccessLibrary.DataAccess.CreditQueries
+namespace DataAccessLibrary.DataAccess.Queries
 {
     public class CreditData
     {
@@ -62,6 +62,16 @@ namespace DataAccessLibrary.DataAccess.CreditQueries
         #endregion Save Credit
 
         #region Get Credit
+
+        public CreditModel GetLatestCredit()
+        {
+            string sql = @"SELECT Id, SaleId, Commants, ValidTill, Amount, IsClaimed
+                          FROM Credit
+                          ORDER BY Id DESC
+                          LIMIT 1;";
+
+            return _db.LoadData<CreditModel, dynamic>(sql, new { }, _connectionStringName).FirstOrDefault();
+        }
 
         public List<CreditModel> GetAllCredits()
         {

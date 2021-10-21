@@ -2,9 +2,10 @@
 using DataAccessLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace DataAccessLibrary.DataAccess.StockQueries
+namespace DataAccessLibrary.DataAccess.Queries
 {
     // This class saves, loads and updates
     // Stock data and StockLog data in the database
@@ -22,7 +23,7 @@ namespace DataAccessLibrary.DataAccess.StockQueries
         /// <param name="locationId">Needs an int parameter for LocationId</param>
         /// <param name="productId">Needs an int parameter for ProductId</param>
         /// <param name="quantity">Needs an int parameter for Quantity</param>
-        public void AddStock(int locationId, int productId,
+        public void AddNewItemToStock(int locationId, int productId,
             int quantity, string comments)
         {
             string sql = @"INSERT INTO Stock
@@ -41,20 +42,69 @@ namespace DataAccessLibrary.DataAccess.StockQueries
             AddStockLog(productId, DateTime.UtcNow.Date.ToString(), comments);
         }
 
-        // Adjust the stock level of a product
-        // that already has a stock entry in the database
-        public void AdjustStock(int locationId, int productId, int quantity, string comments)
+        /// <summary>
+        /// Add stock for a product that has a stock entry already in the database
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <param name="productId"></param>
+        /// <param name="quantity"></param>
+        /// <param name="comments">string variable to save on StockLog</param>
+        public void AddStock(int locationId, int productId, int quantity, string comments)
         {
             string sql = @"UPDATE Stock
                           SET Quantity = @quantity
                           WHERE ProductId = @productId
                           AND LocationId = @locationId";
 
-            // Save the data
-            _db.SaveData(sql, new { productId, locationId, quantity }, _connectionStringName);
+            var stock = GetStockByProductAndLocation(productId,locationId).FirstOrDefault();
 
-            // Add stock log
-            AddStockLog(productId, DateTime.UtcNow.Date.ToString(), comments);
+            try
+            {
+                quantity = stock.Quantity + quantity;
+                // Save the data
+                _db.SaveData(sql, new { productId, locationId, quantity }, _connectionStringName);
+
+                // Add stock log
+                AddStockLog(productId, DateTime.UtcNow.Date.ToString(), comments);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Remove stock for a product that has a stock entry already in the database
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <param name="productId"></param>
+        /// <param name="quantity"></param>
+        /// <param name="comments">string variable to save on StockLog</param>
+        public void RemoveStock(int locationId, int productId, int quantity, string comments)
+        {
+            string sql = @"UPDATE Stock
+                          SET Quantity = @quantity
+                          WHERE ProductId = @productId
+                          AND LocationId = @locationId";
+
+            var stock = GetStockByProductAndLocation(productId, locationId).FirstOrDefault();
+
+            try
+            {
+                quantity = stock.Quantity - quantity;
+
+                // Save the data
+                _db.SaveData(sql, new { productId, locationId, quantity }, _connectionStringName);
+
+                // Add stock log
+                AddStockLog(productId, DateTime.UtcNow.Date.ToString(), comments);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         #endregion
 
