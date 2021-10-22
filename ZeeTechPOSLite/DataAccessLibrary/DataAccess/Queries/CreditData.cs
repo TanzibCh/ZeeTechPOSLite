@@ -17,7 +17,7 @@ namespace DataAccessLibrary.DataAccess.Queries
         {
             string sql = @"INSERT INTO Credit
                           (SaleId,  Comments, Amount, ValidTill)
-                          VALUES (@saleId, @commants, @amount, @validTill);";
+                          VALUES (@saleId, @comments, @amount, @validTill);";
 
             // Insert Credit data into the database
             _db.SaveData(sql, new
@@ -65,7 +65,7 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         public CreditModel GetLatestCredit()
         {
-            string sql = @"SELECT Id, SaleId, Commants, ValidTill, Amount, IsClaimed
+            string sql = @"SELECT Id, SaleId, Comments, ValidTill, Amount, IsClaimed
                           FROM Credit
                           ORDER BY Id DESC
                           LIMIT 1;";
@@ -75,7 +75,7 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         public List<CreditModel> GetAllCredits()
         {
-            string sql = @"SELECT Id, SaleId, Commants, ValidTill, Amount, IsClaimed
+            string sql = @"SELECT Id, SaleId, Comments, ValidTill, Amount, IsClaimed
                           FROM Credit;";
 
             return _db.LoadData<CreditModel, dynamic>(sql, new { }, _connectionStringName);
@@ -83,7 +83,7 @@ namespace DataAccessLibrary.DataAccess.Queries
 
         public CreditModel GetCreditById(int id)
         {
-            string sql = @"SELECT Id, SaleId, Commants, ValidTill, Amount, IsClaimed
+            string sql = @"SELECT Id, SaleId, Comments, ValidTill, Amount, IsClaimed
                           FROM Credit
                           WHERE Id = @id;";
 
@@ -98,7 +98,7 @@ namespace DataAccessLibrary.DataAccess.Queries
         /// <returns></returns>
         public List<CreditModel> GetCreditsByClaimedStatus(int claimedStatus)
         {
-            string sql = @"SELECT Id, SaleId, Commants, ValidTill, Amount, IsClaimed
+            string sql = @"SELECT Id, SaleId, Comments, ValidTill, Amount, IsClaimed
                           FROM Credit
                           WHERE IsClaimed = @claimedStatus;";
 

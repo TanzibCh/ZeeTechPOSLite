@@ -21,7 +21,6 @@ namespace DesktopUI.Services
         public void Navigate()
         {
             _navigationStore.CurrentViewModel = _createViewModel();
-
         }
     }
 }

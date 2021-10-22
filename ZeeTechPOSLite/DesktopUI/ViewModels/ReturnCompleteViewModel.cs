@@ -160,7 +160,7 @@ namespace DesktopUI.ViewModels
         public ReturnCompleteViewModel(ReturnStore returnStore,
             INavigationService closeModalNavigationService,
             LocationStore locationStore,
-            CloseAllModalNavigationService closeAllNavigationService)
+            INavigationService closeAllNavigationService)
         {
             _returnStore = returnStore;
             _locationStore = locationStore;

@@ -20,11 +20,11 @@ namespace DesktopUI.Commands.CompleteReturnCommands
         private readonly ReturnCompleteViewModel _returnCompleteViewModel;
         private readonly ReturnStore _returnStore;
         private readonly LocationStore _locationStore;
-        private readonly CloseAllModalNavigationService _navigationService;
+        private readonly INavigationService _navigationService;
 
         // Constructor
         public CompleteReturnCommand(ReturnCompleteViewModel returnCompleteViewModel,
-            ReturnStore returnStore, LocationStore locationStore, CloseAllModalNavigationService navigationService)
+            ReturnStore returnStore, LocationStore locationStore, INavigationService navigationService)
         {
             _returnCompleteViewModel = returnCompleteViewModel;
             _returnStore = returnStore;

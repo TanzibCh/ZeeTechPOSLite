@@ -33,11 +33,11 @@ namespace DesktopUI
             services.AddSingleton<SaleStore>();
             services.AddSingleton<ProductStore>();
             services.AddSingleton<ReturnStore>();
+            services.AddSingleton<LocationStore>();
             services.AddSingleton<ModalNavigationStore>();
 
             // Main window
             services.AddSingleton<MainViewModel>();
-
             services.AddSingleton<INavigationService>(s => CreateManualSaleNavigationService(_serviceProvider));
 
             // register ViewModels
@@ -60,7 +60,7 @@ namespace DesktopUI
                 s.GetRequiredService<ReturnStore>(),
                 CreateCloseModalNavigationService(s),
                 s.GetRequiredService<LocationStore>(),
-                CreateCloseAllModalNavigationService(s));
+                CreateCloseAllModalNavigationService(s)));
 
             services.AddTransient<EditSaleViewModel>(s => new EditSaleViewModel(
                 CreateCloseModalNavigationService(s),

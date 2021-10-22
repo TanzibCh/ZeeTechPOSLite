@@ -57,9 +57,6 @@ namespace DesktopUI.Stores
                 return;
             }
 
-            //ViewModelBase previousViewModel = _viewModelHistory.Pop();
-            //previousViewModel.Dispose();
-
             _viewModelHistory.Clear();
 
             OnCurrentViewModelChanged();
