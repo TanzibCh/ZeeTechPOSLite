@@ -28,11 +28,22 @@
         <Setter Property="Margin" Value="-5 0 0 -5" />
     </Style>
 
-    <!--Headerb White Lable-->
+    <!--Header White Lable-->
     <Style TargetType="Label" x:Key="HeaderWhiteLabel"
                BasedOn="{StaticResource LabelBase}">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="25" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 5" />
+    </Style>
+    
+    <!--Header White Large Lable-->
+    <Style TargetType="Label" x:Key="HeaderWhiteLargeLabel"
+               BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="32" />
         <Setter Property="FontWeight" Value="DemiBold" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -113,6 +124,12 @@
         
     </Style>
 
+    <!--Navigation Radio Button-->
+    <Style TargetType="RadioButton" x:Key="NavigationButton"
+           BasedOn="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}">
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
     <!--#region ListBox -->
     
     <!--ListBox Selection trigger-->
@@ -132,5 +149,11 @@
 
     <!--#endregion-->
     
+    <!--#endregion-->
+
+    <!--#region Card -->
+    <Style TargetType="materialDesign:Card">
+        <Setter Property="UniformCornerRadius" Value="10" />
+    </Style>
     <!--#endregion-->
 </ResourceDictionary>

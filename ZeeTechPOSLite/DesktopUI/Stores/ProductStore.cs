@@ -45,6 +45,5 @@ namespace DesktopUI.Stores
 
         public event Action EditedCartItemChanged;
         public event Action EditedSaleProductChanged;
-        public event Action CartChanged;
     }
 }

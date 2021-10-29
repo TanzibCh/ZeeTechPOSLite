@@ -38,9 +38,11 @@ namespace DesktopUI
 
             // Main window
             services.AddSingleton<MainViewModel>();
-            services.AddSingleton<INavigationService>(s => CreateManualSaleNavigationService(_serviceProvider));
+            services.AddSingleton<INavigationService>(s => CreateDashboardNavigationService(_serviceProvider));
 
             // register ViewModels
+            services.AddTransient<DashboardViewModel>();
+
             services.AddTransient<ManualSaleViewModel>(s => new ManualSaleViewModel(
                 CreateEditProductNavigationService(s),
                 s.GetRequiredService<ProductStore>()));
@@ -81,7 +83,7 @@ namespace DesktopUI
             Thread.CurrentThread.CurrentCulture = ci;
         }
 
-        // Startup Ovverride
+        // Startup Override
         protected override void OnStartup(StartupEventArgs e)
         {
             INavigationService initialNavigationService = _serviceProvider.GetRequiredService<INavigationService>();
@@ -98,12 +100,22 @@ namespace DesktopUI
             base.OnStartup(e);
         }
 
+        // Dashboard Navigation Service
+        private INavigationService CreateDashboardNavigationService(IServiceProvider serviceProvider)
+        {
+            return new LayoutNavigationService<DashboardViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                () => CreateNavigationBarViewModel(serviceProvider),
+                () => serviceProvider.GetRequiredService<DashboardViewModel>());
+        }
+
         // Navigation Bar View Model
         private NavigationBarViewModel CreateNavigationBarViewModel(IServiceProvider serviceProvider)
         {
             return new NavigationBarViewModel(
                 CreateManualSaleNavigationService(serviceProvider),
-                CreateBankingNavigationService(serviceProvider));
+                CreateBankingNavigationService(serviceProvider),
+                CreateDashboardNavigationService(serviceProvider));
         }
 
         // Manual Sale Navigation Service
