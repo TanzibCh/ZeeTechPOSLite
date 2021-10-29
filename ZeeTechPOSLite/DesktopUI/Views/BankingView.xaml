@@ -91,6 +91,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="60" />
                     </Grid.RowDefinitions>
+                    
                     <ListBox Grid.Row="0"
                              Margin="10"
                              HorizontalContentAlignment="Stretch"
@@ -98,6 +99,7 @@
                              MinHeight="810"
                              ItemsSource="{Binding Sales}"
                              SelectedItem="{Binding SelectedSale}">
+                        
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Style.Triggers>
@@ -888,7 +890,7 @@
                                      Text="{Binding CardExpense, Mode=TwoWay}"
                                      materialDesign:HintAssist.Hint="Card"
                                      materialDesign:TextFieldAssist.PrefixText="£"
-                                     Style="{StaticResource floatingHintBox}"
+                                     Style="{StaticResource FloatingHintBox}"
                                      VerticalAlignment="Center" />
 
                             <TextBox Grid.Column="1" Grid.Row="0"
@@ -897,14 +899,14 @@
                                      Text="{Binding CashExpense, Mode=TwoWay}"
                                      materialDesign:HintAssist.Hint="Cash"
                                      materialDesign:TextFieldAssist.PrefixText="£"
-                                     Style="{StaticResource floatingHintBox}"
+                                     Style="{StaticResource FloatingHintBox}"
                                      VerticalAlignment="Center" />
 
                             <TextBox Grid.Column="0" Grid.Row="1"
                                      Grid.ColumnSpan="2"
                                      Text="{Binding ExpenseDetails}"
                                      materialDesign:HintAssist.Hint="Details"
-                                     Style="{StaticResource floatingHintBox}"
+                                     Style="{StaticResource FloatingHintBox}"
                                      VerticalAlignment="Center" />
 
                             <Button Grid.Column="0" Grid.Row="2"

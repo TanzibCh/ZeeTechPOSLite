@@ -15,7 +15,7 @@
         xmlns:custom="clr-namespace:ModalControl;assembly=ModalControl"
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
         mc:Ignorable="d"
-        Title="MainView" Height="1000" Width="1700" MinHeight="800" MinWidth="1400" WindowStartupLocation="CenterScreen">
+        Title="MainView" Height="1000" Width="1920" MinHeight="800" MinWidth="1400" WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid.Resources>

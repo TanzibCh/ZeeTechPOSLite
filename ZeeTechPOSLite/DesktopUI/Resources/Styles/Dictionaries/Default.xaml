@@ -4,33 +4,36 @@
 
     <!--#region Lables -->
 
-    <!--Base lable-->
-    <Style TargetType="Label" x:Key="LabelBase"
+    <!--Base label-->
+    <Style TargetType="Label" 
+           x:Key="LabelBase"
            BasedOn="{StaticResource MaterialDesignLabel}">
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="16" />
     </Style>
     
-    <!-- Default Lable style -->
+    <!-- Default Label style -->
     <Style TargetType="Label" 
-               BasedOn="{StaticResource LabelBase}">
+           BasedOn="{StaticResource LabelBase}">
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 
     <!-- Small Label -->
-    <Style TargetType="Label" x:Key="SmallGrayLabel"
-               BasedOn="{StaticResource LabelBase}">
+    <Style TargetType="Label" 
+           x:Key="SmallGrayLabel"
+           BasedOn="{StaticResource LabelBase}">
         <Setter Property="Foreground" Value="Gray" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Margin" Value="-5 0 0 -5" />
     </Style>
 
     <!--Header White Lable-->
-    <Style TargetType="Label" x:Key="HeaderWhiteLabel"
-               BasedOn="{StaticResource LabelBase}">
+    <Style TargetType="Label"
+           x:Key="HeaderWhiteLabel"
+           BasedOn="{StaticResource LabelBase}">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="25" />
         <Setter Property="FontWeight" Value="DemiBold" />
@@ -38,10 +41,35 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Margin" Value="0 5" />
     </Style>
-    
+
+    <!--Header medium White Lable-->
+    <Style TargetType="Label"
+           x:Key="HeaderMediumWhiteLabel"
+           BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 5" />
+    </Style>
+
+    <!--Header medium Gray Lable-->
+    <Style TargetType="Label" 
+           x:Key="HeaderMediumGrayLabel"
+           BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Foreground" Value="Gray" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 5" />
+    </Style>
+
     <!--Header White Large Lable-->
-    <Style TargetType="Label" x:Key="HeaderWhiteLargeLabel"
-               BasedOn="{StaticResource LabelBase}">
+    <Style TargetType="Label" 
+           x:Key="HeaderWhiteLargeLabel"
+           BasedOn="{StaticResource LabelBase}">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="32" />
         <Setter Property="FontWeight" Value="DemiBold" />
@@ -88,12 +116,19 @@
     </Style>
 
     <!-- Floating Hint TextBox -->
-    <Style TargetType="TextBox" x:Key="floatingHintBox"
+    <Style TargetType="TextBox" x:Key="FloatingHintBox"
                BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="16" />
     </Style>
 
+    <!-- Floating Large Hint TextBox -->
+    <Style TargetType="TextBox" x:Key="FloatingLargeHintBox"
+               BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="20" />
+    </Style>
+    
     <!--Small TextBox-->
     <Style TargetType="TextBox"  x:Key="SmallTextBox"
                BasedOn="{StaticResource MaterialDesignTextBox}">
@@ -107,14 +142,15 @@
     <!-- Default Button -->
     <Style TargetType="Button"
                BasedOn="{StaticResource MaterialDesignRaisedLightButton}">
-        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="15" />
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="10" />
         <Setter Property="Margin" Value="10" />
     </Style>
 
     <!-- Accent Button -->
-    <Style TargetType="Button" x:Key="AccentButton"
+    <Style TargetType="Button" 
+           x:Key="AccentButton"
                BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
-        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="15" />
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="10" />
         <Setter Property="Margin" Value="10" />
     </Style>
     
@@ -125,11 +161,14 @@
     </Style>
 
     <!--Navigation Radio Button-->
-    <Style TargetType="RadioButton" x:Key="NavigationButton"
-           BasedOn="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}">
+    <Style TargetType="RadioButton" 
+           x:Key="NavigationButton"
+           BasedOn="{StaticResource MaterialDesignChoiceChipAccentOutlineRadioButton}">
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 
+    <!--#endregion-->
+    
     <!--#region ListBox -->
     
     <!--ListBox Selection trigger-->
@@ -147,8 +186,6 @@
             </Style>
         </ListBox.ItemContainerStyle>-->
 
-    <!--#endregion-->
-    
     <!--#endregion-->
 
     <!--#region Card -->

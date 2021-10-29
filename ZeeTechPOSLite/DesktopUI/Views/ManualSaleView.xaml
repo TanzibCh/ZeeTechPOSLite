@@ -96,7 +96,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="900" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -105,107 +105,179 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <materialDesign:ColorZone Grid.Column="0" Grid.Row="0"
-                                  Grid.ColumnSpan="2"
-                                  Mode="PrimaryDark">
-            <TextBlock  Text="New Sale"
-                   HorizontalAlignment="Center"
-                   FontSize="30"/>
-        </materialDesign:ColorZone>
-        
+        <Label Content="New Sale"
+               Margin="20 0"
+               HorizontalAlignment="Left"
+               Style="{StaticResource HeaderWhiteLargeLabel}"/>
 
         <!--#region Product Entry-->
-        <Grid Grid.Column="0" Grid.Row="2"
+        <Grid Grid.Column="0" 
+              Grid.Row="1"
               Margin="5 0 0 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="200" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- Customer info -->
-            <materialDesign:Card Grid.Row="0"
-                                 Margin="10"
-                                 materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                 UniformCornerRadius="15" >
-                <StackPanel>
-                    <!-- Lable -->
-                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
-                           Margin="0 10 0 0"
-                           Style="{StaticResource HeaderLable}"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                           Content="Cstomer Information" />
+            <Expander Grid.Row="0"
+                      Header="Cstomer Information"
+                      HorizontalAlignment="Stretch"
+                      materialDesign:ExpanderAssist.HeaderFontSize="20">
+                <StackPanel Orientation="Vertical">
+                    <TextBox Text="general" />
+                    <TextBox Text="general" />
+                    <TextBox Text="general" />
+
                 </StackPanel>
-                
-            </materialDesign:Card>
+            </Expander>
 
             <!--#region Search entry-->
-            <materialDesign:Card Grid.Row="1"
-                                    Margin="10 10"
-                                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                    UniformCornerRadius="15" >
 
-                <Grid Grid.Column="0" Grid.Row="1" Margin="10">
+            <Grid Grid.Column="0" 
+                  Grid.Row="1" 
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto "/>
+                    <RowDefinition Height="70" />
+                </Grid.RowDefinitions>
+
+                <!-- Lable -->
+                <Label Grid.Row="0"
+                       Style="{StaticResource HeaderLable}"
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Center"
+                       Margin="10 0"
+                       Content="Search Product" />
+
+                <!-- Product search box -->
+                <TextBox Grid.Row="1"
+                         VerticalContentAlignment="Center"
+                         materialDesign:HintAssist.Hint="Search product by Model/Barcode" />
+
+                <!-- Search ListBox -->
+                <ListView Grid.Row="2"
+                          Margin="10"
+                          HorizontalContentAlignment="Stretch"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          ItemsSource="{Binding SearchedProducts}"
+                          d:ItemsSource="{d:SampleData ItemCount=10}"
+                          Grid.IsSharedSizeScope="True">
+
+                    <!--ListView Headers-->
+                    <ListView.Template>
+                        <ControlTemplate>
+                            <DockPanel LastChildFill="True">
+                                <Grid DockPanel.Dock="Top"
+                                      HorizontalAlignment="Stretch"
+                                      Height="50">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition MinWidth="200" SharedSizeGroup="name" />
+                                        <ColumnDefinition MinWidth="450" SharedSizeGroup="description" />
+                                        <ColumnDefinition MinWidth="100" SharedSizeGroup="localQty" />
+                                        <ColumnDefinition MinWidth="100" SharedSizeGroup="totlQty" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0"
+                                               Style="{StaticResource HeaderMediumGrayLabel}"
+                                               HorizontalAlignment="Left"
+                                               Content="Name/Model" />
+                                    <Label Grid.Column="1"
+                                               Style="{StaticResource HeaderMediumGrayLabel}"
+                                               HorizontalAlignment="Left"
+                                               Content="Description" />
+                                    <Label Grid.Column="2"
+                                               Style="{StaticResource HeaderMediumGrayLabel}"
+                                               HorizontalAlignment="Center"
+                                               Content="Local Qty" />
+                                    <Label Grid.Column="3"
+                                               Style="{StaticResource HeaderMediumGrayLabel}"
+                                               HorizontalAlignment="Center"
+                                               Content="Total Qty" />
+                                </Grid>
+                                <ItemsPresenter></ItemsPresenter>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </ListView.Template>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="name" />
+                                    <ColumnDefinition SharedSizeGroup="description" />
+                                    <ColumnDefinition SharedSizeGroup="localQty" />
+                                    <ColumnDefinition SharedSizeGroup="totlQty" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                               Style="{StaticResource WhiteTextBlock}"
+                                                HorizontalAlignment="Left"
+                                                Text="{Binding ProductName}" />
+                                <TextBlock Grid.Column="1"
+                                               Style="{StaticResource WhiteTextBlock}"
+                                                HorizontalAlignment="Left"
+                                                Text="{Binding ProductDescription}" />
+                                <TextBlock Grid.Column="2"
+                                               Style="{StaticResource WhiteTextBlock}"
+                                                HorizontalAlignment="Center"
+                                                Text="{Binding Quantity}" />
+                                <TextBlock Grid.Column="3"
+                                               Style="{StaticResource WhiteTextBlock}"
+                                               HorizontalAlignment="Center"
+                                               Text="{Binding TotalQuantity}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Grid Grid.Row="3">
+                    <materialDesign:ColorZone Background="{StaticResource MaterialDesignDarkSeparatorBackground}" 
+                                      HorizontalAlignment="Stretch"
+                                      Height="3"/>
+                </Grid>
+                <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="200" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="70" />
-                    </Grid.RowDefinitions>
-
-                    <!-- Lable -->
-                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
-                           Style="{StaticResource HeaderLable}"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                           Content="Search Product Entry" />
-                    <!-- Product search box -->
-                    <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4"
-                             VerticalContentAlignment="Center"
-                             materialDesign:HintAssist.Hint="Search product by Model/Barcode" />
-
-                    <!-- Search ListBox -->
-                    <ListBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
-                        Margin="10 0">
-
-                    </ListBox>
-
                     <!-- Qty -->
-                    <TextBox Grid.Column="0" Grid.Row="3" Margin="10"
-                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox Grid.Column="0"
+                             Margin="10"
+                             Style="{StaticResource FloatingLargeHintBox}"
+                             HorizontalContentAlignment="Center" 
+                             VerticalContentAlignment="Center"
                              materialDesign:HintAssist.Hint="Qty" />
 
                     <!-- Price -->
-                    <TextBox Grid.Column="1" Grid.Row="3" Margin="10"
-                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox Grid.Column="1"
+                             Margin="10"
+                             Style="{StaticResource FloatingLargeHintBox}"
+                             HorizontalContentAlignment="Center" 
+                             VerticalContentAlignment="Center"
                              materialDesign:HintAssist.Hint="Price" />
 
-                    <!-- Cost -->
-                    <TextBox Grid.Column="2" Grid.Row="3" Margin="10"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    materialDesign:HintAssist.Hint="Cost" />
-
                     <!-- Add to cart Button -->
-                    <Button Grid.Column="3" Grid.Row="3"
+                    <Button Grid.Column="2"
                             HorizontalAlignment="Right"
                             Width="150"
                             Margin="10"
                             FontSize="20"
                             Content="Add"/>
                 </Grid>
-            </materialDesign:Card>
+
+            </Grid>
             <!--#endregion-->
 
             <!--#region Manual entry-->
             <Expander HorizontalAlignment="Stretch"
                       Grid.Row="2"
                       Header="Manual Sale">
-                
+
                 <StackPanel Orientation="Vertical">
                     <materialDesign:Card 
                                  Margin="10"
@@ -318,6 +390,7 @@
 
 
             <!--#endregion-->
+
         </Grid>
         <!--#endregion-->
 
@@ -340,7 +413,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="60" />
                     </Grid.RowDefinitions>
-                    
+
                     <StackPanel Orientation="Vertical"
                                 Grid.Row="0">
                         <Label HorizontalAlignment="Center"
@@ -351,16 +424,16 @@
 
                         <Separator Margin="10 0"/>
                     </StackPanel>
-                    
+
                     <!-- Cart ListBox -->
-                    <ListBox Grid.Row="1" 
+                    <ListView Grid.Row="1" 
                              HorizontalContentAlignment="Stretch"
                              MinHeight="600"
                              Margin="10"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ItemsSource="{Binding Cart}"
-                             SelectedItem="{Binding SelectedCartItem}">
-                        <ListBox.ItemTemplate>
+                             SelectedItem="{Binding SelectedCartItem}" d:ItemsSource="{d:SampleData ItemCount=5}">
+                        <ListView.ItemTemplate>
                             <DataTemplate>
                                 <!-- Listbox grid -->
                                 <Grid>
@@ -446,14 +519,14 @@
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    
+                        </ListView.ItemTemplate>
+                    </ListView>
+
                     <!-- Buttons -->
                     <StackPanel Grid.Row="2"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center">
-                        
+
                         <!-- Edit Button -->
                         <Button Grid.Column="5" Grid.Row="0"
                                 Margin="10 0"
@@ -614,7 +687,7 @@
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Right"
                                    Content="SubTotal:"/>
-                            
+
                             <StackPanel Grid.Column="1" Grid.Row="0"
                                         Orientation="Horizontal">
                                 <TextBlock Margin="5 0" 

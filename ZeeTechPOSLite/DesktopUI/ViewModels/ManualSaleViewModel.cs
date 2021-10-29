@@ -15,6 +15,7 @@ using DesktopUI.Services;
 using DesktopUI.Helpers;
 using System.Linq;
 using System.Windows.Data;
+using DataAccessLibrary.DataAccess.Queries;
 
 namespace DesktopUI.ViewModels
 {
@@ -23,7 +24,8 @@ namespace DesktopUI.ViewModels
         #region Private properties
 
         private readonly CurrencyHelper _cHelper = new CurrencyHelper();
-        private SalesData _salesData = new SalesData();
+        private readonly SalesData _salesData = new SalesData();
+        private readonly ProductData _productData = new ProductData();
         private readonly ProductStore _productStore;
 
         #endregion
@@ -34,6 +36,22 @@ namespace DesktopUI.ViewModels
         public string SaleDate { get; set; }
         public string CurrentTime { get; set; }
 
+        #endregion
+
+        #region Product search properties
+
+
+        private ObservableCollection<ProductSearchModel> _searchModels;
+
+        public ObservableCollection<ProductSearchModel> SearchedProducts
+        {
+            get { return _searchModels; }
+            set
+            {
+                _searchModels = value;
+                OnPropertyChanged(nameof(SearchedProducts));
+            }
+        }
         #endregion
 
         #region Manual Entry Properties
@@ -338,6 +356,8 @@ namespace DesktopUI.ViewModels
         {
             _productStore = productStore;
 
+            GetTopSellingProducts();
+
             Departments = new ObservableCollection<DepartmantModel>()
             {
                 new DepartmantModel(){ DepartmentName = "Mobile"},
@@ -370,6 +390,20 @@ namespace DesktopUI.ViewModels
         #endregion
 
         #region Methods
+
+        private void GetTopSellingProducts()
+        {
+            List<ProductSearchModel> topTenProducts = _productData.GetTopTenSellingProducts();
+            ObservableCollection<ProductSearchModel> products = new ObservableCollection<ProductSearchModel>();
+
+
+            foreach (ProductSearchModel product in topTenProducts)
+            {
+                products.Add(product);
+            }
+
+            SearchedProducts = products;
+        }
 
         // calculates all the invoice payment fields
         public void CalculatePayments()
