@@ -45,7 +45,8 @@ namespace DesktopUI
 
             services.AddTransient<ManualSaleViewModel>(s => new ManualSaleViewModel(
                 CreateEditProductNavigationService(s),
-                s.GetRequiredService<ProductStore>()));
+                s.GetRequiredService<ProductStore>(),
+                s.GetRequiredService<LocationStore>()));
 
             services.AddTransient<BankingViewModel>(s => new BankingViewModel(
                 CreateEditSaleNavigationService(s),

@@ -89,18 +89,26 @@ namespace DataAccessLibrary.DataAccess.Queries
 		/// Method for the Sales page product search. It shows the top 10 selling products.
 		/// </summary>
 		/// <returns></returns>
-		public List<ProductSearchModel> GetTopTenSellingProducts()
+		public List<ProductSearchModel> GetTopTenSellingProducts(int locationId)
 		{
 			string sql = @"SELECT  p.Id, p.ProductName, p.ProductDescription, p.Barcode,
-						  p.AverageCost, p.Price, p.Department, p.IsActive, sum(sp.QuantitySold) AS TotalSold
+						  p.AverageCost, p.Price, p.Department, p.IsActive, 
+								(SELECT Quantity
+								 FROM Stock s
+								 WHERE s.LocationId = @locationId
+								 AND s.ProductId = p.Id) AS Quantity,
+								(SELECT sum(Quantity)
+								FROM Stock s
+								WHERE s.ProductId = p.Id) AS TotalQuantity,
+						  sum(sp.QuantitySold) AS TotalSold
 						  FROM Product p
 						  INNER JOIN SaleProduct sp on p.Id = sp.ProductId
+						  INNER JOIN Stock s on p.Id = s.ProductId
 						  GROUP BY p.Id
-						  ORDER By
-						  TotalSold DESC
+						  ORDER By TotalSold DESC
 						  LIMIT 10;";
 
-			return _db.LoadData<ProductSearchModel, dynamic>(sql, new { }, _connectionStringName);
+			return _db.LoadData<ProductSearchModel, dynamic>(sql, new { locationId }, _connectionStringName);
 		}
 
 		public List<ProductSearchModel> SearchProductByName(int locationId, string productName)
@@ -108,18 +116,23 @@ namespace DataAccessLibrary.DataAccess.Queries
 			string sql = @"SELECT p.Id, p.ProductName, p.ProductDescription, p.Barcode,
 						  p.AverageCost, p.Price, p.Department, p.IsActive, s.Quantity,
 						  (
+							SELECT Quantity
+						    FROM Stock s
+						    WHERE s.LocationId = @locationId
+						    AND s.ProductId = p.Id
+						  ) AS Quantity,
+						  (
 							  SELECT  sum(Quantity)
 							  FROM Stock
 							  WHERE Stock.ProductId = p.Id
 							  GROUP BY ProductId
-						  )
-						  TotalQuantity
+						  ) AS TotalQuantity
 						  FROM Product p
 						  INNER JOIN Stock s on p.Id = s.ProductId
-						  WHERE s.LocationId = @locationId
-						  AND ProductName like @productName;";
+						  WHERE ProductName like @productName
+						  GROUP BY p.Id;";
 
-			productName = $"% {productName} %";
+			productName = $"%{productName}%";
 
 			return _db.LoadData<ProductSearchModel, dynamic>(sql, new { locationId, productName }, _connectionStringName);
 		}
@@ -129,18 +142,24 @@ namespace DataAccessLibrary.DataAccess.Queries
 			string sql = @"SELECT p.Id, p.ProductName, p.ProductDescription, p.Barcode,
 						  p.AverageCost, p.Price, p.Department, p.IsActive, s.Quantity,
 						  (
+							SELECT Quantity
+						    FROM Stock s
+						    WHERE s.LocationId = @locationId
+						    AND s.ProductId = p.Id
+						  ) AS Quantity,
+						  (
 							  SELECT  sum(Quantity)
 							  FROM Stock
 							  WHERE Stock.ProductId = p.Id
 							  GROUP BY ProductId
-						  )
-						  TotalQuantity
+						  ) AS TotalQuantity
 						  FROM Product p
 						  INNER JOIN Stock s on p.Id = s.ProductId
-						  WHERE s.LocationId = @locationId
-						  AND ProductName = @barcode;";
+						  WHERE Barcode = @barcode
+					      GROUP BY p.Id;";
+			var test = _db.LoadData<ProductSearchModel, dynamic>(sql, new { locationId, barcode }, _connectionStringName);
 
-			return _db.LoadData<ProductSearchModel, dynamic>(sql, new { locationId, barcode }, _connectionStringName);
+			return _db.LoadData<ProductSearchModel, dynamic>(sql, new { barcode }, _connectionStringName);
 			#endregion
 		}
 	}

@@ -122,7 +122,7 @@
 
             <!-- Customer info -->
             <Expander Grid.Row="0"
-                      Header="Cstomer Information"
+                      Header="Customer Information"
                       HorizontalAlignment="Stretch"
                       materialDesign:ExpanderAssist.HeaderFontSize="20">
                 <StackPanel Orientation="Vertical">
@@ -140,7 +140,7 @@
                   Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="60" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto "/>
                     <RowDefinition Height="70" />
@@ -154,11 +154,33 @@
                        Margin="10 0"
                        Content="Search Product" />
 
-                <!-- Product search box -->
-                <TextBox Grid.Row="1"
-                         VerticalContentAlignment="Center"
-                         materialDesign:HintAssist.Hint="Search product by Model/Barcode" />
+                <!-- Product search boxes -->
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Left">
+                    <!--Name/Model-->
+                    <TextBox Grid.Row="1"
+                             Margin="10 0 20 0"
+                             VerticalContentAlignment="Center"
+                             Style="{StaticResource FloatingLargeHintBox}"
+                             materialDesign:HintAssist.Hint="Search product by Name/Model"
+                             Text="{Binding SearchName, Mode=TwoWay}"/>
 
+                    <Button Content="Search"
+                            Margin="0 0 20 0"
+                            Command="{Binding SearchNameCommand}"/>
+                    <!--Barcode-->
+                    <TextBox Grid.Row="1"
+                             Margin="20 0"
+                             VerticalContentAlignment="Center"
+                             Style="{StaticResource FloatingLargeHintBox}"
+                             materialDesign:HintAssist.Hint="Search product by Barcode" />
+
+                    <Button Content="Search"
+                            Command="{Binding SearchBarcodeCommand}"/>
+                </StackPanel>
+                            
+                
                 <!-- Search ListBox -->
                 <ListView Grid.Row="2"
                           Margin="10"
@@ -237,7 +259,8 @@
                 <Grid Grid.Row="3">
                     <materialDesign:ColorZone Background="{StaticResource MaterialDesignDarkSeparatorBackground}" 
                                       HorizontalAlignment="Stretch"
-                                      Height="3"/>
+                                              Margin="10 0"
+                                      Height="2"/>
                 </Grid>
                 <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>

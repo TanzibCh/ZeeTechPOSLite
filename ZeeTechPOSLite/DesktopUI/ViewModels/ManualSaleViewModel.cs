@@ -1,21 +1,16 @@
-﻿using DataAccessLibrary.Models;
-using DesktopUI.Models;
+﻿using DataAccessLibrary.DataAccess.Queries;
+using DataAccessLibrary.DataAccess.SalesQueries;
+using DataAccessLibrary.Models;
 using DesktopUI.Commands.ManualSaleCommands;
+using DesktopUI.Helpers;
+using DesktopUI.Models;
+using DesktopUI.Services;
+using DesktopUI.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Text;
 using System.Windows;
-using DataAccessLibrary.DataAccess.SalesQueries;
 using System.Windows.Input;
-using DesktopUI.Commands;
-using DesktopUI.Stores;
-using DesktopUI.Services;
-using DesktopUI.Helpers;
-using System.Linq;
-using System.Windows.Data;
-using DataAccessLibrary.DataAccess.Queries;
 
 namespace DesktopUI.ViewModels
 {
@@ -27,6 +22,7 @@ namespace DesktopUI.ViewModels
         private readonly SalesData _salesData = new SalesData();
         private readonly ProductData _productData = new ProductData();
         private readonly ProductStore _productStore;
+        private readonly LocationStore _locationStore;
 
         #endregion
 
@@ -40,16 +36,40 @@ namespace DesktopUI.ViewModels
 
         #region Product search properties
 
-
-        private ObservableCollection<ProductSearchModel> _searchModels;
+        private ObservableCollection<ProductSearchModel> _searchProducts;
 
         public ObservableCollection<ProductSearchModel> SearchedProducts
         {
-            get { return _searchModels; }
+            get { return _searchProducts; }
             set
             {
-                _searchModels = value;
+                _searchProducts = value;
                 OnPropertyChanged(nameof(SearchedProducts));
+            }
+        }
+
+        private string _searchName;
+
+        public string SearchName
+        {
+            get { return _searchName; }
+            set
+            {
+                _searchName = value;
+                OnPropertyChanged(nameof(SearchName));
+            }
+        }
+
+
+        private string _searchBarcode;
+
+        public string SearchBarcode
+        {
+            get { return _searchBarcode; }
+            set
+            {
+                _searchBarcode = value;
+                OnPropertyChanged(nameof(SearchBarcode));
             }
         }
         #endregion
@@ -168,6 +188,9 @@ namespace DesktopUI.ViewModels
         public ICommand RemoveItemFromCartCommand { get; }
 
         public ICommand EditCartItem { get; set; }
+
+        public ICommand SearchNameCommand { get; set; }
+        public ICommand SearchBarcodeCommand { get; set; }
 
         #endregion
 
@@ -352,8 +375,9 @@ namespace DesktopUI.ViewModels
         #region Constructor
 
         public ManualSaleViewModel(INavigationService editProductNavigationService,
-            ProductStore productStore)
+            ProductStore productStore, LocationStore locationStore)
         {
+            _locationStore = locationStore;
             _productStore = productStore;
 
             GetTopSellingProducts();
@@ -381,6 +405,8 @@ namespace DesktopUI.ViewModels
             RemoveItemFromCartCommand = new RemoveFromCartCommand(this);
             EditCartItem = new EditCartItemCommand(this, productStore, editProductNavigationService);
             Pay = new PayCommand(this);
+            SearchNameCommand = new SearchNameCommand(this, locationStore);
+            SearchBarcodeCommand = new SearchBarcodeCommand(this, locationStore);
 
             Cart = new ObservableCollection<CartItemDisplayModel>();
 
@@ -393,7 +419,7 @@ namespace DesktopUI.ViewModels
 
         private void GetTopSellingProducts()
         {
-            List<ProductSearchModel> topTenProducts = _productData.GetTopTenSellingProducts();
+            List<ProductSearchModel> topTenProducts = _productData.GetTopTenSellingProducts(_locationStore.Id);
             ObservableCollection<ProductSearchModel> products = new ObservableCollection<ProductSearchModel>();
 
 
@@ -609,7 +635,7 @@ namespace DesktopUI.ViewModels
                 ClearPaymentFields();
             }
 
-            
+
         }
 
         private void ClearPaymentFields()

@@ -110,7 +110,8 @@
         <Grid Grid.Column="1">
             <materialDesign:ColorZone Background="{StaticResource MaterialDesignDarkSeparatorBackground}" 
                                       VerticalAlignment="Stretch"
-                                      Width="3"/>
+                                      Width="2"
+                                      Margin="0 20"/>
         </Grid>
         
         <!--ToDo-->
