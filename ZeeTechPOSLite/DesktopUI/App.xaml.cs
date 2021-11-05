@@ -41,12 +41,18 @@ namespace DesktopUI
             services.AddSingleton<INavigationService>(s => CreateDashboardNavigationService(_serviceProvider));
 
             // register ViewModels
-            services.AddTransient<DashboardViewModel>();
+            services.AddTransient<DashboardViewModel>(s => new DashboardViewModel(
+                s.GetRequiredService<LocationStore>()));
 
             services.AddTransient<ManualSaleViewModel>(s => new ManualSaleViewModel(
                 CreateEditProductNavigationService(s),
+                CreatePaymentNavigatonService(s),
                 s.GetRequiredService<ProductStore>(),
-                s.GetRequiredService<LocationStore>()));
+                s.GetRequiredService<LocationStore>(),
+                s.GetRequiredService<SaleStore>()));
+
+            services.AddTransient<PaymentVewModel>(s => new PaymentVewModel(
+                s.GetRequiredService<SaleStore>()));
 
             services.AddTransient<BankingViewModel>(s => new BankingViewModel(
                 CreateEditSaleNavigationService(s),
@@ -119,7 +125,7 @@ namespace DesktopUI
                 CreateDashboardNavigationService(serviceProvider));
         }
 
-        // Manual Sale Navigation Service
+        // New Sale Navigation Service
         private INavigationService CreateManualSaleNavigationService(IServiceProvider serviceProvider)
         {
             return new LayoutNavigationService<ManualSaleViewModel>(
@@ -165,6 +171,14 @@ namespace DesktopUI
                 () => new EditSaleProductViewModel(CreateCloseModalNavigationService(serviceProvider),
                 serviceProvider.GetRequiredService<ProductStore>(),
                 serviceProvider.GetRequiredService<ManualSaleViewModel>()));
+        }
+
+        // Payment Navigation Service
+        private INavigationService CreatePaymentNavigatonService(IServiceProvider serviceProvider)
+        {
+            return new ModalNavigationService<PaymentVewModel>(
+                serviceProvider.GetRequiredService<ModalNavigationStore>(),
+                () => new PaymentVewModel(serviceProvider.GetRequiredService<SaleStore>()));
         }
 
         // Refund Navigation Service

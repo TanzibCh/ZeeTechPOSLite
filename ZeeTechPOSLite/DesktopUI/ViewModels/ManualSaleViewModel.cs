@@ -23,6 +23,7 @@ namespace DesktopUI.ViewModels
         private readonly ProductData _productData = new ProductData();
         private readonly ProductStore _productStore;
         private readonly LocationStore _locationStore;
+        private readonly SaleStore _saleStore;
 
         #endregion
 
@@ -70,6 +71,47 @@ namespace DesktopUI.ViewModels
             {
                 _searchBarcode = value;
                 OnPropertyChanged(nameof(SearchBarcode));
+            }
+        }
+
+
+        private ProductSearchModel _selectedSearchedProduct;
+
+        public ProductSearchModel SelectedSearchedProduct
+        {
+            get { return _selectedSearchedProduct; }
+            set
+            {
+                _selectedSearchedProduct = value;
+                OnPropertyChanged(nameof(SelectedSearchedProduct));
+                SearchedProductQuantity = 1;
+                SearchedProductPrice = _cHelper.ConvertIntToCurrencyDecimal(_selectedSearchedProduct.Price);
+            }
+        }
+
+
+        private int _searchedProductQuantity;
+
+        public int SearchedProductQuantity
+        {
+            get { return _searchedProductQuantity; }
+            set
+            {
+                _searchedProductQuantity = value;
+                OnPropertyChanged(nameof(SearchedProductQuantity));
+            }
+        }
+
+
+        private decimal _searchedProductPrice;
+
+        public decimal SearchedProductPrice
+        {
+            get { return _searchedProductPrice; }
+            set
+            {
+                _searchedProductPrice = value;
+                OnPropertyChanged(nameof(SearchedProductPrice));
             }
         }
         #endregion
@@ -180,17 +222,16 @@ namespace DesktopUI.ViewModels
 
         // Command Properties
 
-        public ICommand NavigateBankingCommand { get; }
-
         public ICommand AddManualProduct { get; }
-        public PayCommand Pay { get; set; }
-
+        public ICommand PaymentCommand { get; set; }
         public ICommand RemoveItemFromCartCommand { get; }
-
         public ICommand EditCartItem { get; set; }
-
         public ICommand SearchNameCommand { get; set; }
         public ICommand SearchBarcodeCommand { get; set; }
+        public ICommand SelectSearchedProductCommand { get; set; }
+        public ICommand AddSearchedProductCommand { get; set; }
+        public ICommand AddSearchedProductQuantityCommand { get; set; }
+        public ICommand RemoveSearchedProductQuantityCommand { get; set; }
 
         #endregion
 
@@ -375,9 +416,11 @@ namespace DesktopUI.ViewModels
         #region Constructor
 
         public ManualSaleViewModel(INavigationService editProductNavigationService,
-            ProductStore productStore, LocationStore locationStore)
+            INavigationService paymentNavigationService, ProductStore productStore,
+            LocationStore locationStore, SaleStore saleStore)
         {
             _locationStore = locationStore;
+            _saleStore = saleStore;
             _productStore = productStore;
 
             GetTopSellingProducts();
@@ -404,9 +447,13 @@ namespace DesktopUI.ViewModels
             AddManualProduct = new AddManualProductCommand(this);
             RemoveItemFromCartCommand = new RemoveFromCartCommand(this);
             EditCartItem = new EditCartItemCommand(this, productStore, editProductNavigationService);
-            Pay = new PayCommand(this);
+            PaymentCommand = new PayCommand(this, paymentNavigationService, saleStore);
             SearchNameCommand = new SearchNameCommand(this, locationStore);
             SearchBarcodeCommand = new SearchBarcodeCommand(this, locationStore);
+            SelectSearchedProductCommand = new SelectSearchedProductCommand(this);
+            AddSearchedProductCommand = new AddSearchedProductCommand(this);
+            AddSearchedProductQuantityCommand = new AddSearchedProductQuantityCommand(this);
+            RemoveSearchedProductQuantityCommand = new RemoveSearchedProductQuantityCommand(this);
 
             Cart = new ObservableCollection<CartItemDisplayModel>();
 

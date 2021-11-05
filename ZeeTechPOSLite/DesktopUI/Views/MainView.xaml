@@ -16,46 +16,52 @@
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
         mc:Ignorable="d"
         Title="MainView" Height="1000" Width="1920" MinHeight="800" MinWidth="1400" WindowStartupLocation="CenterScreen">
-
     <Grid>
         <Grid.Resources>
+            <!--Dashboard-->
             <DataTemplate DataType="{x:Type viewModel:DashboardViewModel}">
                 <local:DashboardView />
             </DataTemplate>
-            
+            <!--Banking-->
             <DataTemplate DataType="{x:Type viewModel:BankingViewModel}">
                 <local:BankingView />
             </DataTemplate>
-
+            <!--New Sale-->
             <DataTemplate DataType="{x:Type viewModel:ManualSaleViewModel}">
                 <local:ManualSaleView />
             </DataTemplate>
-
+            <!--Payment-->
+            <DataTemplate DataType="{x:Type viewModel:PaymentVewModel}">
+                <local:PaymentView />
+            </DataTemplate>
+            <!--Edit Sale-->
             <DataTemplate DataType="{x:Type viewModel:EditSaleViewModel}">
                 <local:EditSaleView />
             </DataTemplate>
-
+            <!--Edit Sale Products-->
             <DataTemplate DataType="{x:Type viewModel:EditSaleProductViewModel}">
                 <local:EditProductView />
             </DataTemplate>
-
+            <!--Refund-->
             <DataTemplate DataType="{x:Type viewModel:RefundViewModel}">
                 <local:RefundView />
             </DataTemplate>
-
+            <!--Complete Return-->
             <DataTemplate DataType="{x:Type viewModel:ReturnCompleteViewModel}">
                 <local:ReturnCompleteView />
             </DataTemplate>
-
+            <!--Layout-->
             <DataTemplate DataType="{x:Type viewModel:LayoutViewModel}">
                 <components:Layout />
             </DataTemplate>
         </Grid.Resources>
 
+        <!--Modal-->
         <custom:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
             <ContentControl Content="{Binding CurrentModalViewModel}" />
         </custom:Modal>
 
+        <!--Contant-->
         <ContentControl Content="{Binding CurrentViewModel}" />
     </Grid>
 </Window>

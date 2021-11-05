@@ -11,10 +11,10 @@
              TextElement.FontSize="14"
              FontFamily="{materialDesign:MaterialDesignFont}"
              xmlns:local="clr-namespace:DesktopUI.Views" 
-             xmlns:components="clr-namespace:DesktopUI.Components" d:DataContext="{d:DesignInstance Type=viewModel:ManualSaleViewModel}"
+             xmlns:components="clr-namespace:DesktopUI.Components"
+             d:DataContext="{d:DesignInstance Type=viewModel:ManualSaleViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1700" >
-
     <UserControl.Resources>
         <!-- Default Lable style -->
         <Style TargetType="Label"
@@ -174,13 +174,14 @@
                              Margin="20 0"
                              VerticalContentAlignment="Center"
                              Style="{StaticResource FloatingLargeHintBox}"
-                             materialDesign:HintAssist.Hint="Search product by Barcode" />
+                             materialDesign:HintAssist.Hint="Search product by Barcode"
+                             Text="{Binding SearchBarcode, Mode=TwoWay}"/>
 
                     <Button Content="Search"
                             Command="{Binding SearchBarcodeCommand}"/>
                 </StackPanel>
-                            
-                
+
+
                 <!-- Search ListBox -->
                 <ListView Grid.Row="2"
                           Margin="10"
@@ -188,8 +189,8 @@
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
                           ItemsSource="{Binding SearchedProducts}"
                           d:ItemsSource="{d:SampleData ItemCount=10}"
-                          Grid.IsSharedSizeScope="True">
-
+                          Grid.IsSharedSizeScope="True" 
+                          SelectedItem="{Binding SelectedSearchedProduct, Mode=TwoWay}">
                     <!--ListView Headers-->
                     <ListView.Template>
                         <ControlTemplate>
@@ -264,33 +265,52 @@
                 </Grid>
                 <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <!-- Qty -->
-                    <TextBox Grid.Column="0"
-                             Margin="10"
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <!--Remove Quantity Button-->
+                        <Button Content="-" 
+                                Width="40"
+                                Command="{Binding RemoveSearchedProductQuantityCommand}"/>
+                        
+                        <TextBox Grid.Column="1"
+                             Margin="20 10 20 10"
                              Style="{StaticResource FloatingLargeHintBox}"
                              HorizontalContentAlignment="Center" 
                              VerticalContentAlignment="Center"
-                             materialDesign:HintAssist.Hint="Qty" />
+                             materialDesign:HintAssist.Hint="Qty"
+                             Text="{Binding SearchedProductQuantity, Mode=TwoWay}"/>
+                        
+                        <!--Add Quantity Button-->
+                        <Button Content="+"
+                                Width="40"
+                                Command="{Binding AddSearchedProductQuantityCommand}"/>
+
+                    </StackPanel>
 
                     <!-- Price -->
-                    <TextBox Grid.Column="1"
+                    <TextBox Grid.Column="2"
                              Margin="10"
                              Style="{StaticResource FloatingLargeHintBox}"
                              HorizontalContentAlignment="Center" 
                              VerticalContentAlignment="Center"
-                             materialDesign:HintAssist.Hint="Price" />
+                             materialDesign:TextFieldAssist.PrefixText="£"
+                             materialDesign:HintAssist.Hint="Price"
+                             Text="{Binding SearchedProductPrice, Mode=TwoWay}" />
 
                     <!-- Add to cart Button -->
-                    <Button Grid.Column="2"
+                    <Button Grid.Column="3"
                             HorizontalAlignment="Right"
                             Width="150"
                             Margin="10"
                             FontSize="20"
-                            Content="Add"/>
+                            Content="Add"
+                            Command="{Binding AddSearchedProductCommand}"/>
                 </Grid>
 
             </Grid>
@@ -592,7 +612,7 @@
 
                         <!-- Pay Button -->
                         <Button Style="{StaticResource AccentButton}"
-                                Command="{Binding Pay}"
+                                Command="{Binding PaymentCommand}"
                                 MinHeight="100"
                                 Content="Pay"
                                 FontSize="30" FontWeight="Bold"/>

@@ -14,7 +14,8 @@ namespace DesktopUI.Commands.ManualSaleCommands
         private readonly LocationStore _locationStore;
         private readonly ManualSaleViewModel _manualSaleViewModel;
 
-        public SearchBarcodeCommand(ManualSaleViewModel manualSaleViewModel, LocationStore locationStore)
+        public SearchBarcodeCommand(ManualSaleViewModel manualSaleViewModel,
+            LocationStore locationStore)
         {
             _manualSaleViewModel = manualSaleViewModel;
             _locationStore = locationStore;
@@ -24,9 +25,11 @@ namespace DesktopUI.Commands.ManualSaleCommands
 
         public override void Execute(object parameter)
         {
-            var products = _productData.SearchProductByBarcode(_locationStore.Id, _manualSaleViewModel.SearchBarcode);
+            var products = _productData.SearchProductByBarcode(_locationStore.Id,
+                _manualSaleViewModel.SearchBarcode);
 
-            ObservableCollection<ProductSearchModel> searchedProducts = new ObservableCollection<ProductSearchModel>();
+            ObservableCollection<ProductSearchModel> searchedProducts = 
+                new ObservableCollection<ProductSearchModel>();
 
             foreach (var product in products)
             {

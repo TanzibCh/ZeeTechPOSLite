@@ -134,7 +134,8 @@ namespace DataAccessLibrary.DataAccess.Queries
 
 			productName = $"%{productName}%";
 
-			return _db.LoadData<ProductSearchModel, dynamic>(sql, new { locationId, productName }, _connectionStringName);
+			return _db.LoadData<ProductSearchModel, dynamic>(sql, new 
+			{ locationId, productName }, _connectionStringName);
 		}
 
 		public List<ProductSearchModel> SearchProductByBarcode(int locationId, string barcode)
@@ -157,9 +158,9 @@ namespace DataAccessLibrary.DataAccess.Queries
 						  INNER JOIN Stock s on p.Id = s.ProductId
 						  WHERE Barcode = @barcode
 					      GROUP BY p.Id;";
-			var test = _db.LoadData<ProductSearchModel, dynamic>(sql, new { locationId, barcode }, _connectionStringName);
 
-			return _db.LoadData<ProductSearchModel, dynamic>(sql, new { barcode }, _connectionStringName);
+			return _db.LoadData<ProductSearchModel, dynamic>(sql, new 
+			{ locationId, barcode }, _connectionStringName);
 			#endregion
 		}
 	}

@@ -74,5 +74,11 @@ namespace DesktopUI.Helpers
         {
             return Convert.ToDecimal(intValue);
         }
+
+        public decimal ConvertIntToCurrencyDecimal(int intValue)
+        {
+            decimal decimalValue = Convert.ToDecimal(intValue);
+            return decimal.Divide(decimalValue, 100m);
+        }
     }
 }
