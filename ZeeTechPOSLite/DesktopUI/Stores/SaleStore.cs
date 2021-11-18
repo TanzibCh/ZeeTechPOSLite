@@ -1,10 +1,13 @@
-﻿using DesktopUI.Models;
+﻿using DataAccessLibrary.Models;
+using DesktopUI.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace DesktopUI.Stores
 {
+    // Used for editing and updating SaleProducts
     public class SaleStore
     {
         private SaleDisplayModel _selectedSale;
@@ -19,35 +22,28 @@ namespace DesktopUI.Stores
             }
         }
 
+        // Total without the tax Value from NewSaleVM
+        public decimal SubTotal { get; set; }
 
-        private decimal _subTotal;
+        // Tax Value from NewSaleVM
+        public decimal Tax { get; set; }
 
-        public decimal SubTotal
-        {
-            get { return _subTotal; }
-            set
-            {
-                _subTotal = value;
-            }
-        }
+        // Total Value from NewSaleVM
+        public decimal Total { get; set; }
 
-        private decimal _tax;
+        // TotalCost value from NewSaleVM
+        public decimal TotalCost { get; set; }
 
-        public decimal Tax
-        {
-            get { return _tax; }
-            set { _tax = value; }
-        }
+        // TotalProfit value from NewSaleVM
+        public decimal TotalPtofit { get; set; }
 
-        private decimal _total;
+        // Cart Value from the NewSaleVM
+        public ObservableCollection<CartItemDisplayModel> Cart { get; set; }
 
-        public decimal Total
-        {
-            get { return _total; }
-            set { _total = value; }
-        }
+        // List of SaleProductModel to save in the database when sale is completed
+        public List<SaleProductModel> SaleProductsForDB { get; set; }
 
-
+        // Event used to trigger when editing sale
         public event Action SelectedSaleChanged;
     }
 }

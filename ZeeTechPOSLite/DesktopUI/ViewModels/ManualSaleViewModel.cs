@@ -236,6 +236,7 @@ namespace DesktopUI.ViewModels
         #endregion
 
         #region Cart Properties
+
         private ObservableCollection<CartItemDisplayModel> _cart;
 
         public ObservableCollection<CartItemDisplayModel> Cart
@@ -250,6 +251,19 @@ namespace DesktopUI.ViewModels
                 //CalculateTax();
                 //CheckCashOnlySale();
                 //CheckPaymentSum();
+            }
+        }
+
+
+        private bool _cartIsEmpty;
+
+        public bool CartIsEmpty
+        {
+            get { return _cartIsEmpty; }
+            set
+            {
+                _cartIsEmpty = value;
+                OnPropertyChanged(nameof(CartIsEmpty));
             }
         }
 
@@ -423,6 +437,7 @@ namespace DesktopUI.ViewModels
             _saleStore = saleStore;
             _productStore = productStore;
 
+            CartIsEmpty = true;
             GetTopSellingProducts();
 
             Departments = new ObservableCollection<DepartmantModel>()
@@ -509,7 +524,7 @@ namespace DesktopUI.ViewModels
         }
 
         // Create Manual Product 
-        private SaleProductDisplayModel CreateManualProduct()
+        public SaleProductDisplayModel CreateManualProduct()
         {
             SaleProductDisplayModel product = new SaleProductDisplayModel
             {
@@ -521,47 +536,6 @@ namespace DesktopUI.ViewModels
                 Department = SelectedDepartment.DepartmentName
             };
             return product;
-        }
-
-        /// <summary>
-        /// Takes the created product and adds it to the cart
-        /// also adds the quantity entered and calculates the 
-        /// total amount for that product
-        /// </summary>
-        public void AddToCartManualItem()
-        {
-            if (string.IsNullOrWhiteSpace(ManualProductName))
-            {
-                MessageBox.Show("You need to enter Product Name");
-            }
-            else if (SelectedDepartment == null)
-            {
-                MessageBox.Show("You need to select a Department");
-            }
-            else if (ManualQuantity < 1)
-            {
-                MessageBox.Show("You need to enter a Quantity");
-            }
-            else
-            {
-                SaleProductDisplayModel product = CreateManualProduct();
-
-                decimal total = ManualQuantity * _cHelper.ConvertStringToDecimal(ManualPrice);
-
-                CartItemDisplayModel item = new CartItemDisplayModel
-                {
-                    Product = product,
-                    Quantity = ManualQuantity,
-                    Price = ManualPrice,
-                    Total = _cHelper.ConvertDecimalToString(total)
-                };
-
-                Cart.Add(item);
-
-                CalculatePayments();
-
-                ClearManualFields();
-            }
         }
 
         // Calculates the Total amount in the Cart
@@ -598,7 +572,7 @@ namespace DesktopUI.ViewModels
         }
 
         // Clears out all the fields in the Manual sale creation fields
-        private void ClearManualFields()
+        public void ClearManualFields()
         {
             ManualProductName = null;
             ManualProductDescription = null;
@@ -610,7 +584,7 @@ namespace DesktopUI.ViewModels
         }
 
         // Calculates the Profit amount for the items in the Cart
-        private decimal CalculateCartProfit()
+        public decimal CalculateCartProfit()
         {
             decimal cartTotal = 0;
             decimal totalCost = CalculateTotalCartCost();
@@ -624,7 +598,7 @@ namespace DesktopUI.ViewModels
         }
 
         // Calculates the cost for all the items in the cart
-        private decimal CalculateTotalCartCost()
+        public decimal CalculateTotalCartCost()
         {
             foreach (CartItemDisplayModel item in Cart)
             {
@@ -643,48 +617,6 @@ namespace DesktopUI.ViewModels
             return cartCost;
         }
 
-        // pay Button : Compleats the sale, saves the sale into the DB and clears out all the filds for the next sale
-        public void CompleteSale()
-        {
-            decimal balance = 0m;
-
-            // Check if sum of payment methods == to CartTotal
-            if (_cHelper.ConvertStringToDecimal(CartTotal) > SumPayment)
-            {
-                // Show MessageBox asaking to enter payment method
-                MessageBox.Show("Full payment was not taken. Please enter correct Card, Cash or Credit amounts");
-
-                return;
-            }
-            // check if there should be any change given
-            else if (_cHelper.ConvertStringToDecimal(CartTotal) < SumPayment)
-            {
-                decimal cash = _cHelper.ConvertStringToDecimal(CashPayment);
-                decimal card = _cHelper.ConvertStringToDecimal(CardPayment);
-                decimal credit = _cHelper.ConvertStringToDecimal(CreditPayment);
-
-                decimal paymentReceived = cash + card + credit;
-                balance = paymentReceived - _cHelper.ConvertStringToDecimal(CartTotal);
-
-                MessageBox.Show($"Change to give : £{ Math.Round(balance, 2)}");
-            }
-
-            if (MessageBox.Show("Do you want to complete the sale?", "Compleate Sale", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                CashPayment = _cHelper.ConvertDecimalToString(_cHelper.ConvertStringToDecimal(CashPayment) - balance);
-
-                _salesData.SaveSale(CreateSaleForDB(), CreateSaleProductsForDB());
-
-                // Clear out items from the cart list
-                Cart.Clear();
-
-                // Clear out payment method fields
-                ClearPaymentFields();
-            }
-
-
-        }
-
         private void ClearPaymentFields()
         {
             CardPayment = "0.00";
@@ -695,55 +627,6 @@ namespace DesktopUI.ViewModels
             Tax = "0.00";
 
             SumPayment = 0m;
-        }
-
-        private SaleModel CreateSaleForDB()
-        {
-            // Set CashIn as int to save in database
-            int cashOnly = 0;
-            if (CashOnlySale == true)
-            {
-                cashOnly = 1;
-            }
-            else
-            {
-                cashOnly = 0;
-            }
-
-            SaleModel sale = new SaleModel
-            {
-                Card = _cHelper.ConvertStringToInt(CardPayment),
-                Cash = _cHelper.ConvertStringToInt(CashPayment),
-                Credit = _cHelper.ConvertStringToInt(CreditPayment),
-                SaleTotal = _cHelper.ConvertStringToInt(CartTotal),
-                Tax = _cHelper.ConvertStringToInt(Tax),
-                TotalCost = _cHelper.ConvertDecimalToInt(CalculateTotalCartCost()),
-                Profit = _cHelper.ConvertDecimalToInt(CalculateCartProfit()),
-                CashOnly = cashOnly
-            };
-
-            return sale;
-        }
-
-        private List<SaleProductModel> CreateSaleProductsForDB()
-        {
-            List<SaleProductModel> saleProducts = new List<SaleProductModel>();
-
-            foreach (CartItemDisplayModel item in Cart)
-            {
-                saleProducts.Add(new SaleProductModel
-                {
-                    ProductId = item.Product.Id,
-                    ProductName = item.Product.ProductName,
-                    ProductDescription = item.Product.ProductDescription,
-                    ProductCost = _cHelper.ConvertStringToInt(item.Product.ProductCost),
-                    SalePrice = _cHelper.ConvertStringToInt(item.Price),
-                    QuantitySold = item.Quantity,
-                    Department = item.Product.Department
-                });
-            }
-
-            return saleProducts;
         }
 
         public void CheckPaymentSum()
@@ -765,6 +648,11 @@ namespace DesktopUI.ViewModels
             Cart.Remove(SelectedCartItem);
 
             CalculatePayments();
+
+            if (Cart.Count == 0)
+            {
+                CartIsEmpty = true;
+            }
         }
 
         public void CheckCashOnlySale()

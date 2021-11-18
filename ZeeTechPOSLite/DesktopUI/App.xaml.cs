@@ -52,7 +52,9 @@ namespace DesktopUI
                 s.GetRequiredService<SaleStore>()));
 
             services.AddTransient<PaymentVewModel>(s => new PaymentVewModel(
-                s.GetRequiredService<SaleStore>()));
+                s.GetRequiredService<SaleStore>(),
+                CreateCloseModalNavigationService(s),
+                CreatePaymentNavigatonService(s)));
 
             services.AddTransient<BankingViewModel>(s => new BankingViewModel(
                 CreateEditSaleNavigationService(s),
@@ -176,9 +178,15 @@ namespace DesktopUI
         // Payment Navigation Service
         private INavigationService CreatePaymentNavigatonService(IServiceProvider serviceProvider)
         {
+            CompositeNavigationService completeNavigationService = new CompositeNavigationService(
+                CreateCloseModalNavigationService(serviceProvider),
+                CreateManualSaleNavigationService(serviceProvider));
+
             return new ModalNavigationService<PaymentVewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),
-                () => new PaymentVewModel(serviceProvider.GetRequiredService<SaleStore>()));
+                () => new PaymentVewModel(serviceProvider.GetRequiredService<SaleStore>(),
+                CreateCloseModalNavigationService(serviceProvider),
+                completeNavigationService));
         }
 
         // Refund Navigation Service

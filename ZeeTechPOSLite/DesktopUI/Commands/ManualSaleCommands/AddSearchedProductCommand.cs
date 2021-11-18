@@ -3,6 +3,7 @@ using DesktopUI.Models;
 using DesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace DesktopUI.Commands.ManualSaleCommands
@@ -15,9 +16,23 @@ namespace DesktopUI.Commands.ManualSaleCommands
         public AddSearchedProductCommand(ManualSaleViewModel manualSaleViewModel)
         {
             _manualSaleVM = manualSaleViewModel;
+
+            _manualSaleVM.PropertyChanged += OnVeiwModelPropertyChanged;
+        }
+
+        
+
+        public override bool CanExecute(object parameter)
+        {
+            return _manualSaleVM.SelectedSearchedProduct != null && base.CanExecute(parameter);
         }
 
         public override void Execute(object parameter)
+        {
+            AddProductToCart();
+        }
+
+        private void AddProductToCart()
         {
             // Create a product to store in the cartItem
             SaleProductDisplayModel product = new SaleProductDisplayModel
@@ -42,7 +57,20 @@ namespace DesktopUI.Commands.ManualSaleCommands
             };
 
             _manualSaleVM.Cart.Add(item);
+
+            if (_manualSaleVM.CartIsEmpty == true)
+            {
+                _manualSaleVM.CartIsEmpty = false;
+            }
             _manualSaleVM.CalculatePayments();
+        }
+
+        private void OnVeiwModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_manualSaleVM.SelectedSearchedProduct))
+            {
+                OnCanExecuteChanged();
+            }
         }
     }
 }

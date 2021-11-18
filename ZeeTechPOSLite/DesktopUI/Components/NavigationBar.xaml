@@ -42,6 +42,7 @@
                                  Style="{StaticResource NavigationButton}"
                                  Height="60"
                                  ToolTip="New Sale"
+                                 IsChecked="True"
                                  Command="{Binding NavigateDashboardCommand}">
 
                         <StackPanel Orientation="Horizontal">
