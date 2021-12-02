@@ -22,20 +22,31 @@ namespace DesktopUI.Commands.ManualSaleCommands
 
         private void AddQuantity()
         {
-            int localQuantity = _manualSaleVM.SelectedSearchedProduct.Quantity;
-
-            if (_manualSaleVM.SearchedProductQuantity == localQuantity)
+            if (_manualSaleVM.SelectedSearchedProduct != null)
             {
-                if (MessageBox.Show("Do not have enough stock in current location. Do you still Add more?",
-                    "Quantity Limit", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                int localQuantity = _manualSaleVM.SelectedSearchedProduct.Quantity;
+
+                if (_manualSaleVM.SearchedProductQuantity == localQuantity)
+                {
+                    if (MessageBox.Show("Do not have enough stock in current location. Do you still Add more?",
+                        "Quantity Limit", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        _manualSaleVM.SearchedProductQuantity += 1;
+                    }
+                }
+                else
                 {
                     _manualSaleVM.SearchedProductQuantity += 1;
                 }
             }
             else
             {
-                _manualSaleVM.SearchedProductQuantity += 1;
+                _manualSaleVM.SearchedProductQuantity = 0;
             }
+
+
+
+
         }
     }
 }

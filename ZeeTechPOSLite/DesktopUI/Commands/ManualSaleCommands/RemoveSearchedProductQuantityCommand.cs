@@ -21,13 +21,20 @@ namespace DesktopUI.Commands.ManualSaleCommands
 
         private void RemoveQuantity()
         {
-            if (_manualSaleVM.SearchedProductQuantity == 1)
+            if (_manualSaleVM.SelectedSearchedProduct != null)
             {
-                return;
+                if (_manualSaleVM.SearchedProductQuantity < 2)
+                {
+                    _manualSaleVM.SearchedProductQuantity = 1;
+                }
+                else if (_manualSaleVM.SearchedProductQuantity > 1)
+                {
+                    _manualSaleVM.SearchedProductQuantity -= 1;
+                }
             }
             else
             {
-                _manualSaleVM.SearchedProductQuantity -= 1;
+                _manualSaleVM.SearchedProductQuantity = 0;
             }
         }
     }
