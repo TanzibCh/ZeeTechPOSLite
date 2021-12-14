@@ -46,6 +46,10 @@
             <DataTemplate DataType="{x:Type viewModel:EditSaleProductViewModel}">
                 <local:EditProductView />
             </DataTemplate>
+            <!--Create Products-->
+            <DataTemplate DataType="{x:Type viewModel:CreateProductViewModel}">
+                <local:CreateProductView />
+            </DataTemplate>
             <!--Refund-->
             <DataTemplate DataType="{x:Type viewModel:RefundViewModel}">
                 <local:RefundView />

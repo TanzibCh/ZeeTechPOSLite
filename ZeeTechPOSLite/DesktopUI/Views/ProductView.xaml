@@ -54,7 +54,8 @@
                     Command="{Binding SearchBarcodeCommand}"/>
             
             <Button Content="Create New"
-                    Style="{StaticResource AccentButton}"/>
+                    Style="{StaticResource AccentButton}"
+                    Command="{Binding CreateProductCommand}"/>
         </StackPanel>
 
         <ListView Grid.Row="2"

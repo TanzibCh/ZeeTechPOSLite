@@ -15,15 +15,14 @@ namespace DataAccessLibrary.DataAccess.Queries
 
 		public void AddNewProduct(ProductModel product)
 		{
-			// Query to save Address data
+			// Query to save New Product data
 			string sql = @"INSERT INTO Product
 						  (ProductName, ProductDescription, Barcode, AverageCost
 						  Price, Department)
-						  VALUES (@productName, @productDescription, @barcode, @averageCost,
-						  @price, @department);";
+						  VALUES (@productName, @productDescription, @barcode, @averageCost, @price, @department);";
 
 
-			// Insert Address data into the database
+			// Insert Product data into the database
 			_db.SaveData(sql, new
 			{
 				productName = product.ProductName,

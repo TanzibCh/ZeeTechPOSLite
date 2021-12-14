@@ -2,6 +2,7 @@
 using DataAccessLibrary.Models;
 using DesktopUI.Commands.ProductCommands;
 using DesktopUI.Models;
+using DesktopUI.Services;
 using DesktopUI.Stores;
 using System;
 using System.Collections.Generic;
@@ -157,12 +158,13 @@ namespace DesktopUI.ViewModels
 
         public ICommand SearchNameCommand { get; }
         public ICommand SearchBarcodeCommand { get; }
+        public ICommand CreateProductCommand { get; }
 
         #endregion
 
         #region Constructor
 
-        public ProductViewModel(LocationStore locationStore)
+        public ProductViewModel(LocationStore locationStore, INavigationService CreateProductNavigationService)
         {
             _locationStore = locationStore;
 
@@ -170,6 +172,7 @@ namespace DesktopUI.ViewModels
 
             SearchNameCommand = new SearchNameCommand(this, locationStore);
             SearchBarcodeCommand = new SearchBarcodeCommand(this, locationStore);
+            CreateProductCommand = new CreateProductCommand(CreateProductNavigationService);
         }
         #endregion
 
