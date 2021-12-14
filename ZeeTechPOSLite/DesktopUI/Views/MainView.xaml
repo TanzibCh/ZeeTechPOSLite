@@ -30,6 +30,10 @@
             <DataTemplate DataType="{x:Type viewModel:ManualSaleViewModel}">
                 <local:ManualSaleView />
             </DataTemplate>
+            <!--Product-->
+            <DataTemplate DataType="{x:Type viewModel:ProductViewModel}">
+                <local:ProductView />
+            </DataTemplate>
             <!--Payment-->
             <DataTemplate DataType="{x:Type viewModel:PaymentVewModel}">
                 <local:PaymentView />

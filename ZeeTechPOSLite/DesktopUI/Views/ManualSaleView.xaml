@@ -12,7 +12,6 @@
              FontFamily="{materialDesign:MaterialDesignFont}"
              xmlns:local="clr-namespace:DesktopUI.Views" 
              xmlns:components="clr-namespace:DesktopUI.Components"
-             d:DataContext="{d:DesignInstance Type=viewModel:ManualSaleViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1700" >
     <UserControl.Resources>

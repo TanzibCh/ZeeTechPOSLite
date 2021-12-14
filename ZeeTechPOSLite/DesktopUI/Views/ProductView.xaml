@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="DesktopUI.Views.ProductView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
+             xmlns:viewModel="clr-namespace:DesktopUI.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             FontFamily="{materialDesign:MaterialDesignFont}"
+             xmlns:local="clr-namespace:DesktopUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+
+        <!-- Header -->
+        <Label Grid.Row="0"
+               Content="Products"
+               Margin="20 0"
+               HorizontalAlignment="Left"
+               Style="{StaticResource HeaderWhiteLargeLabel}"/>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+            
+            <!--Name/Model-->
+            <TextBox Grid.Row="1"
+                     Margin="10 0 20 0"
+                     VerticalContentAlignment="Center"
+                     Style="{StaticResource FloatingLargeHintBox}"
+                     materialDesign:HintAssist.Hint="Search product by Name/Model"
+                     Text="{Binding SearchName, Mode=TwoWay}"/>
+
+            <Button Content="Search"
+                    Margin="0 0 20 0"
+                    Command="{Binding SearchNameCommand}"/>
+            <!--Barcode-->
+            <TextBox Grid.Row="1"
+                     Margin="20 0"
+                     VerticalContentAlignment="Center"
+                     Style="{StaticResource FloatingLargeHintBox}"
+                     materialDesign:HintAssist.Hint="Search product by Barcode"
+                     Text="{Binding SearchBarcode, Mode=TwoWay}"/>
+
+            <Button Content="Search"
+                    Command="{Binding SearchBarcodeCommand}"/>
+            
+            <Button Content="Create New"
+                    Style="{StaticResource AccentButton}"/>
+        </StackPanel>
+
+        <ListView Grid.Row="2"
+                  Margin="10"
+                  HorizontalContentAlignment="Stretch"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ItemsSource="{Binding SearchedProducts}"
+                  d:ItemsSource="{d:SampleData ItemCount=10}"
+                  Grid.IsSharedSizeScope="True" 
+                  SelectedItem="{Binding SelectedSearchedProduct, Mode=TwoWay}">
+            <!--ListView Headers-->
+            <ListView.Template>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Grid DockPanel.Dock="Top"
+                                      HorizontalAlignment="Stretch"
+                                      Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition MinWidth="200" SharedSizeGroup="name" />
+                                <ColumnDefinition MinWidth="500" SharedSizeGroup="description" />
+                                <ColumnDefinition MinWidth="100" SharedSizeGroup="localQty" />
+                                <ColumnDefinition MinWidth="100" SharedSizeGroup="totlQty" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0"
+                                               Style="{StaticResource HeaderMediumGrayLabel}"
+                                               HorizontalAlignment="Left"
+                                               Content="Name/Model" />
+                            <Label Grid.Column="1"
+                                               Style="{StaticResource HeaderMediumGrayLabel}"
+                                               HorizontalAlignment="Left"
+                                               Content="Description" />
+                            <Label Grid.Column="2"
+                                               Style="{StaticResource HeaderMediumGrayLabel}"
+                                               HorizontalAlignment="Center"
+                                               Content="Local Qty" />
+                            <Label Grid.Column="3"
+                                               Style="{StaticResource HeaderMediumGrayLabel}"
+                                               HorizontalAlignment="Center"
+                                               Content="Total Qty" />
+                        </Grid>
+                        <ItemsPresenter></ItemsPresenter>
+                    </DockPanel>
+                </ControlTemplate>
+            </ListView.Template>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="name" />
+                            <ColumnDefinition SharedSizeGroup="description" />
+                            <ColumnDefinition SharedSizeGroup="localQty" />
+                            <ColumnDefinition SharedSizeGroup="totlQty" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource WhiteTextBlock}"
+                                   HorizontalAlignment="Left"
+                                   Text="{Binding ProductName}" />
+                        <TextBlock Grid.Column="1"
+                                   Style="{StaticResource WhiteTextBlock}"
+                                   HorizontalAlignment="Left"
+                                   Text="{Binding ProductDescription}" />
+                        <TextBlock Grid.Column="2"
+                                   Style="{StaticResource WhiteTextBlock}"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding Quantity}" />
+                        <TextBlock Grid.Column="3"
+                                   Style="{StaticResource WhiteTextBlock}"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding TotalQuantity}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

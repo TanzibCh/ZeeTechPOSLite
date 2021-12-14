@@ -44,6 +44,9 @@ namespace DesktopUI
             services.AddTransient<DashboardViewModel>(s => new DashboardViewModel(
                 s.GetRequiredService<LocationStore>()));
 
+            services.AddTransient<ProductViewModel>(s => new ProductViewModel(
+                s.GetRequiredService<LocationStore>()));
+
             services.AddTransient<ManualSaleViewModel>(s => new ManualSaleViewModel(
                 CreateEditProductNavigationService(s),
                 CreatePaymentNavigatonService(s),
@@ -109,6 +112,8 @@ namespace DesktopUI
             base.OnStartup(e);
         }
 
+        // Navigation Services
+
         // Dashboard Navigation Service
         private INavigationService CreateDashboardNavigationService(IServiceProvider serviceProvider)
         {
@@ -118,12 +123,24 @@ namespace DesktopUI
                 () => serviceProvider.GetRequiredService<DashboardViewModel>());
         }
 
+        // Product Navigation Service
+        private INavigationService CreateProductNavigationService(IServiceProvider serviceProvider)
+        {
+            return new LayoutNavigationService<ProductViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                () => CreateNavigationBarViewModel(serviceProvider),
+                () => serviceProvider.GetRequiredService<ProductViewModel>());
+        }
+
+
+
         // Navigation Bar View Model
         private NavigationBarViewModel CreateNavigationBarViewModel(IServiceProvider serviceProvider)
         {
             return new NavigationBarViewModel(
                 CreateManualSaleNavigationService(serviceProvider),
                 CreateBankingNavigationService(serviceProvider),
+                CreateProductNavigationService(serviceProvider),
                 CreateDashboardNavigationService(serviceProvider));
         }
 

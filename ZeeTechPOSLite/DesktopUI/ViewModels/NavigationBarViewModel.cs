@@ -12,14 +12,17 @@ namespace DesktopUI.ViewModels
         public ICommand NavigateManualSaleCommand { get; }
         public ICommand NavigateBankingCommand { get; }
         public ICommand NavigateDashboardCommand { get; }
+        public ICommand NavigateProductCommand { get; }
 
         public NavigationBarViewModel(INavigationService manualSaleNavigationService,
                                       INavigationService bankingNavigationService,
+                                      INavigationService productNavigationService,
                                       INavigationService dashboardNavigationService)
         {
             NavigateManualSaleCommand = new NavigateCommand(manualSaleNavigationService);
             NavigateBankingCommand = new NavigateCommand(bankingNavigationService);
             NavigateDashboardCommand = new NavigateCommand(dashboardNavigationService);
+            NavigateProductCommand = new NavigateCommand(productNavigationService);
         }
 
         public override void Dispose()

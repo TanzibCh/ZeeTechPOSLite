@@ -69,13 +69,16 @@ namespace DesktopUI.Commands.PaymentCompleteCommands
                 _paymentVM.CashPayment -= balance;
 
                 _salesData.SaveSale(CreateSaleForDB(), _saleStore.SaleProductsForDB);
+
+                // TODO: Remove quantity from the current location stock
+                // if the ProductId of any product in the Cart is != -1
+
+                _navigationService.Navigate();
             }
-
-            // TODO: Remove quantity from the current location stock
-            // if the ProductId of any product in the Cart is != -1
-
-            _navigationService.Navigate();
-
+            else
+            {
+                return;
+            }
         }
 
         // Creates SaleModel object to save in the database

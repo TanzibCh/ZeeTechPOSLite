@@ -34,6 +34,7 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
+                
                 <!--DashBoard-->
                 <StackPanel Grid.Row="0"
                             Grid.Column="0"
@@ -56,6 +57,7 @@
                         </StackPanel>
                     </RadioButton>
                 </StackPanel>
+                
                 <!--Sale-->
                 <StackPanel Grid.Row="1"
                             Grid.Column="0"
@@ -78,46 +80,27 @@
                     </RadioButton>
                 </StackPanel>
 
-
-                <!--Search-->
-                <!--<StackPanel Margin="0 10">
-                    <Button GroupName="navigation"
-                            Style="{StaticResource MaterialDesignToolForegroundButton}"
-                            Height="60"
-                        ToolTip="Sale Search">
-                        <materialDesign:PackIcon Kind="TextBoxSearchOutline" 
-                                             Width="30"
-                                             Height="30"/>
-                    </Button>
-                </StackPanel>-->
-
-
                 <!--Products-->
-                <!--<StackPanel Margin="0 10">
-                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
-                            Height="60"
-                        ToolTip="Products">
-                        <materialDesign:PackIcon Kind="ArchiveStarOutline" 
-                                             Width="30"
-                                             Height="30"/>
-                    </Button>
-                </StackPanel>-->
-
-
-                <!--Products Search-->
-                <!--<StackPanel Margin="0 10">
-                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
-                            Height="60"
-                        ToolTip="Product search">
-                        <materialDesign:PackIcon Kind="ArchiveSearchOutline" 
-                                             Width="30"
-                                             Height="30"/>
-                    </Button>
-                </StackPanel>-->
-
+                <StackPanel Grid.Row="2"
+                            Grid.Column="0"
+                            Margin="0 5">
+                    <RadioButton GroupName="navigation"
+                                 Style="{StaticResource NavigationButton}"
+                                 Height="60"
+                                 ToolTip="Banking"
+                                 Command="{Binding NavigateProductCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ArchiveStarOutline" 
+                                                     Style="{StaticResource NavigationIcon}"/>
+                            <TextBlock Margin="10 0"
+                                       Style="{StaticResource WhiteTextBlock}"
+                                       Text="Products" />
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
 
                 <!--Banking-->
-                <StackPanel Grid.Row="2"
+                <StackPanel Grid.Row="3"
                             Grid.Column="0"
                             Margin="0 5">
                     <RadioButton GroupName="navigation"

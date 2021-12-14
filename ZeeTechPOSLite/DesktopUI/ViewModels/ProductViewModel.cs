@@ -1,93 +1,193 @@
-﻿using DesktopUI.Models;
+﻿using DataAccessLibrary.DataAccess.Queries;
+using DataAccessLibrary.Models;
+using DesktopUI.Commands.ProductCommands;
+using DesktopUI.Models;
+using DesktopUI.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows.Input;
 
 namespace DesktopUI.ViewModels
 {
     public class ProductViewModel : ViewModelBase
     {
-        #region Field Properties
+        private readonly LocationStore _locationStore;
+        private readonly ProductData _productData = new ProductData(); 
+        private ProductSearchModel _selectedSearchedProduct;
 
-        private ObservableCollection<ProductDisplayModel> _products;
 
-        // List to load the products
-        public ObservableCollection<ProductDisplayModel> Products
+        //#region Field Properties
+
+        //private ObservableCollection<ProductDisplayModel> _products;
+
+        //// List to load the products
+        //public ObservableCollection<ProductDisplayModel> Products
+        //{
+        //    get { return _products; }
+        //    set
+        //    {
+        //        _products = value;
+        //        OnPropertyChanged(nameof(Products));
+        //    }
+        //}
+
+        //private string _Productsearch;
+
+        //// Field for searching priducts
+        //public string ProductSearch
+        //{
+        //    get { return _Productsearch; }
+        //    set
+        //    {
+        //        _Productsearch = value;
+        //        OnPropertyChanged(nameof(ProductSearch));
+        //    }
+        //}
+
+        //private string _filterDepartment;
+
+        //// Deparment filter
+        //public string FilterDepartment
+        //{
+        //    get { return _filterDepartment; }
+        //    set
+        //    {
+        //        _filterDepartment = value;
+        //        OnPropertyChanged(nameof(FilterDepartment));
+        //    }
+        //}
+
+        //private bool _sortCost;
+
+        //// sort by cost
+        //public bool SortCost
+        //{
+        //    get { return _sortCost; }
+        //    set
+        //    {
+        //        _sortCost = value;
+        //        OnPropertyChanged(nameof(SortCost));
+        //    }
+        //}
+
+        //private bool _sortPrice;
+
+        //// sort by price
+        //public bool SortPrice
+        //{
+        //    get { return _sortPrice; }
+        //    set
+        //    {
+        //        _sortPrice = value;
+        //        OnPropertyChanged(nameof(SortPrice));
+        //    }
+        //}
+
+        //private bool _sortName;
+
+        //// sort by name
+        //public bool SortName
+        //{
+        //    get { return _sortName; }
+        //    set
+        //    {
+        //        _sortName = value;
+        //        OnPropertyChanged(nameof(SortName));
+        //    }
+        //}
+
+        //#endregion Field Properties
+
+        #region Product Search Properties
+
+        private ObservableCollection<ProductSearchModel> _searchProducts;
+
+        public ObservableCollection<ProductSearchModel> SearchedProducts
         {
-            get { return _products; }
+            get { return _searchProducts; }
             set
             {
-                _products = value;
-                OnPropertyChanged(nameof(Products));
+                _searchProducts = value;
+                OnPropertyChanged(nameof(SearchedProducts));
             }
         }
 
-        private string _Productsearch;
+        private string _searchName;
 
-        // Field for searching priducts
-        public string ProductSearch
+        public string SearchName
         {
-            get { return _Productsearch; }
+            get { return _searchName; }
             set
             {
-                _Productsearch = value;
-                OnPropertyChanged(nameof(ProductSearch));
+                _searchName = value;
+                OnPropertyChanged(nameof(SearchName));
             }
         }
 
-        private string _filterDepartment;
 
-        // Deparment filter
-        public string FilterDepartment
+        private string _searchBarcode;
+
+        public string SearchBarcode
         {
-            get { return _filterDepartment; }
+            get { return _searchBarcode; }
             set
             {
-                _filterDepartment = value;
-                OnPropertyChanged(nameof(FilterDepartment));
+                _searchBarcode = value;
+                OnPropertyChanged(nameof(SearchBarcode));
             }
         }
 
-        private bool _sortCost;
 
-        // sort by cost
-        public bool SortCost
+       
+
+        public ProductSearchModel SelectedSearchedProduct
         {
-            get { return _sortCost; }
+            get { return _selectedSearchedProduct; }
             set
             {
-                _sortCost = value;
-                OnPropertyChanged(nameof(SortCost));
+                _selectedSearchedProduct = value;
+                OnPropertyChanged(nameof(SelectedSearchedProduct));
             }
         }
+        #endregion
 
-        private bool _sortPrice;
+        #region Commands
 
-        // sort by price
-        public bool SortPrice
+        public ICommand SearchNameCommand { get; }
+        public ICommand SearchBarcodeCommand { get; }
+
+        #endregion
+
+        #region Constructor
+
+        public ProductViewModel(LocationStore locationStore)
         {
-            get { return _sortPrice; }
-            set
-            {
-                _sortPrice = value;
-                OnPropertyChanged(nameof(SortPrice));
-            }
+            _locationStore = locationStore;
+
+            GetAllProducts();
+
+            SearchNameCommand = new SearchNameCommand(this, locationStore);
+            SearchBarcodeCommand = new SearchBarcodeCommand(this, locationStore);
         }
+        #endregion
 
-        private bool _sortName;
+        #region Methods
 
-        // sort by name
-        public bool SortName
+        public void GetAllProducts()
         {
-            get { return _sortName; }
-            set
-            {
-                _sortName = value;
-                OnPropertyChanged(nameof(SortName));
-            }
-        }
+            List<ProductSearchModel> allProducts = _productData.GetAllProducts(_locationStore.Id);
+            ObservableCollection<ProductSearchModel> products = new ObservableCollection<ProductSearchModel>();
 
-        #endregion Field Properties
+
+            foreach (ProductSearchModel product in allProducts)
+            {
+                products.Add(product);
+            }
+
+            SearchedProducts = products;
+        }
+        #endregion
     }
 }
