@@ -84,8 +84,13 @@ namespace DesktopUI.ViewModels
             {
                 _selectedSearchedProduct = value;
                 OnPropertyChanged(nameof(SelectedSearchedProduct));
-                SearchedProductQuantity = 1;
-                SearchedProductPrice = _cHelper.ConvertIntToCurrencyDecimal(_selectedSearchedProduct.Price);
+
+                if (SelectedSearchedProduct != null)
+                {
+                    SearchedProductQuantity = 1;
+                    SearchedProductPrice = _cHelper.ConvertIntToCurrencyDecimal(_selectedSearchedProduct.Price);
+                }
+                
             }
         }
 

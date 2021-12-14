@@ -11,7 +11,7 @@
              FontFamily="{materialDesign:MaterialDesignFont}"
              d:DataContext="{d:DesignInstance Type=viewModel:RefundViewModel}"
              mc:Ignorable="d"
-             Height="490" Width="800">
+             Height="530" Width="900">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -32,7 +32,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="220" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -97,18 +97,19 @@
                              materialDesign:TextFieldAssist.SuffixText="%"
                              HorizontalContentAlignment="Center"
                              Width="134"
-                             Style="{StaticResource floatingHintBox}"
+                             Style="{StaticResource FloatingHintBox}"
                              Text="{Binding RestockingCharge, Mode=TwoWay}" />
                     <StackPanel Orientation="Horizontal" Margin="0 30"
                                 HorizontalAlignment="Center">
                         <!-- Remove quantity button -->
                         <Button Content="-"
-                                Width="30"
+                                Width="40"
+                                Height="40"
                                 Command="{Binding RemoveQuantityCommand}"
                                 IsEnabled="{Binding RemoveQuantityEnabled}" />
                         <!-- Quantity -->
                         <TextBox Margin="10 0"
-                                 Style="{StaticResource floatingHintBox}"
+                                 Style="{StaticResource FloatingHintBox}"
                                  materialDesign:HintAssist.Hint="Qty"
                                  HorizontalContentAlignment="Center"
                                  Width="50"
@@ -116,20 +117,21 @@
                                  IsEnabled="{Binding QuantityEnabled}" />
                         <!-- Add quantity button -->
                         <Button Content="+"
-                                Width="30"
+                                Width="40"
+                                Height="40"
                                 Command="{Binding AddQuantityCommand}"
                                 IsEnabled="{Binding AddQuantityEnabled}" />
                     </StackPanel>
+                    
                     <!-- Add button -->
                     <Button Content="Add"
-                            Margin=" 0 0 0 10"
                             Command="{Binding AddCommand}"
                             IsEnabled="{Binding AddButtonEnabled}" />
                     <!-- remove button -->
                     <Button Content="Remove"
                             Command="{Binding RemoveCommand}" />
 
-                    <Separator Margin="0 20 0 0" Style="{StaticResource MaterialDesignLightSeparator}" />
+                    <Separator Margin="0 10 0 0" Style="{StaticResource MaterialDesignLightSeparator}" />
                     <!-- Product total -->
                     <Label HorizontalAlignment="Center"
                            Content="Product Total"
@@ -186,7 +188,7 @@
                                Style="{StaticResource MaterialDesignLightSeparator}" />
                     <Grid Margin="10 0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="90" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0"

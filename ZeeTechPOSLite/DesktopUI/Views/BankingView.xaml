@@ -77,7 +77,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="800" />
-                <ColumnDefinition MinWidth="400" MaxWidth="500"/>
+                <ColumnDefinition MinWidth="400" MaxWidth="550"/>
                 <ColumnDefinition Width="260" />
             </Grid.ColumnDefinitions>
 
@@ -270,10 +270,10 @@
                                         materialDesign:ButtonAssist.CornerRadius="15"
                                         Command="{Binding RefundCommand}" />
 
-                                <Button Margin="10 2"
+                                <!--<Button Margin="10 2"
                                         Content="Void"
                                         Width="80"
-                                        materialDesign:ButtonAssist.CornerRadius="15" />
+                                        materialDesign:ButtonAssist.CornerRadius="15" />-->
                             </StackPanel>
                         </StackPanel>
                     </materialDesign:ColorZone>
@@ -679,7 +679,7 @@
                             <TextBlock Grid.Column="1" Grid.Row="4"
                                        HorizontalAlignment="Right"
                                        Margin="10 0 0 0"
-                                       Text="£10000.00"
+                                       Text="0.00"
                                        VerticalAlignment="Center" />
 
                             <!-- Expenses Label-->
